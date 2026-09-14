@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { archivo, archivoFace } from "@/app/og-font";
 import { facts, profile } from "@/content/profile";
 
 export const alt = "Suyash Kerkar — applied AI engineer";
@@ -8,8 +9,14 @@ export const contentType = "image/png";
 /**
  * Share card, drawn with the site's own tokens so a link preview looks like the
  * page it opens. Values are inline because next/og renders outside Tailwind.
+ * This card is usually seen before the site itself, so it is set in Archivo
+ * rather than the renderer's fallback.
  */
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const [regular, semibold] = await Promise.all([archivo(400), archivo(600)]);
+  const fonts = [...archivoFace(regular, 400), ...archivoFace(semibold, 600)];
+  const fontFamily = fonts.length ? "Archivo" : "sans-serif";
+
   const ground = "#f2efe9";
   const ink = "#1d1f24";
   const muted = "#6b6a64";
@@ -25,7 +32,7 @@ export default function OpenGraphImage() {
           display: "flex",
           background: ground,
           color: ink,
-          fontFamily: "sans-serif",
+          fontFamily,
         }}
       >
         <div
@@ -100,6 +107,6 @@ export default function OpenGraphImage() {
         </div>
       </div>
     ),
-    size,
+    { ...size, ...(fonts.length ? { fonts } : {}) },
   );
 }
