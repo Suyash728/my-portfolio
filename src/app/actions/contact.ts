@@ -17,8 +17,6 @@ const ContactSchema = z.object({
     .trim()
     .min(20, "Tell me a bit more — 20 characters at least.")
     .max(4000),
-  // Honeypot. A real person never sees this field, so anything in it is a bot.
-  company: z.string().max(0).optional().or(z.literal("")),
 });
 
 export type ContactState = {
@@ -49,6 +47,14 @@ function rateLimited(key: string): boolean {
   }
   recent.push(now);
   hits.set(key, recent);
+
+  // Sweep keys whose window has emptied. Without this the map keeps one entry
+  // per IP that ever submitted, for the life of the instance.
+  for (const [other, times] of hits) {
+    if (other !== key && times.every((t) => now - t >= WINDOW_MS)) {
+      hits.delete(other);
+    }
+  }
   return false;
 }
 
@@ -56,17 +62,22 @@ export async function sendMessage(
   _prev: ContactState,
   formData: FormData,
 ): Promise<ContactState> {
+  // Honeypot, checked on its own rather than through the schema: a missing
+  // field arrives as null, and folding that into validation made an absent
+  // field indistinguishable from a filled one. Only a non-empty value is a bot,
+  // and a bot gets the success path so it learns nothing.
+  if (String(formData.get("company") ?? "").trim() !== "") {
+    return { status: "sent", message: "Thanks — that's sent." };
+  }
+
   const parsed = ContactSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
     message: formData.get("message"),
-    company: formData.get("company"),
   });
 
   if (!parsed.success) {
     const flat = z.flattenError(parsed.error).fieldErrors;
-    // A filled honeypot gets the success path: tell the bot nothing.
-    if (flat.company) return { status: "sent", message: "Thanks — that's sent." };
     return {
       status: "error",
       message: "Check the fields marked below.",
@@ -114,7 +125,7 @@ export async function sendMessage(
       from,
       to,
       replyTo: email,
-      subject: `Portfolio — ${name}`,
+      subject: `Portfolio — ${name.replace(/[\r\n]+/g, " ")}`,
       text: `${name} <${email}>\n\n${message}`,
     });
     if (error) throw new Error(error.message);

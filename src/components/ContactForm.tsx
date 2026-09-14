@@ -21,10 +21,10 @@ function SubmitButton() {
   );
 }
 
-function FieldError({ children }: { children?: string }) {
+function FieldError({ id, children }: { id: string; children?: string }) {
   if (!children) return null;
   return (
-    <p className="mt-1.5 text-small text-flag" role="alert">
+    <p id={id} className="mt-1.5 text-small text-flag" role="alert">
       {children}
     </p>
   );
@@ -50,11 +50,17 @@ export function ContactForm() {
           name="name"
           type="text"
           autoComplete="name"
+          maxLength={80}
           required
           aria-invalid={state.errors?.name ? true : undefined}
+          aria-describedby={
+            state.errors?.name ? "contact-name-error" : undefined
+          }
           className="field"
         />
-        <FieldError>{state.errors?.name}</FieldError>
+        <FieldError id="contact-name-error">
+          {state.errors?.name}
+        </FieldError>
       </div>
 
       <div>
@@ -69,11 +75,17 @@ export function ContactForm() {
           name="email"
           type="email"
           autoComplete="email"
+          maxLength={160}
           required
           aria-invalid={state.errors?.email ? true : undefined}
+          aria-describedby={
+            state.errors?.email ? "contact-email-error" : undefined
+          }
           className="field"
         />
-        <FieldError>{state.errors?.email}</FieldError>
+        <FieldError id="contact-email-error">
+          {state.errors?.email}
+        </FieldError>
       </div>
 
       <div>
@@ -86,11 +98,17 @@ export function ContactForm() {
         <textarea
           id="contact-message"
           name="message"
+          maxLength={4000}
           required
           aria-invalid={state.errors?.message ? true : undefined}
+          aria-describedby={
+            state.errors?.message ? "contact-message-error" : undefined
+          }
           className="field min-h-[110px] resize-y"
         />
-        <FieldError>{state.errors?.message}</FieldError>
+        <FieldError id="contact-message-error">
+          {state.errors?.message}
+        </FieldError>
       </div>
 
       {/* Honeypot: off-screen, not hidden, so bots fill it and people never see it. */}
