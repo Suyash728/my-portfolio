@@ -12,9 +12,15 @@ import type { LinkIconName } from "@/content/types";
  * and inventing a "solid" document glyph would be worse than either.
  */
 const GLYPHS: Record<
-  LinkIconName,
+  LinkIconName | "arrow",
   { mode: "fill" | "stroke"; d: string[]; label: string }
 > = {
+  /** Affordance, not a link type: marks a heading as leading somewhere. */
+  arrow: {
+    mode: "stroke",
+    d: ["M7 17 17 7", "M8 7h9v9"],
+    label: "Opens in a new page",
+  },
   repo: {
     mode: "fill",
     d: [ICONS.github.path],
@@ -41,13 +47,19 @@ const GLYPHS: Record<
   },
 };
 
-export function LinkIcon({ name }: { name: LinkIconName }) {
+export function LinkIcon({
+  name,
+  className = "size-[13px] flex-none",
+}: {
+  name: LinkIconName | "arrow";
+  className?: string;
+}) {
   const glyph = GLYPHS[name];
   return (
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className="size-[13px] flex-none"
+      className={className}
       fill={glyph.mode === "fill" ? "currentColor" : "none"}
       stroke={glyph.mode === "stroke" ? "currentColor" : "none"}
       strokeWidth={glyph.mode === "stroke" ? 2 : undefined}

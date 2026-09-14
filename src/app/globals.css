@@ -183,6 +183,33 @@
     border-color: var(--color-ink);
   }
 
+  /* Project heading that leads to its repository. The heading keeps ink colour
+     at rest — a blue headline would be a second loud element — and the arrow
+     carries the affordance, moving the way the link does on hover. */
+  .title-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-ink);
+    transition: color 0.18s var(--ease-out-soft);
+  }
+
+  .title-link svg {
+    color: var(--color-muted);
+    transition:
+      color 0.18s var(--ease-out-soft),
+      transform 0.18s var(--ease-out-soft);
+  }
+
+  .title-link:hover {
+    color: var(--color-signal);
+  }
+
+  .title-link:hover svg {
+    color: var(--color-signal);
+    transform: translate(2px, -2px);
+  }
+
   /* Link whose underline draws in from the left. */
   .link-draw {
     position: relative;

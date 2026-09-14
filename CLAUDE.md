@@ -77,6 +77,14 @@ letting one render bare. The glyphs live in `src/components/LinkIcon.tsx` and
 take `currentColor`: the technology marks are the only brand colour on the
 page, and a link row should read as one object.
 
+A project's heading links to its repository, marked by an arrow. The target is
+derived, not configured: the repo link if it resolves, otherwise the first link
+that does, and **nothing at all when none do** — a heading that looks clickable
+and isn't is worse than a plain one. So filling in a `null` href turns its
+heading into a link with no other change. The heading stays ink at rest; only
+the arrow and the hover state carry the affordance, because a blue headline
+would be a second loud element competing with the rail.
+
 ### TODO convention
 
 A `null` is the placeholder, and it renders visibly through `<Todo />`:
