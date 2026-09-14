@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Suyash Kerkar — portfolio
 
-## Getting Started
+Personal site for Suyash Satish Kerkar, final-year BE student in AI & Data
+Science at Terna Engineering College, Mumbai University.
 
-First, run the development server:
+Next.js App Router · TypeScript (strict) · Tailwind v4 · Resend
+
+## Running it
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in to enable the contact form
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site runs without any environment variables; the contact form then
+validates and rate-limits but tells visitors to use the email address instead
+of sending.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding a project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add one entry to `src/content/projects.ts`. Nothing else needs to change —
+every section maps over typed data in `src/content/`.
 
-## Learn More
+Set a link's `href` to `null` and it renders as a visible TODO chip rather than
+a dead link.
 
-To learn more about Next.js, take a look at the following resources:
+## Layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/          layout, page, Server Action, SEO routes, OG image
+  components/   rail, panels, sections, canvas background, contact form
+  content/      all site content as typed data
+scripts/        brand-icon generator
+docs/           the original build brief
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `CLAUDE.md` for the design direction, tokens, motion constraints and
+conventions.
