@@ -20,7 +20,7 @@ export function Panel({
     <section
       id={id}
       aria-labelledby={id && heading ? `${id}-heading` : undefined}
-      className="scroll-mt-4 border-b border-rule px-5 py-9 last:border-b-0 wide:px-13 wide:py-11"
+      className="scroll-mt-8 border-b border-rule px-5 py-9 last:border-b-0 wide:px-13 wide:py-11"
     >
       {heading ? (
         <h2
@@ -36,11 +36,15 @@ export function Panel({
   );
 }
 
-/** Sub-heading inside a panel, for the second list in a shared section. */
+/**
+ * Sub-heading inside a panel, for the second list in a shared section. An h3,
+ * not an h2: it sits inside a section already labelled by the panel's h2, and a
+ * second h2 there reads as a sibling of the section it is nested in.
+ */
 export function PanelHeading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mt-9 mb-[22px] font-narrow text-meta font-semibold tracking-eyebrow text-muted uppercase">
+    <h3 className="mt-9 mb-[22px] font-narrow text-meta font-semibold tracking-eyebrow text-muted uppercase">
       {children}
-    </h2>
+    </h3>
   );
 }

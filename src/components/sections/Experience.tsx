@@ -39,9 +39,9 @@ export function Experience() {
             marker={qualification.meta}
             first={index === 0}
           >
-            <h3 className="text-lead font-semibold tracking-tight">
+            <h4 className="text-lead font-semibold tracking-tight">
               {qualification.award}
-            </h3>
+            </h4>
             <p className="mt-1 text-small text-muted">
               {qualification.institution}
             </p>
