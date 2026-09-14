@@ -13,9 +13,9 @@ export function Stack() {
         {stack.map((group) => (
           <div
             key={group.label}
-            className="grid grid-cols-1 items-start gap-1.5 wide:grid-cols-[150px_minmax(0,1fr)] wide:gap-5"
+            className="grid grid-cols-1 items-baseline gap-1.5 wide:grid-cols-[150px_minmax(0,1fr)] wide:gap-5"
           >
-            <dt className="font-narrow text-meta tracking-label text-muted uppercase wide:pt-[7px]">
+            <dt className="font-narrow text-meta tracking-label text-muted uppercase">
               {group.label}
             </dt>
             <dd className="m-0">

@@ -14,13 +14,15 @@ export function TechList({
   className?: string;
 }) {
   return (
-    <ul className={`flex list-none flex-wrap gap-[5px] p-0 ${className}`}>
+    <ul
+      className={`flex list-none flex-wrap gap-x-5 gap-y-2.5 p-0 ${className}`}
+    >
       {items.map((tech) => {
         const icon = tech.icon ? ICONS[tech.icon] : undefined;
         return (
           <li
             key={tech.name}
-            className={icon ? "tech pl-[9px]" : "tech text-muted"}
+            className={icon ? "tech" : "tech tech-plain"}
             style={
               icon ? ({ "--brand": icon.hex } as React.CSSProperties) : undefined
             }

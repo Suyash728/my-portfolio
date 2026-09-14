@@ -37,12 +37,12 @@ const hexBySlug = new Map(all.map((i) => [i.slug ?? slugify(i.title), i.hex]));
 
 /**
  * Brand colours are picked for a white page, and several of them (JavaScript's
- * yellow, Linux's amber) all but vanish on our chip surface. `safe` is the
- * brand colour walked darker until it clears 3:1 against that surface, so the
- * marks read as coloured without any of them going washed out. Most brands are
+ * yellow, Linux's amber) all but vanish on our warm ground. `safe` is the brand
+ * colour walked darker until it clears 3:1 against that ground, so the marks
+ * read as coloured without any of them going washed out. Most brands are
  * already dark enough and come back unchanged.
  */
-const CHIP_SURFACE = [0xfb, 0xf9, 0xf5];
+const PAGE_GROUND = [0xf2, 0xef, 0xe9];
 const MIN_CONTRAST = 3;
 
 const channel = (c) => {
@@ -68,7 +68,7 @@ function darkenToLegible(hex) {
     parseInt(hex.slice(4, 6), 16),
   ];
   // Walk down in small steps so the hue survives; 60 steps at 0.94 is ample.
-  for (let i = 0; i < 60 && contrast(rgb, CHIP_SURFACE) < MIN_CONTRAST; i++) {
+  for (let i = 0; i < 60 && contrast(rgb, PAGE_GROUND) < MIN_CONTRAST; i++) {
     rgb = rgb.map((c) => c * 0.94);
   }
   return toHex(rgb).toUpperCase();
@@ -109,7 +109,7 @@ writeFileSync(
 
 export interface BrandIcon {
   /** Brand colour as rendered — darkened where the true brand colour would
-   *  fall below 3:1 on the chip surface. This is the one to paint with. */
+   *  fall below 3:1 on the page ground. This is the one to paint with. */
   readonly hex: string;
   /** The untouched official brand colour, for reference. */
   readonly brand: string;

@@ -29,17 +29,11 @@ export function Hero() {
         ))}
       </dl>
 
-      <div className="rise mt-7 flex flex-wrap items-center gap-3 [animation-delay:0.18s]">
+      {/* One call to action. The resume download lives in the rail, where it
+          stays reachable from every section instead of only the top. */}
+      <div className="rise mt-7 [animation-delay:0.18s]">
         <a className="btn" href="#projects">
           Read the projects
-        </a>
-        <a
-          className="btn btn-quiet"
-          href={profile.resume}
-          download
-          aria-label="Download resume, PDF"
-        >
-          Resume <span className="text-tiny">PDF</span>
         </a>
       </div>
     </section>

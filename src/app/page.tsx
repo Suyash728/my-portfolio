@@ -92,10 +92,8 @@ export default function Home() {
           <Certifications />
           <Contact />
 
-          <footer className="border-t border-rule px-5 pt-7 pb-12 text-small text-muted wide:px-13">
-            Built with Next.js and Tailwind. Type is Archivo; the background is a
-            canvas trace that stops when it is off-screen or you have asked for
-            reduced motion.
+          <footer className="border-t border-rule px-5 pt-7 pb-12 font-narrow text-meta tracking-rail text-muted wide:px-13">
+            Suyash Kerkar · Navi Mumbai · {new Date().getFullYear()}
           </footer>
         </main>
       </div>

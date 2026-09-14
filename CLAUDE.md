@@ -22,7 +22,7 @@ Nothing should introduce a raw hex or a one-off font size outside it.
 | Token | Value | Job |
 | --- | --- | --- |
 | `ground` | `#F2EFE9` | Page base. Warm off-white pulled grey — deliberately not the cream every other portfolio uses. |
-| `raised` | `#FBF9F5` | Chips, inputs, hover surfaces. |
+| `raised` | `#FBF9F5` | Inputs, row hover surfaces, text on filled buttons. |
 | `rule` / `rule-soft` | `#DFD9CE` / `#EAE5DC` | Panel borders / inner row borders. |
 | `ink` | `#1D1F24` | Body text. |
 | `muted` | `#6B6A64` | Secondary text. AA at body size. |
@@ -90,19 +90,22 @@ CDN: one fewer request, works offline, and nothing external can change what the
 site renders. Re-run `node scripts/fetch-icons.mjs` only when adding a slug to
 the `SLUGS` list in that script.
 
-Icons carry their **brand colour at rest**. The chip around them stays quiet —
-neutral surface, hairline border — so a row reads as one object rather than a
-logo wall; hover adds the coloured border, the lift and the shadow.
+Icons carry their **brand colour at rest**, and there is no box around them —
+no border, no fill, no padding. A bordered, filled chip repeated thirty times
+reads as a wall of buttons; with the chrome gone the marks are the only accent
+and the section stays calm. Hover shifts the label to the same brand colour.
 
 Each icon exports two colours. `hex` is what gets painted: the brand colour
-walked darker until it clears 3:1 against the chip surface, because several
-brand colours are chosen for a white page and vanish on ours (JavaScript,
-Linux, Hugging Face, React, Tailwind, Supabase, BigQuery, Cloudflare are
+walked darker until it clears 3:1 against the page ground, because several brand
+colours are chosen for a white page and vanish on ours (JavaScript, React,
+Tailwind, Node, Supabase, BigQuery, Cloudflare, Linux and Hugging Face are
 currently adjusted). `brand` is the untouched official colour, kept for
-reference. **Paint with `hex`.**
+reference. **Paint with `hex`.** If the ground colour ever changes, re-run the
+generator — the threshold is computed against it.
 
-Technologies with no real brand mark (pgvector, RAG, rate limiting) render as
-plain chips — never invent a logo for a concept.
+Technologies with no real brand mark (pgvector, RAG, rate limiting) carry no
+icon and sit in muted text, which sorts branded tools and practices into a quiet
+hierarchy for free. Never invent a logo for a concept.
 
 ## Motion
 
