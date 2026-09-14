@@ -36,7 +36,7 @@ export function Projects() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="title-link"
-                    aria-label={`${project.name}, ${headline.label.toLowerCase()}`}
+                    aria-label={`${project.name}, ${headline.label.toLowerCase()}, opens in a new tab`}
                   >
                     {project.name}
                     <LinkIcon name="arrow" className="size-[15px] flex-none" />
@@ -80,6 +80,7 @@ export function Projects() {
                   >
                     <LinkIcon name={link.icon} />
                     {link.label}
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 ) : (
                   <span

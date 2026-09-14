@@ -115,12 +115,16 @@ export function Rail() {
       <div className="rise flex flex-row flex-wrap gap-4 font-narrow text-meta tracking-rail wide:flex-col wide:gap-1.5 [animation-delay:0.18s]">
         <a
           href={profile.github}
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-fit border-b border-transparent text-muted transition-colors hover:border-signal hover:text-signal"
         >
           github.com/Suyash728
         </a>
         <a
           href={profile.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-fit border-b border-transparent text-muted transition-colors hover:border-signal hover:text-signal"
         >
           linkedin.com/in/suyashkerkar

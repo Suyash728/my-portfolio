@@ -17,10 +17,20 @@ export function Contact() {
         <a className="btn btn-quiet" href={`mailto:${profile.email}`}>
           {profile.email}
         </a>
-        <a className="btn btn-quiet" href={profile.linkedin}>
+        <a
+          className="btn btn-quiet"
+          href={profile.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           LinkedIn
         </a>
-        <a className="btn btn-quiet" href={profile.github}>
+        <a
+          className="btn btn-quiet"
+          href={profile.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           GitHub
         </a>
       </div>

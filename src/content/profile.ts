@@ -9,7 +9,7 @@ export const profile = {
   lede: "Final year, BE in Artificial Intelligence & Data Science at Terna Engineering College, Mumbai University. Graduating 2027. In every system here, the rules live in code and the model is confined to explaining what the code decided.",
   email: "suyashkerkar642005@gmail.com",
   github: "https://github.com/Suyash728",
-  linkedin: "https://linkedin.com/in/suyashkerkar",
+  linkedin: "https://www.linkedin.com/in/suyashkerkar",
   resume: "/Suyash_Kerkar_CV_2026.pdf",
   location: "Nerul, Navi Mumbai",
 } as const;
