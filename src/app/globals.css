@@ -1,26 +1,350 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Design tokens — direction: Control Room, light.
+   Every colour, face and size the site uses is declared here. Components use
+   the generated utilities (bg-ground, text-muted, text-lead…); no component
+   should introduce a raw hex or a one-off px value.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Ground is a warm off-white pulled slightly grey, so it reads as paper
+     rather than the cream that every other portfolio is currently using. */
+  --color-ground: #f2efe9;
+  --color-raised: #fbf9f5;
+  --color-rule: #dfd9ce;
+  --color-rule-soft: #eae5dc;
+  --color-ink: #1d1f24;
+  --color-muted: #6b6a64;
+
+  /* Two accents, each with a job. signal = interactive and in-progress state.
+     flag = outcomes and placements only, never decoration. */
+  --color-signal: #1f4b6e;
+  --color-flag: #8a6414;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-narrow: var(--font-archivo-narrow), var(--font-archivo), ui-sans-serif,
+    sans-serif;
+
+  /* 1.2 ratio, compressed for density. Numerals are Archivo's tabular figures
+     rather than a monospace face. */
+  --text-tiny: 11px;
+  --text-tiny--line-height: 1.5;
+  --text-meta: 12.8px;
+  --text-meta--line-height: 1.5;
+  --text-small: 14px;
+  --text-small--line-height: 1.55;
+  --text-body: 16px;
+  --text-body--line-height: 1.6;
+  --text-lead: 19.2px;
+  --text-lead--line-height: 1.45;
+  --text-title: 23px;
+  --text-title--line-height: 1.2;
+  --text-big: 27.6px;
+  --text-big--line-height: 1.2;
+  --text-display: clamp(26px, 4.4vw, 33.2px);
+  --text-display--line-height: 1.22;
+
+  /* Tracking is a token too: rail text, small labels and the uppercase group
+     headings each get one value, used everywhere that role appears. */
+  --tracking-rail: 0.02em;
+  --tracking-label: 0.03em;
+  --tracking-eyebrow: 0.05em;
+  --tracking-tight: -0.01em;
+  --tracking-display: -0.015em;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* The rail stops being viable below this width and folds into a top bar.
+     Layout and padding both switch here, so it is a token, not a magic number. */
+  --breakpoint-wide: 900px;
+}
+
+/* Width of the fixed identity rail. Not a Tailwind token because it is one
+   layout constant, referenced by the grid template and the mobile breakpoint. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rail-w: 264px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-signal);
+    color: var(--color-raised);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* The one orchestrated page-load moment. Deliberately short (~0.2s total):
+     any longer and a link preview or thumbnail catches the page mid-fade. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .rise {
+    animation: rise 0.38s var(--ease-out-soft) both;
+  }
+
+  /* A row that grows a signal-coloured rule down its left edge on hover.
+     Shared by project entries and list rows so the gesture means one thing. */
+  .edge {
+    position: relative;
+    margin-left: -1rem;
+    padding-left: 1rem;
+    transition: background-color 0.2s var(--ease-out-soft);
+  }
+
+  .edge::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-signal);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.28s var(--ease-out-soft);
+  }
+
+  .edge:hover {
+    background-color: color-mix(in srgb, var(--color-raised) 70%, transparent);
+  }
+
+  .edge:hover::before {
+    transform: scaleY(1);
+  }
+
+  /* Button whose fill sweeps in from the left. */
+  .btn {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid var(--color-signal);
+    color: var(--color-signal);
+    padding: 0.5625rem 1.125rem;
+    font-family: var(--font-narrow);
+    font-size: var(--text-meta);
+    letter-spacing: 0.03em;
+    transition: color 0.22s var(--ease-out-soft);
+  }
+
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.28s var(--ease-out-soft);
+  }
+
+  .btn:hover {
+    color: var(--color-raised);
+  }
+
+  .btn:hover::after {
+    transform: scaleX(1);
+  }
+
+  .btn-quiet {
+    border-color: var(--color-rule);
+    color: var(--color-muted);
+  }
+
+  .btn-quiet::after {
+    background-color: var(--color-ink);
+  }
+
+  .btn-quiet:hover {
+    color: var(--color-ground);
+    border-color: var(--color-ink);
+  }
+
+  /* Link whose underline draws in from the left. */
+  .link-draw {
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .link-draw::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.24s var(--ease-out-soft);
+  }
+
+  .link-draw:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Technology chip. The mark carries its brand colour; the chip around it
+     stays quiet so a row of them reads as one object rather than a logo wall.
+     --brand is set per item, and is pre-darkened where the true brand colour
+     would be illegible on this surface (see scripts/fetch-icons.mjs). */
+  .tech {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-raised);
+    border: 1px solid var(--color-rule-soft);
+    padding: 0.375rem 0.6875rem;
+    font-size: var(--text-small);
+    color: var(--color-ink);
+    transition:
+      border-color 0.2s var(--ease-out-soft),
+      transform 0.2s var(--ease-out-soft),
+      box-shadow 0.2s var(--ease-out-soft);
+  }
+
+  .tech svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    fill: var(--brand, var(--color-muted));
+  }
+
+  .tech:hover {
+    border-color: var(--brand, var(--color-signal));
+    transform: translateY(-2px);
+    box-shadow: 0 2px 0 0 var(--brand, var(--color-signal));
+  }
+
+  /* Rail navigation item: tick thickens and fills when the section is current. */
+  .rail-link {
+    position: relative;
+    display: block;
+    padding: 0.375rem 0 0.375rem 0.75rem;
+    font-family: var(--font-narrow);
+    font-size: var(--text-meta);
+    letter-spacing: 0.02em;
+    color: var(--color-muted);
+    transition:
+      color 0.18s var(--ease-out-soft),
+      padding-left 0.18s var(--ease-out-soft);
+  }
+
+  .rail-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--color-rule);
+    transition:
+      width 0.18s var(--ease-out-soft),
+      background-color 0.18s var(--ease-out-soft);
+  }
+
+  .rail-link:hover {
+    color: var(--color-ink);
+    padding-left: 0.9375rem;
+  }
+
+  .rail-link:hover::before {
+    background-color: var(--color-muted);
+  }
+
+  .rail-link[aria-current="true"] {
+    color: var(--color-ink);
+  }
+
+  .rail-link[aria-current="true"]::before {
+    width: 2px;
+    background-color: var(--color-signal);
+  }
+
+  @media (max-width: 900px) {
+    .rail-link,
+    .rail-link:hover {
+      padding-left: 0;
+    }
+
+    .rail-link::before {
+      display: none;
+    }
+  }
+
+  /* Ambient "this is live" pulse on the availability marker. The only motion
+     on the page that is neither user-triggered nor the background. */
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .breathe {
+    animation: breathe 3.6s ease-in-out infinite;
+  }
+
+  .field {
+    width: 100%;
+    background-color: var(--color-raised);
+    border: 1px solid var(--color-rule);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    padding: 0.625rem 0.75rem;
+    transition:
+      border-color 0.2s var(--ease-out-soft),
+      box-shadow 0.2s var(--ease-out-soft);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--color-signal);
+    box-shadow: inset 0 -2px 0 0 var(--color-signal);
+  }
+}
+
+/* Full stop, not a slowdown. The canvas renders a static frame separately. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .edge::before {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+
+  .edge:hover::before {
+    opacity: 1;
+  }
 }
