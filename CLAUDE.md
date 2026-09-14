@@ -24,6 +24,7 @@ Nothing should introduce a raw hex or a one-off font size outside it.
 | `ground` | `#F2EFE9` | Page base. Warm off-white pulled grey — deliberately not the cream every other portfolio uses. |
 | `raised` | `#FBF9F5` | Inputs, row hover surfaces, text on filled buttons. |
 | `rule` / `rule-soft` | `#DFD9CE` / `#EAE5DC` | Panel borders / inner row borders. |
+| `rule-strong` | `#8A877F` | **Edges of things you can operate** — inputs, quiet buttons. `rule` sits at 1.3:1 and fails WCAG 1.4.11 for a control boundary; this clears 3:1 on both `raised` and `ground`. Never a divider. |
 | `ink` | `#1D1F24` | Body text. |
 | `muted` | `#6B6A64` | Secondary text. AA at body size. |
 | `signal` | `#1F4B6E` | **Interactive and in-progress state only.** |
@@ -127,8 +128,9 @@ Hard constraints, all enforced in `src/components/TraceBackground.tsx`:
 
 - Peak opacity **0.11** (cap for the direction is 0.15).
 - rAF throttled to **30fps**. Never run it uncapped.
-- `IntersectionObserver` pauses the loop off-screen; `visibilitychange` pauses
-  it on a hidden tab.
+- `visibilitychange` pauses it on a hidden tab. There is deliberately no
+  `IntersectionObserver`: the canvas is fixed to the viewport, so it always
+  intersects and an observer could never pause anything.
 - `prefers-reduced-motion: reduce` renders a **static frame** and starts no
   loop. It is also watched live, so toggling the OS setting takes effect.
 - Nothing is drawn below **640px**.
@@ -160,9 +162,17 @@ generated page and it was specifically designed out.
   address above. It never fails silently.
 - JSON-LD (`Person` + `CreativeWork`) is built in `src/app/page.tsx` from the
   same content the page renders, so it cannot drift.
-- The OG share card is generated at `src/app/opengraph-image.tsx` with
-  `next/og`. Values are inline there because it renders outside Tailwind — if a
-  token changes, change it in both places.
+- The OG share card (`src/app/opengraph-image.tsx`) and the app icons
+  (`icon.tsx`, `apple-icon.tsx`) are generated with `next/og`. Values are inline
+  there because they render outside Tailwind — if a token changes, change it in
+  both places. All three pull Archivo through `src/app/og-font.ts`, which
+  returns `null` on any failure so a network problem degrades the image rather
+  than failing the build. There is no `favicon.ico`; `icon.tsx` is the mark.
+- The page sets `revalidate = 86400`. It is otherwise fully static, and the
+  footer year would otherwise be frozen at whatever the last build saw.
+- `next.config.ts` sets `X-Content-Type-Options`, `Referrer-Policy`,
+  `X-Frame-Options` and `Permissions-Policy`. A full CSP is the next step and
+  needs nonces for the JSON-LD block and Next's bootstrap script.
 
 ## Deviations from the brief
 

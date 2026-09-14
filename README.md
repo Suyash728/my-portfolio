@@ -29,7 +29,7 @@ a dead link.
 
 ```
 src/
-  app/          layout, page, Server Action, SEO routes, OG image
+  app/          layout, page, 404, Server Action, SEO routes, OG image, icons
   components/   rail, panels, sections, canvas background, contact form
   content/      all site content as typed data
 scripts/        brand-icon generator

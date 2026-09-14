@@ -12,6 +12,13 @@ import { achievements } from "@/content/achievements";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
 
+/**
+ * The page is static, so anything read at render time is frozen into the build
+ * — including the footer's year. A daily revalidate keeps it honest without
+ * making the page dynamic.
+ */
+export const revalidate = 86400;
+
 /** Person + CreativeWork, built from the same content the page renders. */
 function StructuredData() {
   const person = {

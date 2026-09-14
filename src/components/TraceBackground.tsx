@@ -16,8 +16,8 @@ const MIN_WIDTH = 640;
  * One oscilloscope trace with two dimmer echoes — instrumentation, because the
  * whole direction is a control panel. Not a particle field.
  *
- * Constraints held here: capped at 30fps, peak opacity 0.11, paused off-screen
- * and while the tab is hidden, nothing drawn below 640px, a static frame under
+ * Constraints held here: capped at 30fps, peak opacity 0.11, paused while the
+ * tab is hidden, nothing drawn below 640px, a static frame under
  * prefers-reduced-motion, and every handle released on unmount.
  */
 export function TraceBackground() {
@@ -92,7 +92,7 @@ export function TraceBackground() {
     const start = () => {
       if (running || reduced) return;
       running = true;
-      canvas.style.willChange = "transform";
+      canvas.style.willChange = "contents";
       lastPaint = 0;
       frame = requestAnimationFrame(loop);
     };
@@ -105,19 +105,13 @@ export function TraceBackground() {
       frame = null;
     };
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) start();
-      else stop();
-    });
-    observer.observe(canvas);
-
+    // No IntersectionObserver here: the canvas is fixed to the viewport, so it
+    // is always intersecting and an observer could never pause anything. A
+    // hidden tab is the case that actually occurs, and visibilitychange covers
+    // it — that is the whole of the off-screen pause.
     const onVisibility = () => {
-      if (document.hidden) {
-        stop();
-      } else {
-        observer.takeRecords();
-        start();
-      }
+      if (document.hidden) stop();
+      else start();
     };
 
     const onResize = () => {
@@ -145,7 +139,6 @@ export function TraceBackground() {
 
     return () => {
       stop();
-      observer.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", onResize);
       motionQuery.removeEventListener("change", onMotionChange);

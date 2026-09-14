@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Archivo, Archivo_Narrow } from "next/font/google";
 import "./globals.css";
 
+// Weights are pinned to the three the design actually uses. Dropping them for
+// the variable axis was measured and changed nothing — next/font already serves
+// variable files — so the explicit list stays, because it keeps the type scale
+// honest rather than leaving every weight silently available.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
