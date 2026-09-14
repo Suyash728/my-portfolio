@@ -21,10 +21,14 @@ export interface Outcome {
   tone: OutcomeTone;
 }
 
+/** Which glyph sits before a link's label. */
+export type LinkIconName = "repo" | "live" | "paper";
+
 /** A null href is a link that does not exist yet; it renders as a visible TODO. */
 export interface Link {
   label: string;
   href: string | null;
+  icon: LinkIconName;
 }
 
 export interface Project {

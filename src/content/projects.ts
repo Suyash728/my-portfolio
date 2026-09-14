@@ -31,8 +31,12 @@ export const projects: Project[] = [
       { name: "ABDM" },
     ],
     links: [
-      { label: "Repository", href: "https://github.com/Suyash728/MediSync" },
-      { label: "Live", href: null },
+      {
+        label: "Repository",
+        href: "https://github.com/Suyash728/MediSync",
+        icon: "repo",
+      },
+      { label: "Live", href: null, icon: "live" },
     ],
   },
   {
@@ -54,8 +58,8 @@ export const projects: Project[] = [
       { name: "IoT sensor ingest" },
     ],
     links: [
-      { label: "Repository", href: null },
-      { label: "Paper", href: null },
+      { label: "Repository", href: null, icon: "repo" },
+      { label: "Paper", href: null, icon: "paper" },
     ],
   },
   {
@@ -72,7 +76,11 @@ export const projects: Project[] = [
       { name: "Static analysis" },
     ],
     links: [
-      { label: "Repository", href: "https://github.com/Suyash728/trustlayer" },
+      {
+        label: "Repository",
+        href: "https://github.com/Suyash728/trustlayer",
+        icon: "repo",
+      },
     ],
   },
   {
@@ -89,7 +97,7 @@ export const projects: Project[] = [
       { name: "A9G" },
       { name: "GPS module" },
     ],
-    links: [{ label: "Paper", href: null }],
+    links: [{ label: "Paper", href: null, icon: "paper" }],
   },
   {
     slug: "autoclutch",
@@ -106,7 +114,7 @@ export const projects: Project[] = [
       { name: "Workspace APIs" },
       { name: "Agentic workflow" },
     ],
-    links: [{ label: "Repository", href: null }],
+    links: [{ label: "Repository", href: null, icon: "repo" }],
   },
   {
     slug: "medinsight",
@@ -121,6 +129,6 @@ export const projects: Project[] = [
       { name: "Python", icon: "python" },
       { name: "NER" },
     ],
-    links: [{ label: "Repository", href: null }],
+    links: [{ label: "Repository", href: null, icon: "repo" }],
   },
 ];

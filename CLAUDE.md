@@ -71,6 +71,12 @@ over the data; no section is hand-written JSX.
 | `types.ts` | Every interface. |
 | `icons.generated.ts` | Brand icon paths. Generated — do not hand-edit. |
 
+Every project link declares an `icon` — `repo`, `live` or `paper`. It is
+required, not optional, so adding a link forces the decision rather than
+letting one render bare. The glyphs live in `src/components/LinkIcon.tsx` and
+take `currentColor`: the technology marks are the only brand colour on the
+page, and a link row should read as one object.
+
 ### TODO convention
 
 A `null` is the placeholder, and it renders visibly through `<Todo />`:

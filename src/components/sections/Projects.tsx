@@ -1,3 +1,4 @@
+import { LinkIcon } from "@/components/LinkIcon";
 import { Panel } from "@/components/Panel";
 import { TechList } from "@/components/TechList";
 import { Todo } from "@/components/Todo";
@@ -40,18 +41,23 @@ export function Projects() {
 
           <TechList items={project.tech} className="mt-4" />
 
-          <div className="mt-4 flex flex-wrap gap-5 font-narrow text-meta tracking-rail">
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-narrow text-meta tracking-rail">
             {project.links.map((link) =>
               link.href ? (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="link-draw text-signal"
+                  className="link-draw inline-flex items-center gap-1.5 text-signal"
                 >
+                  <LinkIcon name={link.icon} />
                   {link.label}
                 </a>
               ) : (
-                <span key={link.label} className="text-muted">
+                <span
+                  key={link.label}
+                  className="inline-flex items-center gap-1.5 text-muted"
+                >
+                  <LinkIcon name={link.icon} />
                   {link.label} <Todo />
                 </span>
               ),
