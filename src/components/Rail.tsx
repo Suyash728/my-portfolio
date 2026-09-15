@@ -1,7 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LinkIcon, type GlyphName } from "@/components/LinkIcon";
 import { profile, sections, statuses } from "@/content/profile";
+
+/**
+ * The three ways to reach him. Each carries its own mark so the rows read as
+ * destinations rather than three lines of grey URL — and the marks take
+ * `currentColor`, not LinkedIn blue, because the rail is already the loud
+ * thing and does not also need to be the colourful one.
+ *
+ * Labels are derived from the hrefs rather than typed twice, so editing a URL
+ * in profile.ts cannot leave the visible text pointing somewhere else.
+ */
+const CONTACTS: { icon: GlyphName; href: string; label: string }[] = [
+  { icon: "github", href: profile.github, label: strip(profile.github) },
+  { icon: "linkedin", href: profile.linkedin, label: strip(profile.linkedin) },
+  {
+    icon: "mail",
+    href: `mailto:${profile.email}`,
+    label: profile.email,
+  },
+];
+
+function strip(url: string) {
+  return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+}
 
 const DOT_TONE = {
   live: "bg-signal breathe",
@@ -112,29 +136,27 @@ export function Rail() {
         Download resume
       </a>
 
-      <div className="rise flex flex-row flex-wrap gap-4 font-narrow text-meta tracking-rail wide:flex-col wide:gap-1.5 [animation-delay:0.18s]">
-        <a
-          href={profile.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-fit border-b border-transparent text-muted transition-colors hover:border-signal hover:text-signal"
-        >
-          github.com/Suyash728
-        </a>
-        <a
-          href={profile.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-fit border-b border-transparent text-muted transition-colors hover:border-signal hover:text-signal"
-        >
-          linkedin.com/in/suyashkerkar
-        </a>
-        <a
-          href={`mailto:${profile.email}`}
-          className="w-fit border-b border-transparent text-muted transition-colors hover:border-signal hover:text-signal"
-        >
-          {profile.email}
-        </a>
+      <div className="rise flex flex-row flex-wrap gap-x-4 gap-y-2 font-narrow text-meta tracking-rail wide:flex-col wide:gap-2 [animation-delay:0.18s]">
+        {CONTACTS.map((contact) => {
+          const external = !contact.href.startsWith("mailto:");
+          return (
+            <a
+              key={contact.href}
+              href={contact.href}
+              {...(external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className="group flex w-fit items-center gap-[7px] text-muted transition-colors hover:text-signal"
+            >
+              <LinkIcon name={contact.icon} className="size-[14px] flex-none" />
+              {/* The rule sits under the label only: an underline that runs
+                  beneath the mark makes the two read as separate objects. */}
+              <span className="border-b border-transparent transition-colors group-hover:border-signal">
+                {contact.label}
+              </span>
+            </a>
+          );
+        })}
       </div>
     </header>
   );

@@ -17,7 +17,7 @@ const SLUGS = [
   "postgresql", "mysql", "nextdotjs", "react", "tailwindcss",
   "fastapi", "nodedotjs", "supabase", "firebase", "googlebigquery",
   "googlecloud", "vercel", "cloudflare", "railway", "git",
-  "github", "linux", "polygon", "langchain", "googlegemini",
+  "github", "linkedin", "linux", "polygon", "langchain", "googlegemini",
   "n8n", "arduino", "espressif", "solidity", "huggingface",
 ];
 

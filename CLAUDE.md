@@ -72,6 +72,12 @@ over the data; no section is hand-written JSX.
 | `types.ts` | Every interface. |
 | `icons.generated.ts` | Brand icon paths. Generated — do not hand-edit. |
 
+The rail's three contact rows each carry a mark (`github`, `linkedin`, `mail`)
+and derive their visible label from the href, so a URL edited in `profile.ts`
+cannot leave the text pointing somewhere else. Those marks take `currentColor`,
+not LinkedIn blue — the rail is already the loud element and does not also need
+to be the colourful one.
+
 Every project link declares an `icon` — `repo`, `live` or `paper`. It is
 required, not optional, so adding a link forces the decision rather than
 letting one render bare. The glyphs live in `src/components/LinkIcon.tsx` and
@@ -99,7 +105,7 @@ invented to fill a gap.
 
 ### Icons
 
-`scripts/fetch-icons.mjs` pulls 30 marks from Simple Icons and writes
+`scripts/fetch-icons.mjs` pulls 31 marks from Simple Icons and writes
 `src/content/icons.generated.ts`. Paths are vendored rather than loaded from a
 CDN: one fewer request, works offline, and nothing external can change what the
 site renders. Re-run `node scripts/fetch-icons.mjs` only when adding a slug to
