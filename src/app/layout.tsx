@@ -27,7 +27,7 @@ const archivoNarrow = Archivo_Narrow({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://suyashkerkar.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://suyashkerkar.vercel.app";
 
 const description =
   "Applied AI engineer and final-year BE student in AI & Data Science. Six shipped systems across health records, agriculture and developer tooling, built so the rules live in code and the model only explains them.";

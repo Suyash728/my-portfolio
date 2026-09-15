@@ -28,7 +28,7 @@ function StructuredData() {
     alternateName: profile.name,
     jobTitle: "Applied AI engineer",
     email: `mailto:${profile.email}`,
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://suyashkerkar.vercel.app",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://suyashkerkar.vercel.app",
     sameAs: [profile.github, profile.linkedin],
     address: {
       "@type": "PostalAddress",
