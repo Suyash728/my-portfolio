@@ -26,20 +26,31 @@ Nothing should introduce a raw hex or a one-off font size outside it.
 | `rule` / `rule-soft` | `#DFD9CE` / `#EAE5DC` | Panel borders / inner row borders. |
 | `rule-strong` | `#8A877F` | **Edges of things you can operate** — inputs, quiet buttons. `rule` sits at 1.3:1 and fails WCAG 1.4.11 for a control boundary; this clears 3:1 on both `raised` and `ground`. Never a divider. |
 | `ink` | `#1D1F24` | Body text. |
-| `muted` | `#6B6A64` | Secondary text. AA at body size. |
+| `muted` | `#5C5B55` | Secondary text. 5.9:1 on `ground`. |
 | `signal` | `#1F4B6E` | **Interactive and in-progress state only.** |
 | `flag` | `#8A6414` | **Outcomes and placements only.** Never decoration. |
 
 Two accents, each with a rule about when it may appear. That is what stops this
 reading as the usual dark-ground-plus-one-highlighter look. Don't add a third.
 
-Type is **Archivo** (400/500/600) with **Archivo Narrow** (500/600) for the rail
-and small labels, both via `next/font/google` with `display: swap`. There is
-**no monospace anywhere** — numerals use Archivo's tabular figures instead, set
-globally by `font-variant-numeric: tabular-nums` on `body`. Scale is a
-compressed 1.2 ratio: `text-tiny` 11 → `text-meta` 12.8 → `text-small` 14 →
-`text-body` 16 → `text-lead` 19.2 → `text-title` 23 → `text-big` 27.6 →
-`text-display` (clamped 26–33.2).
+Type is **Inter** (400/500/600) for everything that gets read, with **Archivo
+Narrow** (500/600) for the rail, the nav, the buttons and the small uppercase
+labels — both via `next/font/google` with `display: swap`. The split is
+deliberate: Archivo Narrow is signage and keeps the rail sounding like itself,
+Inter is drawn for screen text and carries the paragraphs. There is **no
+monospace anywhere** — numerals use Inter's tabular figures instead, set
+globally by `font-variant-numeric: tabular-nums` on `body`. The `antialiased`
+class is deliberately **not** on `<html>`: on a light ground it thins the
+strokes.
+
+Archivo itself survives only in `og-font.ts`, which feeds the OG card and the
+app icons — display type, not reading matter.
+
+Scale is a compressed 1.2 ratio anchored at a 17px body: `text-tiny` 11.7 →
+`text-meta` 13.6 → `text-small` 14.9 → `text-body` 17 → `text-lead` 20.4 →
+`text-title` 24.4 → `text-big` 29.3 → `text-display` (clamped 27.6–35.3). Each
+step is the old 16px-anchored value × 17/16, so the relationships are unchanged
+and only the floor moved.
 
 `--breakpoint-wide: 900px` gives the `wide:` variant. The rail folds into a top
 block below it; layout and padding both switch there.

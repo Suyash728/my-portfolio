@@ -18,34 +18,44 @@
      edge; this clears 3:1 on both `raised` and `ground`. */
   --color-rule-strong: #8a877f;
   --color-ink: #1d1f24;
-  --color-muted: #6b6a64;
+  /* Secondary text. Was #6B6A64, which cleared AA at 4.7:1 and not much more;
+     this sits at 5.9:1 on ground, so the lede and every row subtitle hold up
+     at a glance rather than only on inspection. */
+  --color-muted: #5c5b55;
 
   /* Two accents, each with a job. signal = interactive and in-progress state.
      flag = outcomes and placements only, never decoration. */
   --color-signal: #1f4b6e;
   --color-flag: #8a6414;
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-narrow: var(--font-archivo-narrow), var(--font-archivo), ui-sans-serif,
+  /* Inter reads the text, Archivo Narrow carries the rail and the small
+     labels. Archivo itself is gone from the page — it survives only in the
+     generated OG card, where the name is display type rather than reading
+     matter. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-narrow: var(--font-archivo-narrow), var(--font-inter), ui-sans-serif,
     sans-serif;
 
-  /* 1.2 ratio, compressed for density. Numerals are Archivo's tabular figures
-     rather than a monospace face. */
-  --text-tiny: 11px;
-  --text-tiny--line-height: 1.5;
-  --text-meta: 12.8px;
-  --text-meta--line-height: 1.5;
-  --text-small: 14px;
-  --text-small--line-height: 1.55;
-  --text-body: 16px;
-  --text-body--line-height: 1.6;
-  --text-lead: 19.2px;
-  --text-lead--line-height: 1.45;
-  --text-title: 23px;
+  /* Same compressed ratio as before, re-anchored from a 16px body to 17px:
+     every step is its old value x 17/16, so the relationships between sizes
+     are unchanged and only the floor moved. Numerals are Inter's tabular
+     figures rather than a monospace face. Leading is a step looser at the
+     small end, where the old values were tightest and did the most damage. */
+  --text-tiny: 11.7px;
+  --text-tiny--line-height: 1.55;
+  --text-meta: 13.6px;
+  --text-meta--line-height: 1.55;
+  --text-small: 14.9px;
+  --text-small--line-height: 1.6;
+  --text-body: 17px;
+  --text-body--line-height: 1.65;
+  --text-lead: 20.4px;
+  --text-lead--line-height: 1.5;
+  --text-title: 24.4px;
   --text-title--line-height: 1.2;
-  --text-big: 27.6px;
+  --text-big: 29.3px;
   --text-big--line-height: 1.2;
-  --text-display: clamp(26px, 4.4vw, 33.2px);
+  --text-display: clamp(27.6px, 4.4vw, 35.3px);
   --text-display--line-height: 1.22;
 
   /* Tracking is a token too: rail text, small labels and the uppercase group
@@ -75,9 +85,8 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    line-height: 1.6;
+    line-height: 1.65;
     font-variant-numeric: tabular-nums;
-    -webkit-font-smoothing: antialiased;
   }
 
   :focus-visible {

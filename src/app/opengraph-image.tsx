@@ -19,7 +19,7 @@ export default async function OpenGraphImage() {
 
   const ground = "#f2efe9";
   const ink = "#1d1f24";
-  const muted = "#6b6a64";
+  const muted = "#5c5b55";
   const signal = "#1f4b6e";
   const flag = "#8a6414";
 

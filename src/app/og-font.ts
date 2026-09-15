@@ -1,6 +1,11 @@
 /**
  * Archivo, as a buffer next/og can rasterise with. Shared by the share card and
- * the generated app icons so all three are set in the site's own typeface.
+ * the generated app icons.
+ *
+ * The page itself now reads in Inter; Archivo stayed here because the card and
+ * the icons are display type — a name at 64px and a monogram — where Archivo's
+ * tighter, squarer drawing is the point, and nothing on them is read as a
+ * paragraph.
  *
  * next/og needs a TTF and the Google CSS endpoint only serves one to an old
  * user agent, hence the header. Every failure path returns null and the caller
