@@ -1,4 +1,4 @@
-import type { Qualification, Role } from "./types";
+import type { Role } from "./types";
 
 export const roles: Role[] = [
   {
@@ -19,23 +19,5 @@ export const roles: Role[] = [
     points: [
       "Three months on Python backend work and full-stack web application workflows.",
     ],
-  },
-];
-
-export const education: Qualification[] = [
-  {
-    award: "BE — Artificial Intelligence & Data Science",
-    institution: "Terna Engineering College, Navi Mumbai · Mumbai University",
-    meta: "2027, ongoing",
-  },
-  {
-    award: "Diploma — Computer Engineering",
-    institution: "YBIT, Sawantwadi, Sindhudurg · MSBTE",
-    meta: "2024 · 87.7%",
-  },
-  {
-    award: "SSC",
-    institution: "St. Francis Xavier's High School, Vengurla",
-    meta: "2021 · 86.6%",
   },
 ];

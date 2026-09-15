@@ -59,17 +59,17 @@ export interface Qualification {
   institution: string;
   /** Year, and result where there is one. */
   meta: string;
+  /**
+   * Subjects, for the levels where subjects mean anything. Omitted entirely
+   * where there are none to give; null where the list is still outstanding,
+   * which renders a visible TODO.
+   */
+  focus?: string | null;
 }
 
 export interface StackGroup {
   label: string;
   items: Tech[];
-}
-
-export interface CourseworkGroup {
-  label: string;
-  /** Either the subjects, or null where the list is still outstanding. */
-  subjects: string | null;
 }
 
 /** A discrete placement or publication. */

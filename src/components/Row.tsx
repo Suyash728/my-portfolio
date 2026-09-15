@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 /**
  * A two-column row: a narrow marker on the left, content on the right. Shared
- * by experience, education, coursework, achievements and certifications so the
+ * by experience, education, achievements and certifications so the
  * whole page scans down one alignment spine.
  */
 export function Row({

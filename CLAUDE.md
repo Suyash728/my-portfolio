@@ -77,9 +77,10 @@ over the data; no section is hand-written JSX.
 | --- | --- |
 | `profile.ts` | Identity, headline, contact, hero figures, rail status lines, section list (drives nav + scroll-spy). |
 | `projects.ts` | All six projects. |
-| `experience.ts` | Roles and education. |
+| `experience.ts` | Roles. |
+| `education.ts` | Qualifications, newest first, each with its result. |
 | `stack.ts` | Technologies grouped by role in a request. |
-| `coursework.ts`, `achievements.ts`, `certifications.ts` | The remaining sections. |
+| `achievements.ts`, `certifications.ts` | The remaining sections. |
 | `types.ts` | Every interface. |
 | `icons.generated.ts` | Brand icon paths. Generated — do not hand-edit. |
 
@@ -108,7 +109,10 @@ would be a second loud element competing with the rail.
 A `null` is the placeholder, and it renders visibly through `<Todo />`:
 
 - `Link.href: null` → the link renders as its label plus a dashed TODO chip.
-- `CourseworkGroup.subjects: null` → TODO chip in place of the subject list.
+- `Qualification.focus: null` → TODO chip in place of the subject list. Omitting
+  the field entirely is the other case, and means a level with no subjects worth
+  listing — the distinction is deliberate, so SSC does not sprout a TODO that
+  will never be filled.
 - `Certification.credential: null` → TODO chip after the name.
 
 Nothing outstanding is ever silently omitted, and no fact, date or credential is

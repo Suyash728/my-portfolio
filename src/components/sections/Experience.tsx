@@ -1,6 +1,6 @@
-import { Panel, PanelHeading } from "@/components/Panel";
+import { Panel } from "@/components/Panel";
 import { Row, RowList } from "@/components/Row";
-import { education, roles } from "@/content/experience";
+import { roles } from "@/content/experience";
 
 export function Experience() {
   return (
@@ -26,25 +26,6 @@ export function Experience() {
                 </li>
               ))}
             </ul>
-          </Row>
-        ))}
-      </RowList>
-
-      <PanelHeading>Education</PanelHeading>
-
-      <RowList>
-        {education.map((qualification, index) => (
-          <Row
-            key={qualification.award}
-            marker={qualification.meta}
-            first={index === 0}
-          >
-            <h4 className="text-lead font-semibold tracking-tight">
-              {qualification.award}
-            </h4>
-            <p className="mt-1 text-small text-muted">
-              {qualification.institution}
-            </p>
           </Row>
         ))}
       </RowList>

@@ -31,7 +31,7 @@ export const sections: Section[] = [
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "stack", label: "Stack" },
-  { id: "coursework", label: "Coursework" },
+  { id: "education", label: "Education" },
   { id: "achievements", label: "Achievements" },
   { id: "certifications", label: "Certifications" },
   { id: "contact", label: "Contact" },

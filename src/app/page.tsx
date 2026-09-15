@@ -3,7 +3,7 @@ import { TraceBackground } from "@/components/TraceBackground";
 import { Achievements } from "@/components/sections/Achievements";
 import { Certifications } from "@/components/sections/Certifications";
 import { Contact } from "@/components/sections/Contact";
-import { Coursework } from "@/components/sections/Coursework";
+import { Education } from "@/components/sections/Education";
 import { Experience } from "@/components/sections/Experience";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
@@ -94,7 +94,7 @@ export default function Home() {
           <Projects />
           <Experience />
           <Stack />
-          <Coursework />
+          <Education />
           <Achievements />
           <Certifications />
           <Contact />

@@ -35,16 +35,3 @@ export function Panel({
     </section>
   );
 }
-
-/**
- * Sub-heading inside a panel, for the second list in a shared section. An h3,
- * not an h2: it sits inside a section already labelled by the panel's h2, and a
- * second h2 there reads as a sibling of the section it is nested in.
- */
-export function PanelHeading({ children }: { children: ReactNode }) {
-  return (
-    <h3 className="mt-9 mb-[22px] font-narrow text-meta font-semibold tracking-eyebrow text-muted uppercase">
-      {children}
-    </h3>
-  );
-}
