@@ -1,55 +1,38 @@
 "use client";
 
 import React, { useState } from "react";
-import confetti from "canvas-confetti";
+import { motion, AnimatePresence } from "motion/react";
 import { LinkIcon } from "@/components/LinkIcon";
 import { Panel } from "@/components/Panel";
 import { TechList } from "@/components/TechList";
-import { Todo } from "@/components/Todo";
 import { SystemSchematic } from "@/components/SystemSchematic";
+import { ProjectVisualHeader } from "@/components/ProjectVisualHeader";
 import { projects } from "@/content/projects";
 import { useTechFilter, clearTechFilter } from "@/lib/filterState";
 import { sound } from "@/lib/sound";
-import type { Project } from "@/content/types";
-
-/**
- * Where the project's heading leads. The repository if there is one, otherwise
- * whichever link actually resolves.
- */
-function headlineLink(project: Project) {
-  const resolved = project.links.filter((link) => link.href !== null);
-  return resolved.find((link) => link.icon === "repo") ?? resolved[0] ?? null;
-}
+import { ChevronDown, ArrowUpRight } from "lucide-react";
 
 export function Projects() {
-  const [openSchematics, setOpenSchematics] = useState<Record<string, boolean>>({
-    medisync: true,
-  });
+  const [openSchematicSlug, setOpenSchematicSlug] = useState<string | null>("medisync");
+  const [openArchiveSlug, setOpenArchiveSlug] = useState<string | null>(null);
   const [activeFilter] = useTechFilter();
+
+  const spotlightProjects = projects.filter((p) => p.spotlight);
+  const archiveProjects = projects.filter((p) => !p.spotlight);
 
   const toggleSchematic = (slug: string) => {
     sound.playClick();
-    setOpenSchematics((prev) => ({
-      ...prev,
-      [slug]: !prev[slug],
-    }));
+    setOpenSchematicSlug((prev) => (prev === slug ? null : slug));
   };
 
-  const handleTrophyClick = () => {
-    sound.playSuccess();
-    confetti({
-      particleCount: 40,
-      spread: 50,
-      origin: { y: 0.6 },
-      colors: ["#8A6414", "#1F4B6E", "#8A877F"],
-    });
+  const toggleArchive = (slug: string) => {
+    sound.playClick();
+    setOpenArchiveSlug((prev) => (prev === slug ? null : slug));
   };
 
-  const matchingProjectsCount = activeFilter
+  const matchingCount = activeFilter
     ? projects.filter((p) =>
-        p.tech.some(
-          (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
-        )
+        p.tech.some((t) => t.name.toLowerCase() === activeFilter.toLowerCase())
       ).length
     : projects.length;
 
@@ -57,24 +40,21 @@ export function Projects() {
     <Panel
       id="projects"
       heading="Shipped Systems & Engineering Decisions"
-      intro="Six production systems architected so deterministic rules live in code and probabilistic models are strictly confined to synthesis."
+      intro="Four flagship spotlight systems and three compact archive builds. Designed so deterministic rules live in code and LLMs strictly synthesize."
     >
       {/* Active Request-Path Filter Banner */}
       {activeFilter && (
         <div
           role="status"
           aria-live="polite"
-          className="mb-4 flex flex-wrap items-center justify-between gap-2 border border-signal bg-raised p-3 font-narrow text-meta tracking-rail"
+          className="mb-6 flex flex-wrap items-center justify-between gap-2 bento-well p-3 border-signal-teal font-narrow text-meta tracking-rail"
         >
           <div className="flex items-center gap-2 text-ink">
-            <span className="size-2 bg-signal flex-none" aria-hidden="true" />
+            <span className="led-teal" aria-hidden="true" />
             <span>
               Request-path filter:{" "}
-              <strong className="text-signal">{activeFilter}</strong> (active in{" "}
-              <span className="tabular-nums font-semibold">
-                {matchingProjectsCount}
-              </span>{" "}
-              of {projects.length} systems)
+              <strong className="text-signal-teal font-semibold">{activeFilter}</strong> (active in{" "}
+              <span className="tabular-nums font-semibold">{matchingCount}</span> of {projects.length} systems)
             </span>
           </div>
 
@@ -84,146 +64,281 @@ export function Projects() {
               sound.playClick();
               clearTechFilter();
             }}
-            className="border border-rule-strong bg-ground px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-muted hover:border-signal hover:text-ink transition-colors"
+            className="rounded border border-rule-strong bg-surface px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-muted hover:border-signal-teal hover:text-ink transition-colors"
           >
             Clear Filter [×]
           </button>
         </div>
       )}
 
-      {projects.map((project, index) => {
-        const headline = headlineLink(project);
-        const isMediSync = project.slug === "medisync";
-        const isSchematicOpen = !!openSchematics[project.slug];
-        const isFilteredMatch = activeFilter
-          ? project.tech.some(
-              (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
-            )
-          : true;
+      {/* =========================================================================
+          TOP GRID: 4 Spotlight Bento Cards (2x2 on desktop, 1-col on mobile)
+      ========================================================================= */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+        {spotlightProjects.map((project) => {
+          const isSchematicOpen = openSchematicSlug === project.slug;
+          const isFilteredMatch = activeFilter
+            ? project.tech.some(
+                (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
+              )
+            : true;
 
-        return (
-          <article
-            key={project.slug}
-            className={`edge group py-6 transition-opacity duration-200 ${
-              index === 0 ? "" : "border-t border-rule-soft"
-            } ${isFilteredMatch ? "opacity-100" : "opacity-40"}`}
-          >
-            <div className="flex flex-wrap items-baseline justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <h3 className="text-lead font-semibold tracking-tight">
-                  {headline?.href ? (
-                    <a
-                      href={headline.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => sound.playClick()}
-                      className="title-link"
-                      aria-label={`${project.name}, ${headline.label.toLowerCase()}, opens in a new tab`}
-                    >
-                      {project.name}
-                      <LinkIcon name="arrow" className="size-[15px] flex-none" />
-                    </a>
-                  ) : (
-                    project.name
-                  )}
-                </h3>
+          return (
+            <motion.article
+              layout
+              id={`project-${project.slug}`}
+              key={project.slug}
+              className={`bento-card p-5 flex flex-col justify-between transition-all duration-300 scroll-mt-24 ${
+                isSchematicOpen
+                  ? "md:col-span-2 shadow-md ring-1 ring-signal-teal/30"
+                  : "md:col-span-1"
+              } ${
+                isFilteredMatch ? "opacity-100" : "opacity-40"
+              }`}
+            >
+              <div>
+                {/* Header: Title + Badge */}
+                <div className="flex flex-wrap items-start justify-between gap-2 border-b border-rule-soft pb-3 mb-3">
+                  <h3 className="font-sans text-lead font-semibold tracking-tight text-ink">
+                    {project.name}
+                  </h3>
 
-                {isMediSync && (
-                  <button
-                    type="button"
-                    onClick={handleTrophyClick}
-                    title="1st Place, CodeFusion 2026. Click to verify victory telemetry."
-                    className="border border-flag/40 bg-flag/10 px-2 py-0.5 font-narrow text-tiny uppercase tracking-eyebrow text-flag hover:border-flag transition-colors"
-                  >
-                    ★ Winner
-                  </button>
-                )}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  onClick={isMediSync ? handleTrophyClick : undefined}
-                  className={`font-narrow text-meta tracking-rail whitespace-nowrap ${
-                    project.outcome.tone === "award"
-                      ? "text-flag font-semibold"
-                      : "text-signal"
-                  }`}
-                >
-                  {project.outcome.label}
-                </span>
-
-                {project.schematic && (
-                  <button
-                    type="button"
-                    onClick={() => toggleSchematic(project.slug)}
-                    aria-expanded={isSchematicOpen}
-                    aria-controls={`schematic-${project.slug}`}
-                    className={`ml-2 inline-flex items-center gap-1 border px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow transition-colors ${
-                      isSchematicOpen
-                        ? "border-signal bg-signal text-raised"
-                        : "border-rule-strong bg-raised text-muted hover:border-signal hover:text-ink"
+                  <span
+                    className={`inline-flex items-center rounded-md px-2.5 py-0.5 font-narrow text-tiny uppercase tracking-eyebrow font-semibold border ${
+                      project.outcome.tone === "award"
+                        ? "border-accent-orange/50 bg-surface text-accent-orange"
+                        : "border-signal-teal/50 bg-surface text-signal-teal"
                     }`}
                   >
-                    <span>{isSchematicOpen ? "[-] Schematic" : "[+] Schematic"}</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <p className="mt-2 max-w-[66ch] text-muted">{project.problem}</p>
-
-            <p className="mt-3 max-w-[66ch] border-l-2 border-rule pl-[15px] transition-colors duration-300 group-hover:border-signal">
-              {project.decision}
-            </p>
-
-            {project.detail ? (
-              <p className="mt-3 max-w-[70ch] text-small text-muted">
-                {project.detail}
-              </p>
-            ) : null}
-
-            {/* Expandable Deterministic System Schematic */}
-            {project.schematic && isSchematicOpen && (
-              <div id={`schematic-${project.slug}`}>
-                <SystemSchematic
-                  schematic={project.schematic}
-                  projectName={project.name}
-                />
-              </div>
-            )}
-
-            <TechList items={project.tech} className="mt-4" />
-
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-narrow text-meta tracking-rail">
-              {project.links.map((link) =>
-                link.href ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => sound.playClick()}
-                    className="link-draw inline-flex items-center gap-1.5 text-signal"
-                  >
-                    <LinkIcon name={link.icon} />
-                    {link.label}
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                ) : (
-                  <span
-                    key={link.label}
-                    className="inline-flex items-center gap-1.5 text-muted"
-                  >
-                    <LinkIcon name={link.icon} />
-                    {link.label}{" "}
-                    <Todo todoContext={link.todoContext} />
+                    {project.outcome.label}
                   </span>
+                </div>
+
+                {/* Micro-UI Visual Preview Banner */}
+                <ProjectVisualHeader slug={project.slug} />
+
+                {/* Scannable 1-Sentence Problem + 1-Sentence Decision (Strictly <28 words total!) */}
+                <p className="font-sans text-small text-muted leading-relaxed mb-2">
+                  {project.problem}
+                </p>
+
+                <p className="font-sans text-small text-ink font-medium leading-relaxed border-l-2 border-signal-teal/60 pl-3 mb-4">
+                  {project.decision}
+                </p>
+
+                {/* Tech Chips */}
+                <div className="mb-4">
+                  <TechList items={project.tech} />
+                </div>
+              </div>
+
+              {/* Bottom Action Bar */}
+              <div>
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-rule-soft">
+                  <div className="flex items-center gap-3 font-narrow text-meta tracking-rail">
+                    {project.links.map((link) =>
+                      link.href ? (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => sound.playClick()}
+                          className="inline-flex items-center gap-1.5 text-signal-teal hover:text-ink transition-colors font-medium"
+                        >
+                          <LinkIcon name={link.icon} />
+                          <span>{link.label}</span>
+                          <ArrowUpRight className="size-3 opacity-60" />
+                        </a>
+                      ) : link.statusPill ? (
+                        <span
+                          key={link.label}
+                          className="inline-flex items-center gap-1.5 text-muted text-tiny uppercase tracking-eyebrow bento-well px-2 py-0.5"
+                        >
+                          <LinkIcon name={link.icon} />
+                          <span>{link.statusPill}</span>
+                        </span>
+                      ) : null
+                    )}
+                  </div>
+
+                  {project.schematic && (
+                    <button
+                      type="button"
+                      onClick={() => toggleSchematic(project.slug)}
+                      aria-expanded={isSchematicOpen}
+                      className={`inline-flex items-center gap-1 rounded-lg border px-3 py-1 font-narrow text-tiny uppercase tracking-eyebrow transition-all ${
+                        isSchematicOpen
+                          ? "border-signal-teal bg-signal-teal text-surface font-semibold"
+                          : "border-rule bg-surface text-muted hover:text-ink hover:border-rule-strong"
+                      }`}
+                    >
+                      <span>{isSchematicOpen ? "Hide Architecture" : "Inspect Architecture"}</span>
+                      <ChevronDown
+                        className={`size-3 transition-transform ${
+                          isSchematicOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  )}
+                </div>
+
+                {/* Expandable Pipeline Schematic & Build Notes */}
+                <AnimatePresence>
+                  {project.schematic && isSchematicOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.22, ease: "easeOut" }}
+                      className="overflow-hidden"
+                    >
+                      <SystemSchematic
+                        schematic={project.schematic}
+                        projectName={project.name}
+                      />
+                      {project.detail && (
+                        <p className="mt-2.5 text-tiny font-sans text-muted leading-relaxed p-2 bento-well">
+                          <strong className="text-ink">Build Detail:</strong> {project.detail}
+                        </p>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.article>
+          );
+        })}
+      </div>
+
+      {/* =========================================================================
+          BOTTOM LIST: Compact Shipped Archive (Interactive Accordion Rows)
+      ========================================================================= */}
+      <div>
+        <div className="flex items-center justify-between border-b border-rule pb-2 mb-3">
+          <h3 className="font-narrow text-tiny uppercase tracking-eyebrow text-muted font-bold">
+            Shipped Systems Archive ({archiveProjects.length} Builds)
+          </h3>
+          <span className="font-narrow text-tiny text-muted">
+            Click row to inspect decision
+          </span>
+        </div>
+
+        <div className="space-y-2">
+          {archiveProjects.map((archive) => {
+            const isArchiveOpen = openArchiveSlug === archive.slug;
+            const isFilteredMatch = activeFilter
+              ? archive.tech.some(
+                  (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
                 )
-              )}
-            </div>
-          </article>
-        );
-      })}
+              : true;
+
+            return (
+              <div
+                id={`project-${archive.slug}`}
+                key={archive.slug}
+                className={`bento-well transition-all scroll-mt-24 ${
+                  isFilteredMatch ? "opacity-100" : "opacity-40"
+                } ${isArchiveOpen ? "border-signal-teal bg-surface" : "hover:border-rule-strong"}`}
+              >
+                {/* Accordion Row Header */}
+                <button
+                  type="button"
+                  onClick={() => toggleArchive(archive.slug)}
+                  aria-expanded={isArchiveOpen}
+                  className="w-full p-3.5 flex flex-wrap items-center justify-between gap-4 text-left"
+                >
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="font-sans text-small font-semibold text-ink">
+                      {archive.name}
+                    </span>
+                    <span className="font-narrow text-tiny uppercase tracking-eyebrow text-muted bento-well px-2 py-0.5">
+                      {archive.outcome.label}
+                    </span>
+                  </div>
+
+                  {/* Widened summary allowing clean wrapping without mid-word clipping */}
+                  <div className="flex-1 min-w-[200px] max-w-[480px] hidden sm:block">
+                    <p className="font-sans text-tiny text-muted leading-relaxed line-clamp-2">
+                      {archive.decision}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="font-narrow text-tiny uppercase tracking-eyebrow text-signal-teal font-medium hidden md:inline">
+                      {isArchiveOpen ? "Collapse" : "Inspect"}
+                    </span>
+                    <div
+                      className={`size-6 rounded-md flex items-center justify-center border transition-all ${
+                        isArchiveOpen
+                          ? "bg-signal-teal text-surface border-signal-teal rotate-180"
+                          : "bg-surface text-muted border-rule"
+                      }`}
+                    >
+                      <ChevronDown className="size-3.5" />
+                    </div>
+                  </div>
+                </button>
+
+                {/* Expanded Detail Panel */}
+                <AnimatePresence>
+                  {isArchiveOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="overflow-hidden border-t border-rule-soft px-4 py-3 bg-ground/40"
+                    >
+                      <p className="font-sans text-small text-muted mb-2">
+                        <strong className="text-ink">Problem:</strong> {archive.problem}
+                      </p>
+                      <p className="font-sans text-small text-ink font-medium mb-3">
+                        <strong className="text-signal-teal">Decision:</strong> {archive.decision}
+                      </p>
+                      {archive.detail && (
+                        <p className="font-sans text-tiny text-muted mb-3 leading-relaxed">
+                          {archive.detail}
+                        </p>
+                      )}
+
+                      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-rule-soft">
+                        <TechList items={archive.tech} />
+
+                        <div className="flex items-center gap-2 font-narrow text-meta tracking-rail">
+                          {archive.links.map((link) =>
+                            link.href ? (
+                              <a
+                                key={link.label}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => sound.playClick()}
+                                className="inline-flex items-center gap-1 text-signal-teal hover:text-ink font-medium"
+                              >
+                                <LinkIcon name={link.icon} />
+                                <span>{link.label}</span>
+                                <ArrowUpRight className="size-3 opacity-60" />
+                              </a>
+                            ) : link.statusPill ? (
+                              <span
+                                key={link.label}
+                                className="bento-well px-2 py-0.5 text-tiny font-narrow uppercase tracking-eyebrow text-muted"
+                              >
+                                {link.statusPill}
+                              </span>
+                            ) : null
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </Panel>
   );
 }

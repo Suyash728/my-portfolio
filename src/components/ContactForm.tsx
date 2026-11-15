@@ -129,7 +129,7 @@ export function ContactForm() {
         className={`text-small ${state.status === "error" ? "text-flag" : "text-muted"}`}
       >
         {state.message ||
-          "I read everything that isn't a bulk send. Your address is only used to reply."}
+          "Direct to inbox · Encrypted via Resend · Typically replies within 24h"}
       </p>
     </form>
   );

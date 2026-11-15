@@ -8,6 +8,7 @@ import {
   Cpu,
   FolderGit2,
   Briefcase,
+  GraduationCap,
   Layers,
   Trophy,
   Mail,
@@ -60,31 +61,9 @@ export function CommandPalette() {
   };
 
   return (
-    <>
-      {/* Floating Cmd+K Trigger: Zero-radius, 3:1 WCAG border */}
-      <div className="fixed bottom-5 right-5 z-40 hidden sm:block print:hidden">
-        <button
-          type="button"
-          onClick={() => {
-            sound.playSwitch();
-            setOpen(true);
-          }}
-          className="flex items-center gap-2 border border-rule-strong bg-raised/95 px-3.5 py-1.5 transition-all hover:border-signal"
-          aria-label="Quick Nav ⌘K"
-        >
-          <Search className="size-3.5 text-muted" />
-          <span className="font-narrow text-tiny tracking-rail text-muted font-medium">
-            Quick Nav
-          </span>
-          <kbd className="border border-rule bg-ground px-1.5 py-0.5 font-sans text-tiny tabular-nums text-ink">
-            ⌘K
-          </kbd>
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {open && (
-          <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4">
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] px-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -94,13 +73,13 @@ export function CommandPalette() {
               className="fixed inset-0 bg-ink/40 backdrop-blur-xs"
             />
 
-            {/* Modal Box: Zero-radius, crisp hairline border */}
+            {/* Modal Box: Tactile Bento Surface with 12px radius & shadow */}
             <motion.div
               initial={{ opacity: 0, scale: 0.98, y: -6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98, y: -6 }}
               transition={{ duration: 0.16, ease: "easeOut" }}
-              className="relative w-full max-w-xl border border-rule-strong bg-raised overflow-hidden z-10"
+              className="relative w-full max-w-xl rounded-xl border border-rule-strong bg-surface shadow-2xl overflow-hidden z-10"
             >
               <Command
                 label="Global Command Menu"
@@ -114,13 +93,13 @@ export function CommandPalette() {
                     placeholder="Search sections, systems, or execute action..."
                     className="w-full bg-transparent font-sans text-body text-ink placeholder:text-muted focus:outline-hidden"
                   />
-                  <kbd className="hidden sm:inline-block border border-rule bg-ground px-1.5 py-0.5 font-sans text-tiny tabular-nums text-muted">
+                  <kbd className="hidden sm:inline-block rounded border border-rule bg-ground px-1.5 py-0.5 font-sans text-tiny tabular-nums text-muted">
                     ESC
                   </kbd>
                 </div>
 
                 {/* Command Items List */}
-                <Command.List className="max-h-[340px] overflow-y-auto p-2 font-narrow text-meta tracking-rail divide-y divide-rule-soft/50">
+                <Command.List className="max-h-[360px] overflow-y-auto p-2 font-narrow text-meta tracking-rail divide-y divide-rule-soft/50">
                   <Command.Empty className="py-6 text-center text-muted font-sans text-small">
                     No matching commands found.
                   </Command.Empty>
@@ -131,25 +110,25 @@ export function CommandPalette() {
                     className="px-2 py-1.5 text-tiny font-bold uppercase tracking-eyebrow text-muted"
                   >
                     <Command.Item
-                      onSelect={() => jumpTo("hardware")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      onSelect={() => jumpTo("battlestation")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Cpu className="size-4" />
                       <span className="font-sans font-medium">
-                        Hardware Lab &amp; Systems Craft
+                        Battlestation &amp; Local AI Rig
                       </span>
                       <span className="ml-auto font-sans text-tiny tabular-nums opacity-70">
-                        #hardware
+                        #battlestation
                       </span>
                     </Command.Item>
 
                     <Command.Item
                       onSelect={() => jumpTo("projects")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <FolderGit2 className="size-4" />
                       <span className="font-sans font-medium">
-                        Shipped Systems (MediSync 2.0)
+                        Shipped Systems (Spotlight &amp; Archive)
                       </span>
                       <span className="ml-auto font-sans text-tiny tabular-nums opacity-70">
                         #projects
@@ -158,7 +137,7 @@ export function CommandPalette() {
 
                     <Command.Item
                       onSelect={() => jumpTo("experience")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Briefcase className="size-4" />
                       <span className="font-sans font-medium">
@@ -170,8 +149,21 @@ export function CommandPalette() {
                     </Command.Item>
 
                     <Command.Item
+                      onSelect={() => jumpTo("education")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
+                    >
+                      <GraduationCap className="size-4" />
+                      <span className="font-sans font-medium">
+                        Education &amp; Qualifications
+                      </span>
+                      <span className="ml-auto font-sans text-tiny tabular-nums opacity-70">
+                        #education
+                      </span>
+                    </Command.Item>
+
+                    <Command.Item
                       onSelect={() => jumpTo("stack")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Layers className="size-4" />
                       <span className="font-sans font-medium">
@@ -184,7 +176,7 @@ export function CommandPalette() {
 
                     <Command.Item
                       onSelect={() => jumpTo("achievements")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Trophy className="size-4" />
                       <span className="font-sans font-medium">
@@ -197,7 +189,7 @@ export function CommandPalette() {
 
                     <Command.Item
                       onSelect={() => jumpTo("contact")}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Mail className="size-4" />
                       <span className="font-sans font-medium">
@@ -205,6 +197,64 @@ export function CommandPalette() {
                       </span>
                       <span className="ml-auto font-sans text-tiny tabular-nums opacity-70">
                         #contact
+                      </span>
+                    </Command.Item>
+                  </Command.Group>
+
+                  {/* Spotlight Systems */}
+                  <Command.Group
+                    heading="Spotlight Systems"
+                    className="px-2 py-1.5 text-tiny font-bold uppercase tracking-eyebrow text-muted pt-2"
+                  >
+                    <Command.Item
+                      onSelect={() => jumpTo("project-medisync")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
+                    >
+                      <FolderGit2 className="size-4 text-signal-teal" />
+                      <span className="font-sans font-medium">
+                        MediSync 2.0 (Clinical Triage &amp; Conflict Gate)
+                      </span>
+                      <span className="ml-auto font-sans text-tiny opacity-70">
+                        1st @ CodeFusion
+                      </span>
+                    </Command.Item>
+
+                    <Command.Item
+                      onSelect={() => jumpTo("project-aeromed-india")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
+                    >
+                      <FolderGit2 className="size-4 text-signal-teal" />
+                      <span className="font-sans font-medium">
+                        AeroMed India (Air Quality &amp; CAQM GRAP Gate)
+                      </span>
+                      <span className="ml-auto font-sans text-tiny opacity-70">
+                        $1k @ INNOVATE
+                      </span>
+                    </Command.Item>
+
+                    <Command.Item
+                      onSelect={() => jumpTo("project-kisanchain")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
+                    >
+                      <FolderGit2 className="size-4 text-signal-teal" />
+                      <span className="font-sans font-medium">
+                        KisanChain (Decentralized Agri-Produce)
+                      </span>
+                      <span className="ml-auto font-sans text-tiny opacity-70">
+                        Polygon PoS
+                      </span>
+                    </Command.Item>
+
+                    <Command.Item
+                      onSelect={() => jumpTo("project-trustlayer")}
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
+                    >
+                      <FolderGit2 className="size-4 text-signal-teal" />
+                      <span className="font-sans font-medium">
+                        TrustLayer (Agent Determinism Harness)
+                      </span>
+                      <span className="ml-auto font-sans text-tiny opacity-70">
+                        Mutation 94%
                       </span>
                     </Command.Item>
                   </Command.Group>
@@ -219,7 +269,7 @@ export function CommandPalette() {
                         const newMuted = sound.toggleMute();
                         setIsMuted(newMuted);
                       }}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       {isMuted ? (
                         <VolumeX className="size-4" />
@@ -240,7 +290,7 @@ export function CommandPalette() {
                           window.open(profile.resume, "_blank");
                         });
                       }}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <FileText className="size-4" />
                       <span className="font-sans font-medium">
@@ -256,7 +306,7 @@ export function CommandPalette() {
                           sound.playSuccess();
                         });
                       }}
-                      className="flex items-center gap-2.5 px-2.5 py-2 text-ink aria-selected:bg-signal aria-selected:text-raised cursor-pointer transition-colors"
+                      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-ink aria-selected:bg-signal-teal aria-selected:text-[#fff8f5] cursor-pointer transition-colors"
                     >
                       <Mail className="size-4" />
                       <span className="font-sans font-medium">
@@ -279,6 +329,5 @@ export function CommandPalette() {
           </div>
         )}
       </AnimatePresence>
-    </>
   );
 }

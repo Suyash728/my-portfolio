@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo_Narrow, Inter } from "next/font/google";
+import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
 // Inter reads the running text. It is drawn for screens rather than for
@@ -59,11 +60,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      // No `antialiased`: on the light ground it thins the strokes, and Inter
-      // at text sizes wants the weight that subpixel rendering gives it.
       className={`${inter.variable} ${archivoNarrow.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>
+          <div aria-hidden="true" className="film-grain" />
+          {children}
+        </SmoothScroll>
+      </body>
     </html>
   );
 }

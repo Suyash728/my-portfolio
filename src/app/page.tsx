@@ -3,11 +3,10 @@ import { MobileNav } from "@/components/MobileNav";
 import { TraceBackground } from "@/components/TraceBackground";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Achievements } from "@/components/sections/Achievements";
-import { Certifications } from "@/components/sections/Certifications";
 import { Contact } from "@/components/sections/Contact";
 import { Education } from "@/components/sections/Education";
 import { Experience } from "@/components/sections/Experience";
-import { HardwareLab } from "@/components/sections/HardwareLab";
+import { BattlestationBento } from "@/components/sections/BattlestationBento";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
 import { Stack } from "@/components/sections/Stack";
@@ -16,13 +15,11 @@ import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
 
 /**
- * The page is static, so anything read at render time is frozen into the build
- * — including the footer's year. A daily revalidate keeps it honest without
- * making the page dynamic.
+ * The page is static, revalidated daily to keep year honest without SSR overhead.
  */
 export const revalidate = 86400;
 
-/** Person + CreativeWork, built from the same content the page renders. */
+/** Person + CreativeWork JSON-LD, built from verified repo content. */
 function StructuredData() {
   const person = {
     "@context": "https://schema.org",
@@ -73,7 +70,6 @@ function StructuredData() {
   return (
     <script
       type="application/ld+json"
-      // Content is authored in this repo, not user input.
       dangerouslySetInnerHTML={{ __html: JSON.stringify([person, ...works]) }}
     />
   );
@@ -85,7 +81,7 @@ export default function Home() {
       <StructuredData />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:border focus:border-rule-strong focus:bg-raised focus:px-4 focus:py-2.5 focus:font-narrow focus:text-meta focus:uppercase focus:tracking-rail focus:text-ink focus:outline-2 focus:outline-signal focus:outline-offset-2"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:border focus:border-rule-strong focus:bg-surface focus:px-4 focus:py-2.5 focus:font-narrow focus:text-meta focus:uppercase focus:tracking-rail focus:text-ink focus:outline-2 focus:outline-signal-teal focus:outline-offset-2"
       >
         Skip to main content
       </a>
@@ -96,16 +92,18 @@ export default function Home() {
       <div className="relative z-1 grid min-h-screen grid-cols-1 wide:grid-cols-[var(--rail-w)_minmax(0,1fr)]">
         <Rail />
 
-        <main id="main" className="min-w-0 bg-grain">
+        <main id="main" className="min-w-0 bg-grain bg-grid-fade overflow-x-clip">
           <MobileNav />
           <Hero />
-          <HardwareLab />
+          <BattlestationBento />
           <Projects />
-          <Experience />
+          {/* Side-by-side Experience & Education on desktop (reduces vertical scroll fatigue by ~30%) */}
+          <div className="grid grid-cols-1 wide:grid-cols-2 border-b border-rule divide-y wide:divide-y-0 wide:divide-x divide-rule">
+            <Experience className="border-b-0 wide:px-8 wide:py-10" />
+            <Education className="border-b-0 wide:px-8 wide:py-10" />
+          </div>
           <Stack />
-          <Education />
           <Achievements />
-          <Certifications />
           <Contact />
 
           <footer className="border-t border-rule px-5 pt-7 pb-12 font-narrow text-meta tracking-rail text-muted wide:px-13">

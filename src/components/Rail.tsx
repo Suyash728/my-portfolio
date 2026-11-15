@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { LinkIcon, type GlyphName } from "@/components/LinkIcon";
 import { profile, sections, statuses } from "@/content/profile";
 import { sound } from "@/lib/sound";
 import { Volume2, VolumeX, Search } from "lucide-react";
 
-/**
- * The three ways to reach him. Each carries its own mark so the rows read as
- * destinations rather than three lines of grey URL.
- */
 const CONTACTS: { icon: GlyphName; href: string; label: string }[] = [
   { icon: "github", href: profile.github, label: strip(profile.github) },
   { icon: "linkedin", href: profile.linkedin, label: strip(profile.linkedin) },
@@ -24,20 +21,12 @@ function strip(url: string) {
   return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
 }
 
-const DOT_TONE = {
-  live: "bg-signal breathe",
-  award: "bg-flag",
-  plain: "bg-signal",
-} as const;
-
 export function Rail() {
-  const [current, setCurrent] = useState<string | null>("hardware");
+  const [current, setCurrent] = useState<string>("battlestation");
   const [isMuted, setIsMuted] = useState(() =>
     typeof window !== "undefined" ? sound.isMuted() : false
   );
   const [istTime, setIstTime] = useState<string | null>(null);
-  const [markerOffset, setMarkerOffset] = useState<number>(0);
-  const navRef = useRef<HTMLElement>(null);
 
   // Live IST (Asia/Kolkata) clock with tabular figures, hydration-safe
   useEffect(() => {
@@ -58,7 +47,7 @@ export function Rail() {
     return () => clearInterval(timer);
   }, []);
 
-  // Mechanical Scroll-Spy with zero-jitter translateY tracking
+  // Mechanical Scroll-Spy
   useEffect(() => {
     const nodes = sections
       .map((s) => document.getElementById(s.id))
@@ -69,7 +58,7 @@ export function Rail() {
 
     const spy = () => {
       queued = false;
-      const probe = window.innerHeight * 0.32;
+      const probe = window.innerHeight * 0.35;
       let best: string | null = null;
       let bestTop = -Infinity;
       for (const el of nodes) {
@@ -108,17 +97,6 @@ export function Rail() {
     };
   }, []);
 
-  // Update mechanical rail indicator offset
-  useEffect(() => {
-    if (!navRef.current || !current) return;
-    const activeLink = navRef.current.querySelector<HTMLElement>(
-      `[data-section-id="${current}"]`
-    );
-    if (activeLink) {
-      setMarkerOffset(activeLink.offsetTop);
-    }
-  }, [current]);
-
   const handleNavClick = (id: string) => {
     sound.playClick();
     const el = document.getElementById(id);
@@ -139,16 +117,16 @@ export function Rail() {
   };
 
   return (
-    <header className="flex flex-col gap-4 border-b border-rule px-5 py-6 wide:sticky wide:top-0 wide:h-screen wide:gap-[22px] wide:self-start wide:overflow-y-auto wide:border-r wide:border-b-0 wide:px-[26px] wide:pt-[34px] wide:pb-10">
-      {/* Identity block & quick audio toggle */}
-      <div className="rise flex items-start justify-between [animation-delay:0.02s]">
+    <header className="flex flex-col gap-4 border-b border-rule bg-surface/50 px-5 py-6 wide:sticky wide:top-0 wide:h-screen wide:gap-[20px] wide:self-start wide:overflow-y-auto wide:border-r wide:border-b-0 wide:px-[24px] wide:pt-[30px] wide:pb-8">
+      {/* Identity block & tactile audio toggle */}
+      <div className="flex items-start justify-between">
         <div>
-          <p className="font-narrow text-title leading-[1.1] font-semibold tracking-rail uppercase">
+          <p className="font-narrow text-title leading-[1.1] font-semibold tracking-rail uppercase text-ink">
             Suyash
             <br />
             Kerkar
           </p>
-          <p className="mt-2.5 font-narrow text-meta tracking-rail text-muted">
+          <p className="mt-2 font-narrow text-meta tracking-rail text-muted">
             {profile.identity.map((line) => (
               <span key={line} className="block">
                 {line}
@@ -157,91 +135,94 @@ export function Rail() {
           </p>
         </div>
 
-        {/* Tactile Audio Switch in Rail: Zero-radius, 3:1 WCAG border */}
+        {/* Tactile Audio Switch: 8px radius, WCAG 3:1 border */}
         <button
           type="button"
           onClick={handleToggleSound}
           title={isMuted ? "Unmute tactile sound haptics" : "Mute tactile sound haptics"}
-          className="border border-rule-strong bg-raised p-2 text-muted hover:text-ink hover:border-signal transition-colors focus-visible:outline-2 focus-visible:outline-signal"
+          className="bento-well p-2 text-muted hover:text-ink hover:border-signal-teal transition-colors"
           aria-label={isMuted ? "Unmute sound" : "Mute sound"}
         >
-          {isMuted ? <VolumeX className="size-3.5" /> : <Volume2 className="size-3.5 text-signal" />}
+          {isMuted ? (
+            <VolumeX className="size-4" />
+          ) : (
+            <Volume2 className="size-4 text-signal-teal" />
+          )}
         </button>
       </div>
 
-      <div className="rise h-px bg-rule [animation-delay:0.02s]" />
+      <div className="h-px bg-rule" />
 
-      {/* Live System Status Lines + IST Real-time Readout */}
-      <div className="rise flex flex-col gap-2 font-narrow text-meta tracking-rail [animation-delay:0.06s]">
-        <ul className="flex list-none flex-row flex-wrap gap-x-4 gap-y-1.5 p-0 wide:flex-col wide:gap-[7px]">
+      {/* Recessed Status Well & Clock */}
+      <div className="bento-well p-3 flex flex-col gap-2 font-narrow text-meta tracking-rail">
+        <ul className="flex list-none flex-row flex-wrap gap-x-3 gap-y-1.5 p-0 wide:flex-col wide:gap-[6px]">
           {statuses.map((status) => (
-            <li key={status.label} className="flex items-baseline gap-[9px] text-muted">
-              <span
-                aria-hidden="true"
-                className={`size-1.5 flex-none -translate-y-px ${DOT_TONE[status.tone]}`}
-              />
-              {status.label}
+            <li key={status.label} className="flex items-center gap-2 text-muted">
+              <span className={status.tone === "live" ? "led-orange" : "led-teal"} />
+              <span>{status.label}</span>
             </li>
           ))}
         </ul>
 
         {/* Telemetry Clock */}
         <div className="mt-1 border-t border-rule-soft pt-2 text-tiny text-muted flex items-center justify-between">
-          <span>SYSTEM CLOCK</span>
+          <span className="uppercase tracking-eyebrow">SYSTEM TIME</span>
           <span className="tabular-nums font-sans font-semibold text-ink">
             {istTime ?? "19:30:00 IST"}
           </span>
         </div>
       </div>
 
-      {/* Quick Cmd+K Command Search in Rail: Zero-radius, crisp */}
+      {/* Quick Cmd+K Hardware Launcher Button */}
       <button
         type="button"
         onClick={openCommandPalette}
-        className="rise flex items-center justify-between border border-rule-strong bg-raised/80 px-3 py-1.5 font-narrow text-tiny uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors [animation-delay:0.08s]"
+        className="flex items-center justify-between bento-well px-3 py-2 font-narrow text-tiny uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal-teal transition-colors"
       >
         <span className="flex items-center gap-1.5">
-          <Search className="size-3 text-signal" />
-          <span>Quick Menu</span>
+          <Search className="size-3.5 text-signal-teal" />
+          <span>Quick Launcher</span>
         </span>
-        <kbd className="border border-rule bg-ground px-1 font-sans text-tiny tabular-nums text-ink">
+        <kbd className="border border-rule bg-surface px-1.5 py-0.5 rounded text-tiny font-sans tabular-nums text-ink">
           ⌘K
         </kbd>
       </button>
 
-      <div className="rise h-px bg-rule [animation-delay:0.08s]" />
+      <div className="h-px bg-rule" />
 
-      {/* Navigation Links with Mechanical Zero-Jitter Indicator */}
+      {/* Navigation Links with Smooth Spring LayoutId Active Pill */}
       <nav
-        ref={navRef}
         aria-label="Sections"
-        className="rise relative flex flex-row flex-wrap gap-x-[18px] wide:flex-col wide:gap-0 [animation-delay:0.1s]"
+        className="relative flex flex-row flex-wrap gap-1 wide:flex-col wide:gap-1"
       >
-        {/* Continuous mechanical glider for desktop rail */}
-        <div
-          aria-hidden="true"
-          className="hidden wide:block absolute left-0 top-0 w-[2px] bg-signal transition-transform duration-160 ease-out pointer-events-none"
-          style={{
-            height: "28px",
-            transform: `translateY(${markerOffset}px)`,
-          }}
-        />
-
-        {sections.map((section) => (
-          <a
-            key={section.id}
-            data-section-id={section.id}
-            href={`#${section.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick(section.id);
-            }}
-            className="rail-link"
-            aria-current={current === section.id ? "true" : "false"}
-          >
-            {section.label}
-          </a>
-        ))}
+        {sections.map((section) => {
+          const isActive = current === section.id;
+          return (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => handleNavClick(section.id)}
+              className={`relative text-left px-3 py-2 rounded-lg font-narrow text-meta tracking-rail transition-colors ${
+                isActive ? "text-ink font-semibold" : "text-muted hover:text-ink"
+              }`}
+              aria-current={isActive ? "true" : undefined}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activeRailTab"
+                  className="absolute inset-0 rounded-lg bg-surface-sunken border border-rule z-0"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center justify-between">
+                <span>{section.label}</span>
+                {isActive && (
+                  <span className="h-1.5 w-1.5 rounded-full bg-signal-teal" />
+                )}
+              </span>
+            </button>
+          );
+        })}
       </nav>
 
       {/* Resume CTA */}
@@ -249,13 +230,13 @@ export function Rail() {
         href={profile.resume}
         download
         onClick={() => sound.playClick()}
-        className="rise btn text-center wide:mt-auto [animation-delay:0.14s]"
+        className="btn btn-orange text-center wide:mt-auto"
       >
-        Download resume
+        Download Resume
       </a>
 
       {/* Contact Links */}
-      <div className="rise flex flex-row flex-wrap gap-x-4 gap-y-2 font-narrow text-meta tracking-rail wide:flex-col wide:gap-2 [animation-delay:0.18s]">
+      <div className="flex flex-row flex-wrap gap-x-4 gap-y-2 font-narrow text-meta tracking-rail wide:flex-col wide:gap-2">
         {CONTACTS.map((contact) => {
           const external = !contact.href.startsWith("mailto:");
           return (
@@ -266,10 +247,10 @@ export function Rail() {
               {...(external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
-              className="group flex w-fit items-center gap-[7px] text-muted transition-colors hover:text-signal"
+              className="group flex w-fit items-center gap-[7px] text-muted transition-colors hover:text-signal-teal"
             >
               <LinkIcon name={contact.icon} className="size-[14px] flex-none" />
-              <span className="border-b border-transparent transition-colors group-hover:border-signal">
+              <span className="border-b border-transparent transition-colors group-hover:border-signal-teal">
                 {contact.label}
               </span>
             </a>

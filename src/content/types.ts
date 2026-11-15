@@ -24,13 +24,13 @@ export interface Outcome {
 /** Which glyph sits before a link's label. */
 export type LinkIconName = "repo" | "live" | "paper";
 
-/** A null href is a link that does not exist yet; it renders as a visible TODO. */
+/** A null href is a link that does not exist yet; it can render as a status pill or be omitted. */
 export interface Link {
   label: string;
   href: string | null;
   icon: LinkIconName;
-  /** Contextual specification note for the unreleased or in-progress artifact. */
-  todoContext?: string;
+  /** Contextual status note for pending paper or private monorepo. */
+  statusPill?: string;
 }
 
 export interface SchematicStage {
@@ -50,16 +50,18 @@ export interface Project {
   slug: string;
   name: string;
   outcome: Outcome;
-  /** One line, the problem in the world — not the feature list. */
+  /** One line, the problem in the world — max 14 words. */
   problem: string;
-  /** The architectural decision worth defending. */
+  /** The architectural decision worth defending — max 14 words. */
   decision: string;
-  /** Everything else. Optional; the smaller builds do without it. */
+  /** Everything else. Shown inside the expanded pipeline inspection. */
   detail?: string;
   tech: Tech[];
   links: Link[];
   /** Decision architecture pipeline schematic proving the engineering boundary. */
   schematic?: Schematic;
+  /** True for the 4 flagship Spotlight Bento cards; false for the compact archive. */
+  spotlight?: boolean;
 }
 
 export interface Role {
@@ -77,8 +79,7 @@ export interface Qualification {
   meta: string;
   /**
    * Subjects, for the levels where subjects mean anything. Omitted entirely
-   * where there are none to give; null where the list is still outstanding,
-   * which renders a visible TODO.
+   * where there are none to give; null where the list is still outstanding.
    */
   focus?: string | null;
 }

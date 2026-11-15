@@ -1,46 +1,39 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens — direction: Control Room, light.
-   Every colour, face and size the site uses is declared here. Components use
-   the generated utilities (bg-ground, text-muted, text-lead…); no component
-   should introduce a raw hex or a one-off px value.
+   Design tokens — Tactile Field Instrument (Teenage Engineering × Nothing OS, Light)
+   Chassis: #F2EFE9 | Surfaces: #FBF9F5 | Wells: #E8E3DA | Ink: #181A1F
+   Accents: #D94E0F (Tactile Orange Pop) · #0F5C6E (Systems Teal)
 --------------------------------------------------------------------------- */
 @theme {
-  /* Ground is a warm off-white pulled slightly grey, so it reads as paper
-     rather than the cream that every other portfolio is currently using. */
   --color-ground: #f2efe9;
+  --color-surface: #fbf9f5;
+  --color-surface-sunken: #e8e3da;
   --color-raised: #fbf9f5;
-  --color-rule: #dfd9ce;
-  --color-rule-soft: #eae5dc;
-  /* Boundary of anything you can operate — inputs, quiet buttons. `rule` is a
-     divider colour and sits at 1.3:1, which WCAG 1.4.11 fails for a control
-     edge; this clears 3:1 on both `raised` and `ground`. */
-  --color-rule-strong: #8a877f;
-  --color-ink: #1d1f24;
-  /* Secondary text. Was #6B6A64, which cleared AA at 4.7:1 and not much more;
-     this sits at 5.9:1 on ground, so the lede and every row subtitle hold up
-     at a glance rather than only on inspection. */
-  --color-muted: #5c5b55;
+  --color-rule: #dcd6ca;
+  --color-rule-soft: #e6e1d6;
+  --color-rule-strong: #7d7a72;
+  --color-ink: #181a1f;
+  --color-muted: #575650;
 
-  /* Two accents, each with a job. signal = interactive and in-progress state.
-     flag = outcomes and placements only, never decoration. */
-  --color-signal: #1f4b6e;
-  --color-flag: #8a6414;
+  /* Tactile Field Instrument Accents (WCAG AAA/AA 4.5:1 calibrated) */
+  --color-accent-orange: #a13706;
+  --color-signal-teal: #0f5c6e;
+  --color-signal: #0f5c6e;
+  --color-flag: #a13706;
 
-  /* Inter reads the text, Archivo Narrow carries the rail and the small
-     labels. Archivo itself is gone from the page — it survives only in the
-     generated OG card, where the name is display type rather than reading
-     matter. */
+  /* Teenage Engineering OLED Instrument Display Cutouts */
+  --color-oled: #14161a;
+  --color-oled-surface: #1d2026;
+  --color-oled-rule: #2e333d;
+  --color-oled-ink: #f4f2ee;
+  --color-oled-muted: #9ba1ae;
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-narrow: var(--font-archivo-narrow), var(--font-inter), ui-sans-serif,
-    sans-serif;
+  --font-narrow: var(--font-archivo-narrow), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Same compressed ratio as before, re-anchored from a 16px body to 17px:
-     every step is its old value x 17/16, so the relationships between sizes
-     are unchanged and only the floor moved. Numerals are Inter's tabular
-     figures rather than a monospace face. Leading is a step looser at the
-     small end, where the old values were tightest and did the most damage. */
+  /* Type Scale anchored at 17px body */
   --text-tiny: 11.7px;
   --text-tiny--line-height: 1.55;
   --text-meta: 13.6px;
@@ -58,8 +51,6 @@
   --text-display: clamp(27.6px, 4.4vw, 35.3px);
   --text-display--line-height: 1.22;
 
-  /* Tracking is a token too: rail text, small labels and the uppercase group
-     headings each get one value, used everywhere that role appears. */
   --tracking-rail: 0.02em;
   --tracking-label: 0.03em;
   --tracking-eyebrow: 0.05em;
@@ -67,14 +58,9 @@
   --tracking-display: -0.015em;
 
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.3, 1);
-
-  /* The rail stops being viable below this width and folds into a top bar.
-     Layout and padding both switch here, so it is a token, not a magic number. */
   --breakpoint-wide: 900px;
 }
 
-/* Width of the fixed identity rail. Not a Tailwind token because it is one
-   layout constant, referenced by the grid template and the mobile breakpoint. */
 :root {
   --rail-w: 264px;
 }
@@ -90,101 +76,175 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-signal);
+    outline: 2px solid var(--color-signal-teal);
     outline-offset: 3px;
   }
 
   ::selection {
-    background-color: var(--color-signal);
-    color: var(--color-raised);
+    background-color: var(--color-signal-teal);
+    color: #fff8f5;
   }
 }
 
 @layer components {
-  /* Subtle tactical paper / noise grain overlay for editorial depth */
+  /* Subtle tactical paper / noise grain overlay */
   .bg-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
   }
 
-  /* The one orchestrated page-load moment. Deliberately short (~0.2s total):
-     any longer and a link preview or thumbnail catches the page mid-fade. */
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
+  /* Fixed global film-grain micro-texture overlay */
+  .film-grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
-  .rise {
-    animation: rise 0.38s var(--ease-out-soft) both;
+  /* Architectural grid hairlines that smoothly fade toward edges */
+  .bg-grid-fade {
+    background-size: 32px 32px;
+    background-image: 
+      linear-gradient(to right, rgba(220, 214, 202, 0.45) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(220, 214, 202, 0.45) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 100%);
   }
 
-  /* A row that grows a signal-coloured rule down its left edge on hover.
-     Shared by project entries and list rows so the gesture means one thing. */
-  .edge {
+  /* Tactile Bento Card (16px / rounded-2xl radius, hairline rule, machined highlight + mouse-tracking spotlight border) */
+  .bento-card {
     position: relative;
-    margin-left: -1rem;
-    padding-left: 1rem;
-    transition: background-color 0.2s var(--ease-out-soft);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: 16px;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.95), 0 2px 8px 0 rgba(24, 26, 31, 0.04);
+    transition: border-color 0.2s var(--ease-out-soft), box-shadow 0.2s var(--ease-out-soft);
   }
 
-  .edge::before {
+  .bento-card::before {
     content: "";
     position: absolute;
-    left: 0;
-    top: -1px;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--color-signal);
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 0.28s var(--ease-out-soft);
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      280px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+      rgba(15, 92, 110, 0.35),
+      transparent 80%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
   }
 
-  .edge:hover {
-    background-color: color-mix(in srgb, var(--color-raised) 70%, transparent);
+  .bento-card:hover::before {
+    opacity: 1;
   }
 
-  .edge:hover::before {
-    transform: scaleY(1);
+  .bento-card:hover {
+    border-color: var(--color-rule-strong);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 1), 0 6px 20px 0 rgba(24, 26, 31, 0.06);
   }
 
-  /* Button whose fill sweeps in from the left. */
+  /* Recessed Bento Well for telemetry meters, switches, and chips */
+  .bento-well {
+    background-color: var(--color-surface-sunken);
+    border: 1px solid var(--color-rule);
+    border-radius: 10px;
+  }
+
+  /* Recessed OLED Display Well (Teenage Engineering Instrument Screen) */
+  .oled-well {
+    position: relative;
+    background-color: var(--color-oled);
+    border: 1px solid var(--color-oled-rule);
+    border-radius: 10px;
+    color: var(--color-oled-ink);
+    box-shadow: inset 0 2px 6px 0 rgba(0, 0, 0, 0.6);
+  }
+
+  /* 3D Low-Profile Mechanical Keycap */
+  .keycap {
+    position: relative;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-bottom: 2px solid var(--color-rule-strong);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(24, 26, 31, 0.06);
+    transition: transform 0.08s ease, border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .keycap:hover {
+    border-color: var(--brand, var(--color-rule-strong));
+    box-shadow: 0 0 10px var(--brand, rgba(15, 92, 110, 0.25)), 0 1px 3px rgba(24, 26, 31, 0.08);
+  }
+
+  .keycap:active {
+    transform: translateY(2px);
+    border-bottom-width: 1px;
+    margin-bottom: 1px;
+  }
+
+  /* Dot-Matrix Recessed Texture (16px grid) */
+  .bg-dot-matrix {
+    background-image: radial-gradient(var(--color-rule) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+
+  /* Hardware Status LEDs */
+  .led-orange {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background-color: var(--color-accent-orange);
+    box-shadow: 0 0 6px rgba(217, 78, 15, 0.75);
+  }
+
+  .led-teal {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background-color: var(--color-signal-teal);
+    box-shadow: 0 0 6px rgba(15, 92, 110, 0.7);
+  }
+
+  /* Hardware Action Buttons */
   .btn {
     position: relative;
-    display: inline-block;
-    isolation: isolate;
-    overflow: hidden;
-    border: 1px solid var(--color-signal);
-    color: var(--color-signal);
-    padding: 0.5625rem 1.125rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-signal-teal);
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    color: var(--color-signal-teal);
+    padding: 0.5rem 1.125rem;
     font-family: var(--font-narrow);
     font-size: var(--text-meta);
     letter-spacing: 0.03em;
-    transition: color 0.22s var(--ease-out-soft);
-  }
-
-  .btn::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-color: var(--color-signal);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.28s var(--ease-out-soft);
+    font-weight: 500;
+    transition: all 0.2s var(--ease-out-soft);
   }
 
   .btn:hover {
-    color: var(--color-raised);
+    background-color: var(--color-signal-teal);
+    color: #fff8f5;
   }
 
-  .btn:hover::after {
-    transform: scaleX(1);
+  .btn-orange {
+    border-color: var(--color-accent-orange);
+    background-color: var(--color-accent-orange);
+    color: #ffffff;
+  }
+
+  .btn-orange:hover {
+    background-color: #822b04;
+    border-color: #822b04;
+    color: #ffffff;
   }
 
   .btn-quiet {
@@ -192,43 +252,13 @@
     color: var(--color-muted);
   }
 
-  .btn-quiet::after {
-    background-color: var(--color-ink);
-  }
-
   .btn-quiet:hover {
-    color: var(--color-ground);
     border-color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-ground);
   }
 
-  /* Project heading that leads to its repository. The heading keeps ink colour
-     at rest — a blue headline would be a second loud element — and the arrow
-     carries the affordance, moving the way the link does on hover. */
-  .title-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    color: var(--color-ink);
-    transition: color 0.18s var(--ease-out-soft);
-  }
-
-  .title-link svg {
-    color: var(--color-muted);
-    transition:
-      color 0.18s var(--ease-out-soft),
-      transform 0.18s var(--ease-out-soft);
-  }
-
-  .title-link:hover {
-    color: var(--color-signal);
-  }
-
-  .title-link:hover svg {
-    color: var(--color-signal);
-    transform: translate(2px, -2px);
-  }
-
-  /* Link whose underline draws in from the left. */
+  /* Link with animated draw underline */
   .link-draw {
     position: relative;
     padding-bottom: 2px;
@@ -251,18 +281,37 @@
     transform: scaleX(1);
   }
 
-  /* Technology item. No border, no fill, no padding — a bordered, filled box
-     repeated thirty times reads as a wall of buttons, and the chrome was doing
-     none of the work the mark itself does. The brand colour is the only accent;
-     everything around it is ground. --brand is set per item, pre-darkened where
-     the true brand colour would be illegible here (scripts/fetch-icons.mjs). */
+  .title-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-ink);
+    transition: color 0.18s var(--ease-out-soft);
+  }
+
+  .title-link svg {
+    color: var(--color-muted);
+    transition: color 0.18s var(--ease-out-soft), transform 0.18s var(--ease-out-soft);
+  }
+
+  .title-link:hover {
+    color: var(--color-signal-teal);
+  }
+
+  .title-link:hover svg {
+    color: var(--color-signal-teal);
+    transform: translate(2px, -2px);
+  }
+
+  /* Technology chip */
   .tech {
     display: inline-flex;
     align-items: center;
     gap: 0.4375rem;
     font-size: var(--text-small);
     color: var(--color-ink);
-    transition: color 0.2s var(--ease-out-soft);
+    border-radius: 6px;
+    transition: all 0.2s var(--ease-out-soft);
   }
 
   .tech svg {
@@ -273,11 +322,9 @@
   }
 
   .tech:hover {
-    color: var(--brand, var(--color-signal));
+    color: var(--brand, var(--color-signal-teal));
   }
 
-  /* No brand mark, so no icon: practices sit in muted text, which puts branded
-     tools and concepts into a quiet hierarchy without inventing a logo. */
   .tech-plain {
     color: var(--color-muted);
   }
@@ -286,124 +333,66 @@
     color: var(--color-ink);
   }
 
-  /* Rail navigation item: tick thickens and fills when the section is current. */
-  .rail-link {
-    position: relative;
-    display: block;
-    padding: 0.375rem 0 0.375rem 0.75rem;
-    font-family: var(--font-narrow);
-    font-size: var(--text-meta);
-    letter-spacing: 0.02em;
-    color: var(--color-muted);
-    transition:
-      color 0.18s var(--ease-out-soft),
-      padding-left 0.18s var(--ease-out-soft);
-  }
-
-  .rail-link::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: var(--color-rule);
-    transition:
-      width 0.18s var(--ease-out-soft),
-      background-color 0.18s var(--ease-out-soft);
-  }
-
-  .rail-link:hover {
-    color: var(--color-ink);
-    padding-left: 0.9375rem;
-  }
-
-  .rail-link:hover::before {
-    background-color: var(--color-muted);
-  }
-
-  .rail-link[aria-current="true"] {
-    color: var(--color-ink);
-  }
-
-  .rail-link[aria-current="true"]::before {
-    width: 2px;
-    background-color: var(--color-signal);
-  }
-
-  @media (max-width: 900px) {
-    .rail-link,
-    .rail-link:hover {
-      padding-left: 0;
-    }
-
-    .rail-link::before {
-      display: none;
-    }
-  }
-
-  /* Ambient "this is live" pulse on the availability marker. The only motion
-     on the page that is neither user-triggered nor the background. */
-  @keyframes breathe {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.35;
-    }
-  }
-
-  .breathe {
-    animation: breathe 3.6s ease-in-out infinite;
-  }
-
+  /* Form input field */
   .field {
     width: 100%;
-    background-color: var(--color-raised);
+    background-color: var(--color-surface);
     border: 1px solid var(--color-rule-strong);
+    border-radius: 8px;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: var(--text-body);
     padding: 0.625rem 0.75rem;
-    transition:
-      border-color 0.2s var(--ease-out-soft),
-      box-shadow 0.2s var(--ease-out-soft);
+    transition: border-color 0.2s var(--ease-out-soft), box-shadow 0.2s var(--ease-out-soft);
   }
 
   .field:focus {
     outline: none;
-    border-color: var(--color-signal);
-    box-shadow: inset 0 -2px 0 0 var(--color-signal);
+    border-color: var(--color-signal-teal);
+    box-shadow: 0 0 0 1px var(--color-signal-teal);
+  }
+
+  /* Row edge gesture */
+  .edge {
+    position: relative;
+    transition: background-color 0.2s var(--ease-out-soft);
+  }
+
+  .edge::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    border-radius: 1px;
+    background-color: var(--color-signal-teal);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.28s var(--ease-out-soft);
+  }
+
+  .edge:hover::before {
+    transform: scaleY(1);
   }
 }
 
-/* Full stop, not a slowdown. The canvas renders a static frame separately. */
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .edge::before {
-    transform: scaleY(1);
-    opacity: 0;
-  }
-
-  .edge:hover::before {
-    opacity: 1;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Print & Judge PDF Export Mode (A4 / Letter Clean Instrument Readout)
---------------------------------------------------------------------------- */
+/* Print & Judge PDF Export */
 @media print {
   body {
     background-color: #ffffff !important;
-    color: #1d1f24 !important;
+    color: #181a1f !important;
     font-size: 11pt !important;
     line-height: 1.4 !important;
   }
@@ -424,23 +413,23 @@
     background: none !important;
   }
 
-  /* Suppress non-printable interactive elements */
   canvas,
   nav[aria-label="Mobile Section Jump Navigation"],
-  button[aria-label="Open command palette"],
-  button[aria-label="Mute sound"],
-  button[aria-label="Unmute sound"],
+  button[aria-label*="command palette"],
+  button[aria-label*="sound"],
   .field,
   form button[type="submit"],
   .print\:hidden {
     display: none !important;
   }
 
-  article {
+  article,
+  .bento-card {
     break-inside: avoid;
     page-break-inside: avoid;
-    border-top: 1px solid var(--color-rule) !important;
-    padding-top: 0.75rem !important;
+    border: 1px solid var(--color-rule) !important;
+    box-shadow: none !important;
+    margin-bottom: 1rem !important;
   }
 
   a {

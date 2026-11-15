@@ -21,55 +21,68 @@ export function SystemSchematic({ schematic, projectName }: SystemSchematicProps
   return (
     <div
       role="region"
-      aria-label={`${projectName} system architecture schematic`}
-      className="mt-3 border border-rule bg-raised/70 p-4 transition-colors"
+      aria-label={`${projectName} pipeline schematic`}
+      className="mt-3 bento-well p-3.5 bg-surface-sunken/80 transition-colors"
     >
       {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-rule-soft pb-2.5 mb-3 font-narrow text-tiny uppercase tracking-eyebrow">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-rule pb-2 mb-3 font-narrow text-tiny uppercase tracking-eyebrow">
         <span className="flex items-center gap-2 text-ink font-semibold">
-          <span className="size-1.5 bg-signal" aria-hidden="true" />
-          Deterministic Pipeline &amp; Verification Gate
+          <span className="led-teal" aria-hidden="true" />
+          Deterministic Verification Pipeline
         </span>
-        <span className="text-muted tracking-rail">
+        <span className="text-muted tracking-rail tabular-nums">
           {schematic.stages.length} Verified Stages
         </span>
       </div>
 
-      {/* Pipeline Sequence: Responsive Flex on desktop, Vertical Stepped Bus on mobile */}
-      <ol className="m-0 p-0 list-none grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5">
+      {/* Pipeline Sequence: Responsive 5-Stage Bus spanning full width on desktop */}
+      <ol className="m-0 p-0 list-none grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-stretch">
         {schematic.stages.map((stage, idx) => {
           const isGate = stage.isGate;
           const stepNum = (idx + 1).toString().padStart(2, "0");
+          const isLast = idx === schematic.stages.length - 1;
 
           return (
             <li
               key={stage.label}
               onMouseEnter={isGate ? triggerGateHover : undefined}
-              className={`relative border p-2.5 transition-colors ${
+              className={`relative rounded-lg border p-3 flex flex-col justify-between transition-all ${
                 isGate
-                  ? "border-signal bg-ground/90 text-ink ring-1 ring-signal/30"
-                  : "border-rule bg-ground/50 text-muted hover:border-rule-strong hover:text-ink"
+                  ? "border-signal-teal bg-surface text-ink ring-2 ring-signal-teal/20 shadow-xs"
+                  : "border-rule bg-surface/90 text-muted hover:border-rule-strong hover:text-ink"
               }`}
             >
-              <div className="flex items-center justify-between font-narrow text-tiny uppercase tracking-eyebrow mb-1">
-                <span className="tabular-nums text-muted">
-                  STAGE {stepNum}
-                </span>
-                {isGate && (
-                  <span className="border border-signal bg-signal/10 px-1 py-0.5 text-signal font-semibold tracking-rail">
-                    GATE
+              <div>
+                <div className="flex items-center justify-between font-narrow text-tiny uppercase tracking-eyebrow mb-1.5">
+                  <span className="tabular-nums text-muted font-sans font-medium">
+                    STAGE {stepNum}
                   </span>
-                )}
-              </div>
+                  {isGate && (
+                    <span className="border border-signal-teal bg-signal-teal/15 px-1.5 py-0.5 rounded text-[10px] text-signal-teal font-bold tracking-eyebrow">
+                      GATE
+                    </span>
+                  )}
+                </div>
 
-              <div className="font-sans text-small font-semibold text-ink leading-snug">
-                {stage.label}
+                <div className="font-sans text-small font-semibold text-ink leading-snug">
+                  {stage.label}
+                </div>
               </div>
 
               {stage.sublabel && (
-                <div className="font-narrow text-tiny tracking-rail text-muted mt-1">
+                <div className="font-narrow text-tiny tracking-rail text-muted mt-2 pt-1 border-t border-rule-soft/60">
                   {stage.sublabel}
                 </div>
+              )}
+
+              {/* Connecting Desktop Arrow */}
+              {!isLast && (
+                <span
+                  aria-hidden="true"
+                  className="hidden md:flex absolute -right-2 top-1/2 -translate-y-1/2 z-10 size-4 items-center justify-center rounded-full bg-surface border border-rule text-muted text-[10px] shadow-xs"
+                >
+                  →
+                </span>
               )}
             </li>
           );
@@ -77,7 +90,7 @@ export function SystemSchematic({ schematic, projectName }: SystemSchematicProps
       </ol>
 
       {/* Engineering Boundary Thesis Callout */}
-      <div className="mt-3 border-t border-rule-soft pt-2.5 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 font-narrow text-meta tracking-rail">
+      <div className="mt-3 border-t border-rule pt-2.5 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 font-narrow text-meta tracking-rail">
         <div className="text-muted text-small font-sans max-w-[62ch]">
           <strong className="text-ink font-semibold">
             {schematic.boundaryRule}
@@ -93,8 +106,8 @@ export function SystemSchematic({ schematic, projectName }: SystemSchematicProps
             sound.playClick();
             triggerGateHover();
           }}
-          className="self-start sm:self-auto shrink-0 border border-rule-strong bg-raised px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-signal hover:border-signal hover:text-ink transition-colors"
-          title="Verify system telemetry signal"
+          className="self-start sm:self-auto shrink-0 rounded border border-rule-strong bg-surface px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-signal-teal hover:border-signal-teal hover:text-ink transition-colors"
+          title="Verify gate telemetry signal"
         >
           Verify Gate
         </button>

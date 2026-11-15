@@ -128,7 +128,7 @@ flowchart TD
     A["Run Playwright & Lighthouse Audit"] --> B{"Score == 100 & No WCAG Violations?"}
     B -- Yes --> C["Audit Passed: Clean & Certified"]
     B -- No --> D["Extract Violation Details (Rule, Selector, Metric)"]
-    D --> E["Cross-reference .agents/skills/control-room-guardrails/SKILL.md"]
+    D --> E["Cross-reference .agents/skills/awwwards-tactile-craft/SKILL.md"]
     E --> F["Patch CSS / Component (No raw hex, keep tokens clean)"]
     F --> G["Re-run Playwright & Lighthouse Verification"]
     G --> B

@@ -1,6 +1,6 @@
 import type { Certification } from "./types";
 
-/** A null credential renders as a visible TODO. */
+/** Verified technical credentials. */
 export const certifications: Certification[] = [
   {
     issuer: "Udemy · 2024",

@@ -1,35 +1,46 @@
 import type { Achievement, Activity } from "./types";
 
-/** Placements and publications — each one a discrete result with a year. */
+/** Placements, publications, and verified credentials — discrete results with years. */
 export const achievements: Achievement[] = [
   {
     marker: "2026",
-    title: "1st prize — CodeFusion 2026 National Innovation Challenge",
+    title: "1st Prize — CodeFusion 2026 National Innovation Challenge",
     detail:
-      "MediSync 2.0, team Error404. Marwadi University × HackerRank Campus Crew.",
+      "MediSync 2.0 (Team Error404) · Marwadi University × HackerRank Campus Crew.",
+  },
+  {
+    marker: "2026",
+    title: "Track Winner ($1,000) — INNOVATE 2026",
+    detail:
+      "AeroMed India · Best Use of Adaption AI Track (Air Quality & Respiratory Surveillance).",
   },
   {
     marker: "2026",
     title: "Finalist — Dataverse 2026",
-    detail: "Symbiosis Centre for Information Technology, Pune",
+    detail: "Symbiosis Centre for Information Technology, Pune.",
   },
   {
     marker: "2024",
     title: "Published — IJIRCEE, February 2024",
-    detail: "Multipurpose IoT Tracker",
+    detail: "Multipurpose IoT Tracker (Autonomous ESP32 Cellular System).",
   },
-  { marker: "2024", title: "Runner-up — Inter-college project competition" },
-  { marker: "2023", title: "1st prize — College coding competition" },
+  { marker: "2024", title: "Runner-up — Inter-college Project Competition" },
+  { marker: "2023", title: "1st Prize — College Coding Competition" },
+  {
+    marker: "2024",
+    title: "Certified — Full-Stack Web Development Bootcamp",
+    detail: "Udemy · Modern React, Node.js, and REST API architecture.",
+  },
 ];
 
-/** Participation and volunteering — a list, not a set of placements. */
+/** Hackathons and technical volunteering. */
 export const activities: Activity[] = [
   {
     marker: "Hackathons",
-    text: "INNOVATE 2026 (AeroMed India, $1k Adaption AI Track) · CodeFusion 2026 (1st Prize, MediSync) · Hackverse 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship (AutoClutch) · Project Viksit Bharat 2026 · Build in AI for India",
+    text: "INNOVATE 2026 · CodeFusion 2026 · Hackverse 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship (AutoClutch) · Project Viksit Bharat 2026 · Build in AI for India",
   },
   {
-    marker: "Also",
-    text: "Microsoft Build: Localhost 2026 · Incubate 2025, IIT Bombay × JIPMER · CSI AgenticAI Workshop, technical volunteer",
+    marker: "Community",
+    text: "Microsoft Build: Localhost 2026 · Incubate 2025 (IIT Bombay × JIPMER) · CSI AgenticAI Workshop Technical Volunteer",
   },
 ];

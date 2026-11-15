@@ -2,9 +2,9 @@ import { Panel } from "@/components/Panel";
 import { Row, RowList } from "@/components/Row";
 import { roles } from "@/content/experience";
 
-export function Experience() {
+export function Experience({ className = "" }: { className?: string }) {
   return (
-    <Panel id="experience" heading="Experience">
+    <Panel id="experience" heading="Experience" className={className}>
       <RowList>
         {roles.map((role, index) => (
           <Row key={role.org} marker={role.period} first={index === 0}>
