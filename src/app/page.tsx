@@ -1,7 +1,7 @@
 import { TopNav } from "@/components/TopNav";
-import { EdgeVisualDesk } from "@/components/EdgeVisualDesk";
-import { EdgeVisualBuilder } from "@/components/EdgeVisualBuilder";
-import { TraceBackground } from "@/components/TraceBackground";
+import { EdgeVisualUsing } from "@/components/EdgeVisualUsing";
+import { EdgeVisualBuilding } from "@/components/EdgeVisualBuilding";
+import { InteractiveBackdrop } from "@/components/InteractiveBackdrop";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
@@ -87,8 +87,8 @@ export default function Home() {
         Skip to main content
       </a>
 
-      {/* Subtle non-intrusive trace canvas in background */}
-      <TraceBackground />
+      {/* Awwwards Interactive Architectural Blueprint & Pulse Grid */}
+      <InteractiveBackdrop />
       <CommandPalette />
 
       {/* Floating Top Navigation Pill */}
@@ -96,9 +96,9 @@ export default function Home() {
 
       {/* Centered Editorial Main Column + Flanking Edge Companions */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Edge-Companion Visual A: Desk Setup (Top-Right Margin, hidden <1280px) */}
-        <div className="hidden xl:block absolute right-2 2xl:right-4 top-24 w-[250px] 2xl:w-[270px]">
-          <EdgeVisualDesk />
+        {/* Edge-Companion Visual 1: Using the White Rig (Top-Right Margin, hidden <1280px) */}
+        <div className="hidden xl:flex absolute right-1 2xl:right-4 top-24 w-[230px] 2xl:w-[270px]">
+          <EdgeVisualUsing />
         </div>
 
         <main id="main" className="min-w-0 max-w-5xl mx-auto px-5 sm:px-8 py-4">
@@ -108,10 +108,10 @@ export default function Home() {
           {/* 2. Shipped Systems FIRST (Right Below Hero!) */}
           <Projects />
 
-          {/* 3. Compact Systems & Rig Strip (~220px height) with Edge Visual B flanking left margin */}
+          {/* 3. Compact Systems & Rig Strip (~220px height) with Edge Visual 2 flanking left margin */}
           <div className="relative">
-            <div className="hidden xl:block absolute -left-[270px] 2xl:-left-[290px] top-4 w-[250px] 2xl:w-[270px]">
-              <EdgeVisualBuilder />
+            <div className="hidden xl:flex absolute -left-[225px] 2xl:-left-[280px] top-4 w-[220px] 2xl:w-[265px]">
+              <EdgeVisualBuilding />
             </div>
             <BattlestationBento />
           </div>
