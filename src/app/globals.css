@@ -396,3 +396,54 @@
     opacity: 1;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Print & Judge PDF Export Mode (A4 / Letter Clean Instrument Readout)
+--------------------------------------------------------------------------- */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #1d1f24 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  header {
+    position: static !important;
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 2px solid var(--color-rule-strong) !important;
+    padding: 0 0 1rem 0 !important;
+  }
+
+  .grid {
+    display: block !important;
+  }
+
+  main {
+    background: none !important;
+  }
+
+  /* Suppress non-printable interactive elements */
+  canvas,
+  nav[aria-label="Mobile Section Jump Navigation"],
+  button[aria-label="Open command palette"],
+  button[aria-label="Mute sound"],
+  button[aria-label="Unmute sound"],
+  .field,
+  form button[type="submit"],
+  .print\:hidden {
+    display: none !important;
+  }
+
+  article {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border-top: 1px solid var(--color-rule) !important;
+    padding-top: 0.75rem !important;
+  }
+
+  a {
+    text-decoration: underline !important;
+  }
+}

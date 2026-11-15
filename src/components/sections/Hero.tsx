@@ -11,10 +11,10 @@ export function Hero() {
   const handleAwardClick = () => {
     sound.playSuccess();
     confetti({
-      particleCount: 60,
-      spread: 70,
+      particleCount: 50,
+      spread: 60,
       origin: { y: 0.6 },
-      colors: ["#8A6414", "#F59E0B", "#1F4B6E", "#10B981"],
+      colors: ["#8A6414", "#1F4B6E", "#8A877F"],
     });
   };
 
@@ -23,9 +23,9 @@ export function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         {/* Left Column: Core Identity, Lede & Shipped Facts */}
         <div className="lg:col-span-7">
-          <div className="rise inline-flex items-center gap-2 rounded-full border border-rule-strong/40 bg-raised px-3 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-signal mb-5 [animation-delay:0.02s]">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Applied AI & Systems Engineering · Navi Mumbai
+          <div className="rise inline-flex items-center gap-2 border border-rule-strong bg-raised px-3 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-signal mb-5 [animation-delay:0.02s]">
+            <span className="size-1.5 bg-signal breathe flex-none" aria-hidden="true" />
+            Applied AI &amp; Deterministic Systems Engineering · Navi Mumbai
           </div>
 
           <h1 className="rise text-display font-semibold tracking-display text-balance [animation-delay:0.06s]">
@@ -44,17 +44,17 @@ export function Hero() {
                   key={fact.label}
                   onClick={isAward ? handleAwardClick : undefined}
                   className={`group ${isAward ? "cursor-pointer" : ""}`}
-                  title={isAward ? "Click to celebrate CodeFusion victory!" : undefined}
+                  title={isAward ? "CodeFusion 2026 Winner. Click to verify victory telemetry." : undefined}
                 >
                   <dt className="sr-only">{fact.label}</dt>
                   <dd className="m-0">
                     <span
-                      className={`mb-0.5 inline-flex items-center gap-1.5 font-sans text-big leading-[1.1] font-semibold tracking-display transition-transform group-hover:scale-105 ${
+                      className={`mb-0.5 inline-flex items-center gap-1.5 font-sans text-big leading-[1.1] font-semibold tracking-display ${
                         isAward ? "text-flag" : "text-ink"
                       }`}
                     >
-                      {isAward && <Trophy className="size-5 text-flag animate-bounce" />}
-                      {fact.value}
+                      {isAward && <Trophy className="size-5 text-flag flex-none" />}
+                      <span className="tabular-nums">{fact.value}</span>
                     </span>
                     <span className="block text-meta text-muted group-hover:text-ink transition-colors">
                       {fact.label}
@@ -69,26 +69,27 @@ export function Hero() {
           <div className="rise mt-8 flex flex-wrap items-center gap-4 [animation-delay:0.18s]">
             <a
               className="btn"
+              href="#projects"
+              onClick={() => sound.playClick()}
+            >
+              Explore Shipped Systems
+            </a>
+            <a
+              className="btn btn-quiet"
               href="#hardware"
               onClick={() => sound.playClick()}
             >
               Inspect Hardware Lab
             </a>
-            <a
-              className="btn btn-quiet"
-              href="#projects"
-              onClick={() => sound.playClick()}
-            >
-              Explore Shipped Projects
-            </a>
 
             <button
+              type="button"
               onClick={() => {
                 sound.playSwitch();
                 const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
                 document.dispatchEvent(event);
               }}
-              className="inline-flex items-center gap-2 rounded-lg border border-dashed border-rule-strong/60 px-3 py-2 text-tiny font-narrow uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors"
+              className="inline-flex items-center gap-2 border border-dashed border-rule-strong px-3 py-2 text-tiny font-narrow uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors"
             >
               <Search className="size-3 text-signal" />
               <span>Press ⌘K Menu</span>
@@ -96,7 +97,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right Column: Interactive Practical Psychology Battlestation Avatar */}
+        {/* Right Column: Interactive Workstation Scene */}
         <div className="lg:col-span-5 rise [animation-delay:0.12s]">
           <BattlestationScene />
         </div>

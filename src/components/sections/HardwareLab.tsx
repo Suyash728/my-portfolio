@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { Panel } from "@/components/Panel";
 import { RigBlueprint } from "@/components/illustrations/RigBlueprint";
 import { InteractiveTerminal } from "@/components/InteractiveTerminal";
@@ -102,7 +101,7 @@ export function HardwareLab() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: The 5 Systems Engineering Pillars */}
         <div className="lg:col-span-5 flex flex-col gap-4">
-          <div className="rounded-xl border border-rule bg-raised/70 p-4 shadow-sm backdrop-blur-sm">
+          <div className="border border-rule bg-raised/70 p-4 transition-colors">
             <h3 className="font-narrow text-tiny uppercase tracking-eyebrow text-muted font-bold mb-3 flex items-center justify-between">
               <span>The 5 Engineering Pillars</span>
               <span className="text-signal">Select to Inspect</span>
@@ -116,28 +115,30 @@ export function HardwareLab() {
                 return (
                   <button
                     key={trait.id}
+                    type="button"
                     onClick={() => {
                       sound.playClick();
                       setActivePinId(trait.id);
                     }}
-                    className={`relative w-full text-left p-3 rounded-lg transition-all border ${
+                    className={`relative w-full text-left p-3 transition-colors border ${
                       isActive
-                        ? "border-signal bg-raised shadow-xs"
-                        : "border-rule/60 bg-ground/40 hover:bg-raised/60 hover:border-rule"
+                        ? "border-signal bg-raised"
+                        : "border-rule/60 bg-ground/40 hover:bg-raised hover:border-rule-strong"
                     }`}
                   >
                     {isActive && (
-                      <motion.div
-                        layoutId="activePillarMarker"
-                        className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-signal"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      <div
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-signal"
+                        aria-hidden="true"
                       />
                     )}
 
                     <div className="flex items-start gap-3">
                       <div
-                        className={`mt-0.5 rounded-md p-1.5 ${
-                          isActive ? "bg-signal text-raised" : "bg-ground text-muted"
+                        className={`mt-0.5 p-1.5 border ${
+                          isActive
+                            ? "bg-signal text-raised border-signal"
+                            : "bg-ground text-muted border-rule"
                         }`}
                       >
                         <Icon className="size-4" />
@@ -148,8 +149,8 @@ export function HardwareLab() {
                           <span className="font-sans text-small font-semibold text-ink truncate">
                             {trait.traitName}
                           </span>
-                          <span className="font-narrow text-[10px] uppercase tracking-eyebrow text-muted shrink-0">
-                            Pillar 0{trait.pinNumber}
+                          <span className="font-narrow text-tiny uppercase tracking-eyebrow text-muted shrink-0 tabular-nums">
+                            PILLAR 0{trait.pinNumber}
                           </span>
                         </div>
 
@@ -164,44 +165,34 @@ export function HardwareLab() {
             </div>
           </div>
 
-          {/* Active Pillar Deep-Dive Card with Cursor Spotlight */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTrait.id}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18 }}
-            >
-              <SpotlightCard className="p-4.5 bg-raised/90">
-                <div className="flex items-center justify-between border-b border-rule-soft pb-2 mb-3">
-                  <span className="font-narrow text-tiny uppercase tracking-eyebrow font-bold text-signal">
-                    {activeTrait.category}
-                  </span>
-                  <span className="inline-flex items-center gap-1 font-narrow text-[11px] text-muted">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    {activeTrait.statusNote}
-                  </span>
-                </div>
+          {/* Active Pillar Deep-Dive Card */}
+          <SpotlightCard className="p-4.5 bg-raised/90">
+            <div className="flex items-center justify-between border-b border-rule-soft pb-2 mb-3">
+              <span className="font-narrow text-tiny uppercase tracking-eyebrow font-bold text-signal">
+                {activeTrait.category}
+              </span>
+              <span className="inline-flex items-center gap-1 font-narrow text-tiny text-muted">
+                <span className="size-1.5 bg-signal breathe" />
+                {activeTrait.statusNote}
+              </span>
+            </div>
 
-                <p className="font-sans text-small text-muted leading-relaxed mb-4">
-                  {activeTrait.deepDive}
-                </p>
+            <p className="font-sans text-small text-muted leading-relaxed mb-4">
+              {activeTrait.deepDive}
+            </p>
 
-                <div className="flex flex-wrap gap-1.5">
-                  {activeTrait.metrics.map((metric) => (
-                    <span
-                      key={metric}
-                      className="inline-flex items-center gap-1 rounded bg-ground px-2 py-0.5 font-narrow text-meta tracking-rail text-ink border border-rule"
-                    >
-                      <span className="text-signal font-bold">#</span>
-                      {metric}
-                    </span>
-                  ))}
-                </div>
-              </SpotlightCard>
-            </motion.div>
-          </AnimatePresence>
+            <div className="flex flex-wrap gap-1.5">
+              {activeTrait.metrics.map((metric) => (
+                <span
+                  key={metric}
+                  className="inline-flex items-center gap-1 border border-rule bg-ground px-2 py-0.5 font-narrow text-meta tracking-rail text-ink"
+                >
+                  <span className="text-signal font-bold">#</span>
+                  {metric}
+                </span>
+              ))}
+            </div>
+          </SpotlightCard>
         </div>
 
         {/* Right Column: Interactive Terminal REPL & Blueprint Toggle */}
@@ -210,14 +201,15 @@ export function HardwareLab() {
           <div className="flex items-center justify-between border-b border-rule-soft pb-2 font-narrow text-meta tracking-rail">
             <div className="flex items-center gap-2">
               <button
+                type="button"
                 onClick={() => {
                   sound.playSwitch();
                   setViewMode("terminal");
                 }}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-tiny uppercase tracking-eyebrow font-semibold transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1 text-tiny uppercase tracking-eyebrow font-semibold border transition-colors ${
                   viewMode === "terminal"
-                    ? "bg-signal text-raised shadow-xs"
-                    : "bg-ground text-muted hover:text-ink hover:bg-raised border border-rule"
+                    ? "bg-signal text-raised border-signal"
+                    : "bg-ground text-muted hover:text-ink hover:bg-raised border-rule-strong"
                 }`}
               >
                 <Terminal className="size-3.5" />
@@ -225,14 +217,15 @@ export function HardwareLab() {
               </button>
 
               <button
+                type="button"
                 onClick={() => {
                   sound.playSwitch();
                   setViewMode("schematic");
                 }}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded text-tiny uppercase tracking-eyebrow font-semibold transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1 text-tiny uppercase tracking-eyebrow font-semibold border transition-colors ${
                   viewMode === "schematic"
-                    ? "bg-signal text-raised shadow-xs"
-                    : "bg-ground text-muted hover:text-ink hover:bg-raised border border-rule"
+                    ? "bg-signal text-raised border-signal"
+                    : "bg-ground text-muted hover:text-ink hover:bg-raised border-rule-strong"
                 }`}
               >
                 <Cpu className="size-3.5" />
@@ -241,7 +234,9 @@ export function HardwareLab() {
             </div>
 
             <span className="hidden sm:inline font-narrow text-tiny text-muted">
-              {viewMode === "terminal" ? "Interactive CLI Simulation" : "Chassis Hotspot Explorer"}
+              {viewMode === "terminal"
+                ? "Interactive CLI Simulation"
+                : "Chassis Hotspot Explorer"}
             </span>
           </div>
 

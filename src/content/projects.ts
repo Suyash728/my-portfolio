@@ -3,6 +3,10 @@ import type { Project } from "./types";
 /**
  * Adding a project means adding an entry here and nothing else. Lead with the
  * problem and the decision; the feature list goes in `detail` or is cut.
+ *
+ * Each project includes a typed `schematic` representing its deterministic
+ * pipeline and verification gate, demonstrating Suyash's core thesis:
+ * deterministic engineering constrains model hallucination.
  */
 export const projects: Project[] = [
   {
@@ -36,8 +40,25 @@ export const projects: Project[] = [
         href: "https://github.com/Suyash728/MediSync",
         icon: "repo",
       },
-      { label: "Live", href: null, icon: "live" },
+      {
+        label: "Live",
+        href: null,
+        icon: "live",
+        todoContext: "Clinical PWA staging deployment under sandbox audit; demo access available upon request.",
+      },
     ],
+    schematic: {
+      stages: [
+        { label: "Raw Scan / Photo", sublabel: "Patient mobile ingest" },
+        { label: "OCR + Extraction", sublabel: "Schema normalization" },
+        { label: "pgvector Index", sublabel: "Sanitized embeddings only" },
+        { label: "Rule-Table Drug Check", sublabel: "Deterministic Gate", isGate: true },
+        { label: "Gemini Citation & 11-Lang TTS", sublabel: "Synthesize & cite" },
+      ],
+      gateNote:
+        "Deterministic Gate: Contraindication evaluated strictly against typed AST rule lookup tables. The probabilistic LLM has zero discretion over drug conflicts.",
+      boundaryRule: "The LLM explains and cites; it never decides whether a conflict exists.",
+    },
   },
   {
     slug: "kisanchain",
@@ -58,9 +79,30 @@ export const projects: Project[] = [
       { name: "IoT sensor ingest" },
     ],
     links: [
-      { label: "Repository", href: null, icon: "repo" },
-      { label: "Paper", href: null, icon: "paper" },
+      {
+        label: "Repository",
+        href: null,
+        icon: "repo",
+        todoContext: "Monorepo under institutional patent & publication hold with Prof. Shraddha Rokade.",
+      },
+      {
+        label: "Paper",
+        href: null,
+        icon: "paper",
+        todoContext: "Survey paper scheduled for December 2026 IEEE/Springer submission window.",
+      },
     ],
+    schematic: {
+      stages: [
+        { label: "IoT Sensor Ingest", sublabel: "Farm gate telemetry" },
+        { label: "FastAPI AI Trust Scorer", sublabel: "Verification Gate", isGate: true },
+        { label: "Polygon Amoy Ledger", sublabel: "Source of Truth" },
+        { label: "Retail Margin Readout", sublabel: "Chain of custody audit" },
+      ],
+      gateNote:
+        "Verification Gate: AI oracle scores telemetry confidence before on-chain commit. The smart contract ledger retains absolute source of truth.",
+      boundaryRule: "The model scores trust; the blockchain ledger holds the price.",
+    },
   },
   {
     slug: "trustlayer",
@@ -82,6 +124,17 @@ export const projects: Project[] = [
         icon: "repo",
       },
     ],
+    schematic: {
+      stages: [
+        { label: "Generated Code + Suite", sublabel: "Synthesized candidate" },
+        { label: "Static API Check", sublabel: "AST hallucination filter" },
+        { label: "Local mutmut Engine", sublabel: "Line Mutation Gate", isGate: true },
+        { label: "Surviving-Mutant Report", sublabel: "Mathematical proof" },
+      ],
+      gateNote:
+        "Line Mutation Gate: Mutates AST lines systematically. If the test suite passes with inverted logic, coverage claims are rejected.",
+      boundaryRule: "Mutation testing is verification; zero source code leaves the machine.",
+    },
   },
   {
     slug: "iot-tracker",
@@ -97,7 +150,24 @@ export const projects: Project[] = [
       { name: "A9G" },
       { name: "GPS module" },
     ],
-    links: [{ label: "Paper", href: null, icon: "paper" }],
+    links: [
+      {
+        label: "Paper",
+        href: null,
+        icon: "paper",
+        todoContext: "Published in IJIRCEE (Feb 2024); archival PDF reprint available upon request.",
+      },
+    ],
+    schematic: {
+      stages: [
+        { label: "GPS + GSM Audio + SOS", sublabel: "Hardware sensor bus" },
+        { label: "Single ESP32 Board", sublabel: "Autonomous Path", isGate: true },
+        { label: "Direct Alert Dispatch", sublabel: "Direct cellular dispatch" },
+      ],
+      gateNote:
+        "Autonomous Path: Firmware logic executes entirely on-chip without dependency on Bluetooth pairing, phone OS state, or cloud proxies.",
+      boundaryRule: "Hardware autonomy: SOS dispatch never depends on a companion app being open.",
+    },
   },
   {
     slug: "autoclutch",
@@ -114,7 +184,24 @@ export const projects: Project[] = [
       { name: "Workspace APIs" },
       { name: "Agentic workflow" },
     ],
-    links: [{ label: "Repository", href: null, icon: "repo" }],
+    links: [
+      {
+        label: "Repository",
+        href: null,
+        icon: "repo",
+        todoContext: "Vibe2Ship hackathon submission repository undergoing OAuth scope security review.",
+      },
+    ],
+    schematic: {
+      stages: [
+        { label: "Gmail / Inbox Stream", sublabel: "Granted message ingest" },
+        { label: "Gemini Deadline Extractor", sublabel: "Temporal NER Gate", isGate: true },
+        { label: "Google Workspace Write", sublabel: "Direct Calendar write" },
+      ],
+      gateNote:
+        "Temporal NER Gate: Strict Pydantic schema validation binds model extraction to ISO 8601 temporal bounds before touching Workspace APIs.",
+      boundaryRule: "The agent writes to Workspace directly; eliminates double entry.",
+    },
   },
   {
     slug: "medinsight",
@@ -129,6 +216,23 @@ export const projects: Project[] = [
       { name: "Python", icon: "python" },
       { name: "NER" },
     ],
-    links: [{ label: "Repository", href: null, icon: "repo" }],
+    links: [
+      {
+        label: "Repository",
+        href: null,
+        icon: "repo",
+        todoContext: "Academic mini-project repository archived on university GitLab.",
+      },
+    ],
+    schematic: {
+      stages: [
+        { label: "Clinical Diagnostic Report", sublabel: "Complex clinical text" },
+        { label: "BioBERT NER Extraction", sublabel: "Findings Gate", isGate: true },
+        { label: "Multilingual Patient Summary", sublabel: "Structured translation" },
+      ],
+      gateNote:
+        "Findings Gate: BioBERT isolates structured biomedical entities (dosages, symptoms, observations) before translation begins.",
+      boundaryRule: "Translation carries structured findings rather than unconstrained paraphrase.",
+    },
   },
 ];

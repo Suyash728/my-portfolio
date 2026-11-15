@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LinkIcon, type GlyphName } from "@/components/LinkIcon";
 import { profile, sections, statuses } from "@/content/profile";
 import { sound } from "@/lib/sound";
@@ -31,20 +31,45 @@ const DOT_TONE = {
 } as const;
 
 export function Rail() {
-  const [current, setCurrent] = useState<string | null>(null);
+  const [current, setCurrent] = useState<string | null>("hardware");
   const [isMuted, setIsMuted] = useState(() =>
     typeof window !== "undefined" ? sound.isMuted() : false
   );
+  const [istTime, setIstTime] = useState<string | null>(null);
+  const [markerOffset, setMarkerOffset] = useState<number>(0);
+  const navRef = useRef<HTMLElement>(null);
 
+  // Live IST (Asia/Kolkata) clock with tabular figures, hydration-safe
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+      setIstTime(`${formatter.format(now)} IST`);
+    };
+
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Mechanical Scroll-Spy with zero-jitter translateY tracking
   useEffect(() => {
     const nodes = sections
       .map((s) => document.getElementById(s.id))
       .filter((el): el is HTMLElement => el !== null);
 
     let queued = false;
+    let prevSection: string | null = null;
+
     const spy = () => {
       queued = false;
-      const probe = window.innerHeight * 0.3;
+      const probe = window.innerHeight * 0.32;
       let best: string | null = null;
       let bestTop = -Infinity;
       for (const el of nodes) {
@@ -54,7 +79,18 @@ export function Rail() {
           best = el.id;
         }
       }
-      setCurrent(best);
+
+      if (best) {
+        setCurrent(best);
+        if (best !== prevSection) {
+          prevSection = best;
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(
+              new CustomEvent("control-room-ping", { detail: { intensity: 0.6 } })
+            );
+          }
+        }
+      }
     };
 
     const onScroll = () => {
@@ -71,6 +107,17 @@ export function Rail() {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
+
+  // Update mechanical rail indicator offset
+  useEffect(() => {
+    if (!navRef.current || !current) return;
+    const activeLink = navRef.current.querySelector<HTMLElement>(
+      `[data-section-id="${current}"]`
+    );
+    if (activeLink) {
+      setMarkerOffset(activeLink.offsetTop);
+    }
+  }, [current]);
 
   const handleNavClick = (id: string) => {
     sound.playClick();
@@ -110,11 +157,12 @@ export function Rail() {
           </p>
         </div>
 
-        {/* Tactile Audio Switch in Rail */}
+        {/* Tactile Audio Switch in Rail: Zero-radius, 3:1 WCAG border */}
         <button
+          type="button"
           onClick={handleToggleSound}
           title={isMuted ? "Unmute tactile sound haptics" : "Mute tactile sound haptics"}
-          className="rounded-full border border-rule bg-raised/80 p-2 text-muted hover:text-ink hover:border-signal transition-colors shadow-2xs"
+          className="border border-rule-strong bg-raised p-2 text-muted hover:text-ink hover:border-signal transition-colors focus-visible:outline-2 focus-visible:outline-signal"
           aria-label={isMuted ? "Unmute sound" : "Mute sound"}
         >
           {isMuted ? <VolumeX className="size-3.5" /> : <Volume2 className="size-3.5 text-signal" />}
@@ -123,43 +171,66 @@ export function Rail() {
 
       <div className="rise h-px bg-rule [animation-delay:0.02s]" />
 
-      {/* Live System Status Lines */}
-      <ul className="rise flex list-none flex-row flex-wrap gap-x-4 gap-y-1.5 p-0 font-narrow text-meta tracking-rail wide:flex-col wide:gap-[7px] [animation-delay:0.06s]">
-        {statuses.map((status) => (
-          <li key={status.label} className="flex items-baseline gap-[9px] text-muted">
-            <span
-              aria-hidden="true"
-              className={`size-1.5 flex-none -translate-y-px ${DOT_TONE[status.tone]}`}
-            />
-            {status.label}
-          </li>
-        ))}
-      </ul>
+      {/* Live System Status Lines + IST Real-time Readout */}
+      <div className="rise flex flex-col gap-2 font-narrow text-meta tracking-rail [animation-delay:0.06s]">
+        <ul className="flex list-none flex-row flex-wrap gap-x-4 gap-y-1.5 p-0 wide:flex-col wide:gap-[7px]">
+          {statuses.map((status) => (
+            <li key={status.label} className="flex items-baseline gap-[9px] text-muted">
+              <span
+                aria-hidden="true"
+                className={`size-1.5 flex-none -translate-y-px ${DOT_TONE[status.tone]}`}
+              />
+              {status.label}
+            </li>
+          ))}
+        </ul>
 
-      {/* Quick Cmd+K Command Search in Rail */}
+        {/* Telemetry Clock */}
+        <div className="mt-1 border-t border-rule-soft pt-2 text-tiny text-muted flex items-center justify-between">
+          <span>SYSTEM CLOCK</span>
+          <span className="tabular-nums font-sans font-semibold text-ink">
+            {istTime ?? "19:30:00 IST"}
+          </span>
+        </div>
+      </div>
+
+      {/* Quick Cmd+K Command Search in Rail: Zero-radius, crisp */}
       <button
+        type="button"
         onClick={openCommandPalette}
-        className="rise flex items-center justify-between rounded-lg border border-rule bg-raised/60 px-3 py-1.5 font-narrow text-tiny uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors [animation-delay:0.08s]"
+        className="rise flex items-center justify-between border border-rule-strong bg-raised/80 px-3 py-1.5 font-narrow text-tiny uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors [animation-delay:0.08s]"
       >
         <span className="flex items-center gap-1.5">
           <Search className="size-3 text-signal" />
           <span>Quick Menu</span>
         </span>
-        <kbd className="rounded bg-ground px-1 font-mono text-[10px] text-ink border border-rule">
+        <kbd className="border border-rule bg-ground px-1 font-sans text-tiny tabular-nums text-ink">
           ⌘K
         </kbd>
       </button>
 
       <div className="rise h-px bg-rule [animation-delay:0.08s]" />
 
-      {/* Navigation Links with Scroll Spy */}
+      {/* Navigation Links with Mechanical Zero-Jitter Indicator */}
       <nav
+        ref={navRef}
         aria-label="Sections"
-        className="rise flex flex-row flex-wrap gap-x-[18px] wide:flex-col wide:gap-0 [animation-delay:0.1s]"
+        className="rise relative flex flex-row flex-wrap gap-x-[18px] wide:flex-col wide:gap-0 [animation-delay:0.1s]"
       >
+        {/* Continuous mechanical glider for desktop rail */}
+        <div
+          aria-hidden="true"
+          className="hidden wide:block absolute left-0 top-0 w-[2px] bg-signal transition-transform duration-160 ease-out pointer-events-none"
+          style={{
+            height: "28px",
+            transform: `translateY(${markerOffset}px)`,
+          }}
+        />
+
         {sections.map((section) => (
           <a
             key={section.id}
+            data-section-id={section.id}
             href={`#${section.id}`}
             onClick={(e) => {
               e.preventDefault();

@@ -26,7 +26,7 @@ export const achievements: Achievement[] = [
 export const activities: Activity[] = [
   {
     marker: "Hackathons",
-    text: "Hackverse 2026 · CodeFusion 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship · Project Viksit Bharat 2026 · Build in AI for India",
+    text: "INNOVATE 2026 (AeroMed India, $1k Adaption AI Track) · CodeFusion 2026 (1st Prize, MediSync) · Hackverse 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship (AutoClutch) · Project Viksit Bharat 2026 · Build in AI for India",
   },
   {
     marker: "Also",

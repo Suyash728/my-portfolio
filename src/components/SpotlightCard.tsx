@@ -13,7 +13,7 @@ interface SpotlightCardProps {
 export function SpotlightCard({
   children,
   className = "",
-  spotlightColor = "rgba(31, 75, 110, 0.08)",
+  spotlightColor = "rgba(31, 75, 110, 0.07)",
   spotlightRadius = 450,
 }: SpotlightCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -37,11 +37,11 @@ export function SpotlightCard({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`group relative overflow-hidden rounded-2xl border border-rule bg-raised/75 p-5 shadow-xs transition-all duration-200 hover:border-rule-strong/70 hover:shadow-md ${className}`}
+      className={`group relative overflow-hidden border border-rule bg-raised/75 p-5 transition-colors duration-200 hover:border-rule-strong ${className}`}
     >
       {/* GPU-Accelerated Cursor-Following Radial Spotlight */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-0"
+        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 group-hover:opacity-100 z-0"
         style={{
           background: useMotionTemplate`
             radial-gradient(

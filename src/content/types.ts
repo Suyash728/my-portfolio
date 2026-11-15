@@ -29,6 +29,20 @@ export interface Link {
   label: string;
   href: string | null;
   icon: LinkIconName;
+  /** Contextual specification note for the unreleased or in-progress artifact. */
+  todoContext?: string;
+}
+
+export interface SchematicStage {
+  label: string;
+  sublabel?: string;
+  isGate?: boolean;
+}
+
+export interface Schematic {
+  stages: SchematicStage[];
+  gateNote: string;
+  boundaryRule: string;
 }
 
 export interface Project {
@@ -44,6 +58,8 @@ export interface Project {
   detail?: string;
   tech: Tech[];
   links: Link[];
+  /** Decision architecture pipeline schematic proving the engineering boundary. */
+  schematic?: Schematic;
 }
 
 export interface Role {

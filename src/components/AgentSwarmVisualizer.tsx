@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "motion/react";
-import { Bot, Cpu, ShieldCheck, CheckCircle2, Play, RefreshCw } from "lucide-react";
 import { sound } from "@/lib/sound";
 
 interface AgentNode {
@@ -11,15 +9,13 @@ interface AgentNode {
   role: string;
   x: number;
   y: number;
-  icon: React.ElementType;
-  color: string;
 }
 
 const NODES: AgentNode[] = [
-  { id: "coord", name: "Coordinator", role: "Planning & State", x: 60, y: 120, icon: Bot, color: "#1F4B6E" },
-  { id: "vllm", name: "vLLM NVFP4", role: "Qwen3-14B Inference", x: 200, y: 50, icon: Cpu, color: "#10B981" },
-  { id: "rules", name: "Rule Engine", role: "Deterministic AST", x: 200, y: 190, icon: ShieldCheck, color: "#8A6414" },
-  { id: "verifier", name: "Verifier", role: "Citation & Output", x: 340, y: 120, icon: CheckCircle2, color: "#3B82F6" },
+  { id: "coord", name: "Coordinator", role: "Planning & State", x: 60, y: 120 },
+  { id: "vllm", name: "vLLM NVFP4", role: "Qwen3-14B Core", x: 200, y: 55 },
+  { id: "rules", name: "Rule Engine", role: "Deterministic AST", x: 200, y: 185 },
+  { id: "verifier", name: "Verifier", role: "Citation Gate", x: 340, y: 120 },
 ];
 
 export function AgentSwarmVisualizer() {
@@ -50,13 +46,13 @@ export function AgentSwarmVisualizer() {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-rule bg-raised/70 p-5 shadow-sm backdrop-blur-md">
+    <div className="w-full border border-rule bg-raised/70 p-5 transition-colors">
       {/* Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule-soft pb-3 mb-4">
         <div>
-          <h4 className="font-sans text-title font-semibold text-ink">
+          <h3 className="font-sans text-title font-semibold text-ink">
             Autonomous Multi-Agent Topology
-          </h4>
+          </h3>
           <p className="font-narrow text-tiny uppercase tracking-eyebrow text-muted mt-0.5">
             Local Swarm Coordination // Blackwell NVFP4 Node
           </p>
@@ -64,70 +60,51 @@ export function AgentSwarmVisualizer() {
 
         <div className="flex items-center gap-2">
           <button
+            type="button"
             onClick={handleStep}
             disabled={isSimulating}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-rule bg-ground px-3 py-1 font-narrow text-tiny uppercase tracking-eyebrow text-ink hover:bg-raised transition-colors disabled:opacity-50"
+            className="border border-rule-strong bg-ground px-3 py-1 font-narrow text-tiny uppercase tracking-eyebrow text-ink hover:bg-raised transition-colors disabled:opacity-50"
           >
-            <RefreshCw className="size-3" />
-            <span>Step Cycle</span>
+            Step Cycle
           </button>
 
           <button
+            type="button"
             onClick={handleRunFullLoop}
             disabled={isSimulating}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-signal px-3 py-1 font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-raised shadow-xs hover:bg-signal/90 transition-colors disabled:opacity-50"
+            className="border border-signal bg-signal px-3 py-1 font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-raised hover:bg-signal/90 transition-colors disabled:opacity-50"
           >
-            <Play className={`size-3 ${isSimulating ? "animate-spin" : ""}`} />
-            <span>{isSimulating ? "Simulating..." : "Execute Swarm Loop"}</span>
+            {isSimulating ? "Simulating..." : "Execute Swarm Loop"}
           </button>
         </div>
       </div>
 
       {/* Interactive SVG Flow Diagram */}
-      <div className="relative w-full max-w-[500px] mx-auto select-none">
-        <svg viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-          {/* Connecting Pipes with Animated Dash Paths */}
-          <path d="M 100 120 L 160 70" stroke="#DFD9CE" strokeWidth="2.5" strokeDasharray="4 4" />
-          <path d="M 100 120 L 160 170" stroke="#DFD9CE" strokeWidth="2.5" strokeDasharray="4 4" />
-          <path d="M 240 70 L 300 120" stroke="#DFD9CE" strokeWidth="2.5" strokeDasharray="4 4" />
-          <path d="M 240 170 L 300 120" stroke="#DFD9CE" strokeWidth="2.5" strokeDasharray="4 4" />
+      <div className="relative w-full max-w-[500px] mx-auto select-none py-2">
+        <svg
+          viewBox="0 0 400 240"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-auto"
+        >
+          {/* Hairline Connecting Structural Bus */}
+          <path d="M 105 120 L 160 70" stroke="#DFD9CE" strokeWidth="1.5" />
+          <path d="M 105 120 L 160 170" stroke="#DFD9CE" strokeWidth="1.5" />
+          <path d="M 240 70 L 295 120" stroke="#DFD9CE" strokeWidth="1.5" />
+          <path d="M 240 170 L 295 120" stroke="#DFD9CE" strokeWidth="1.5" />
 
-          {/* Active Packet Beams */}
+          {/* Active Data Packet Indicators */}
           {activeStep === 1 && (
-            <motion.circle
-              cx="130"
-              cy="95"
-              r="4.5"
-              fill="#10B981"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            />
+            <circle cx="130" cy="95" r="4" fill="#1F4B6E" />
           )}
           {activeStep === 2 && (
-            <motion.circle
-              cx="200"
-              cy="120"
-              r="5"
-              fill="#8A6414"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            />
+            <circle cx="200" cy="120" r="4" fill="#8A6414" />
           )}
           {activeStep === 3 && (
-            <motion.circle
-              cx="270"
-              cy="145"
-              r="4.5"
-              fill="#3B82F6"
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ repeat: Infinity, duration: 1 }}
-            />
+            <circle cx="270" cy="145" r="4" fill="#1F4B6E" />
           )}
 
-          {/* Nodes */}
+          {/* Instrumentation Nodes: Sharp 1px Rectangles */}
           {NODES.map((node) => {
             const isNodeActive =
               (node.id === "coord" && activeStep === 1) ||
@@ -136,45 +113,45 @@ export function AgentSwarmVisualizer() {
               (node.id === "verifier" && activeStep === 4);
 
             return (
-              <g key={node.id} transform={`translate(${node.x - 35}, ${node.y - 35})`}>
+              <g key={node.id} transform={`translate(${node.x - 45}, ${node.y - 35})`}>
                 <rect
                   x="0"
                   y="0"
-                  width="70"
+                  width="90"
                   height="70"
-                  rx="14"
-                  fill={isNodeActive ? "#FAF8F5" : "#F4F0E8"}
-                  stroke={isNodeActive ? node.color : "#DFD9CE"}
-                  strokeWidth={isNodeActive ? "2.5" : "1.5"}
-                  className="transition-all duration-200"
-                />
-
-                <circle
-                  cx="35"
-                  cy="26"
-                  r="12"
-                  fill={isNodeActive ? node.color : "#E2DDD2"}
+                  fill={isNodeActive ? "#FBF9F5" : "#F2EFE9"}
+                  stroke={isNodeActive ? (node.id === "rules" ? "#8A6414" : "#1F4B6E") : "#DFD9CE"}
+                  strokeWidth={isNodeActive ? "2" : "1"}
                   className="transition-colors duration-200"
                 />
 
+                {/* Node Status Indicator Pill */}
+                <rect
+                  x="6"
+                  y="6"
+                  width="8"
+                  height="8"
+                  fill={isNodeActive ? (node.id === "rules" ? "#8A6414" : "#1F4B6E") : "#8A877F"}
+                />
+
                 <text
-                  x="35"
-                  y="48"
+                  x="45"
+                  y="38"
                   textAnchor="middle"
                   fill="#1D1F24"
-                  fontSize="8.5"
+                  fontSize="11"
                   fontFamily="sans-serif"
-                  fontWeight="bold"
+                  fontWeight="600"
                 >
                   {node.name}
                 </text>
 
                 <text
-                  x="35"
-                  y="58"
+                  x="45"
+                  y="54"
                   textAnchor="middle"
                   fill="#5C5B55"
-                  fontSize="6.5"
+                  fontSize="9.5"
                   fontFamily="sans-serif"
                 >
                   {node.role}
@@ -186,16 +163,20 @@ export function AgentSwarmVisualizer() {
       </div>
 
       {/* Active Phase Status Footer */}
-      <div className="mt-3 rounded-lg border border-rule-soft bg-ground/80 p-3 font-sans text-small text-muted flex items-center justify-between">
+      <div className="mt-3 border border-rule-soft bg-ground/80 p-3 font-sans text-small text-muted flex items-center justify-between">
         <div>
           <span className="font-semibold text-ink">Active Phase: </span>
-          {activeStep === 1 && "Coordinator decomposing goal into structured sub-tasks with strict tool schemas."}
-          {activeStep === 2 && "vLLM local inference core generating candidate solutions within memory boundaries."}
-          {activeStep === 3 && "Deterministic Rule Engine evaluating proposals against typed TypeScript AST tables."}
-          {activeStep === 4 && "Verifier compiling validated citations and outputting cryptographically verified payload."}
+          {activeStep === 1 &&
+            "Coordinator decomposing goal into structured sub-tasks with strict tool schemas."}
+          {activeStep === 2 &&
+            "vLLM local inference core generating candidate solutions within memory boundaries."}
+          {activeStep === 3 &&
+            "Deterministic Rule Engine evaluating proposals against typed TypeScript AST tables."}
+          {activeStep === 4 &&
+            "Verifier compiling validated citations and outputting cryptographically verified payload."}
         </div>
-        <span className="shrink-0 font-narrow text-tiny uppercase tracking-eyebrow font-bold text-signal ml-3">
-          Stage 0{activeStep} / 04
+        <span className="shrink-0 font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-signal ml-3 tabular-nums">
+          STAGE 0{activeStep} / 04
         </span>
       </div>
     </div>

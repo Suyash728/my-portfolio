@@ -1,4 +1,5 @@
 import { Rail } from "@/components/Rail";
+import { MobileNav } from "@/components/MobileNav";
 import { TraceBackground } from "@/components/TraceBackground";
 import { CommandPalette } from "@/components/CommandPalette";
 import { Achievements } from "@/components/sections/Achievements";
@@ -47,10 +48,13 @@ function StructuredData() {
     award: achievements.map((a) => a.title),
     knowsAbout: [
       "Retrieval-augmented generation",
+      "Deterministic rule engines",
+      "Mutation testing",
       "FastAPI",
       "Next.js",
       "PostgreSQL and pgvector",
-      "Smart contracts",
+      "Smart contracts and Polygon",
+      "vLLM local inference",
     ],
   };
 
@@ -81,9 +85,9 @@ export default function Home() {
       <StructuredData />
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-20 focus:bg-ink focus:px-3.5 focus:py-2.5 focus:text-raised"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:border focus:border-rule-strong focus:bg-raised focus:px-4 focus:py-2.5 focus:font-narrow focus:text-meta focus:uppercase focus:tracking-rail focus:text-ink focus:outline-2 focus:outline-signal focus:outline-offset-2"
       >
-        Skip to content
+        Skip to main content
       </a>
 
       <TraceBackground />
@@ -93,6 +97,7 @@ export default function Home() {
         <Rail />
 
         <main id="main" className="min-w-0 bg-grain">
+          <MobileNav />
           <Hero />
           <HardwareLab />
           <Projects />

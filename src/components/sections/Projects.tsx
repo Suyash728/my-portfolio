@@ -6,12 +6,11 @@ import { LinkIcon } from "@/components/LinkIcon";
 import { Panel } from "@/components/Panel";
 import { TechList } from "@/components/TechList";
 import { Todo } from "@/components/Todo";
-import { MediSyncArchitecture } from "@/components/illustrations/MediSyncArchitecture";
-import { TrophyAvatar } from "@/components/illustrations/TrophyAvatar";
+import { SystemSchematic } from "@/components/SystemSchematic";
 import { projects } from "@/content/projects";
+import { useTechFilter, clearTechFilter } from "@/lib/filterState";
 import { sound } from "@/lib/sound";
 import type { Project } from "@/content/types";
-import { Sparkles } from "lucide-react";
 
 /**
  * Where the project's heading leads. The repository if there is one, otherwise
@@ -23,31 +22,91 @@ function headlineLink(project: Project) {
 }
 
 export function Projects() {
-  const [openArchSlug, setOpenArchSlug] = useState<string | null>("medisync");
+  const [openSchematics, setOpenSchematics] = useState<Record<string, boolean>>({
+    medisync: true,
+  });
+  const [activeFilter] = useTechFilter();
+
+  const toggleSchematic = (slug: string) => {
+    sound.playClick();
+    setOpenSchematics((prev) => ({
+      ...prev,
+      [slug]: !prev[slug],
+    }));
+  };
 
   const handleTrophyClick = () => {
     sound.playSuccess();
     confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.5 },
-      colors: ["#8A6414", "#F59E0B", "#1F4B6E"],
+      particleCount: 40,
+      spread: 50,
+      origin: { y: 0.6 },
+      colors: ["#8A6414", "#1F4B6E", "#8A877F"],
     });
   };
 
+  const matchingProjectsCount = activeFilter
+    ? projects.filter((p) =>
+        p.tech.some(
+          (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
+        )
+      ).length
+    : projects.length;
+
   return (
-    <Panel id="projects" heading="Shipped Systems & Engineering Decisions">
+    <Panel
+      id="projects"
+      heading="Shipped Systems & Engineering Decisions"
+      intro="Six production systems architected so deterministic rules live in code and probabilistic models are strictly confined to synthesis."
+    >
+      {/* Active Request-Path Filter Banner */}
+      {activeFilter && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="mb-4 flex flex-wrap items-center justify-between gap-2 border border-signal bg-raised p-3 font-narrow text-meta tracking-rail"
+        >
+          <div className="flex items-center gap-2 text-ink">
+            <span className="size-2 bg-signal flex-none" aria-hidden="true" />
+            <span>
+              Request-path filter:{" "}
+              <strong className="text-signal">{activeFilter}</strong> (active in{" "}
+              <span className="tabular-nums font-semibold">
+                {matchingProjectsCount}
+              </span>{" "}
+              of {projects.length} systems)
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              sound.playClick();
+              clearTechFilter();
+            }}
+            className="border border-rule-strong bg-ground px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-muted hover:border-signal hover:text-ink transition-colors"
+          >
+            Clear Filter [×]
+          </button>
+        </div>
+      )}
+
       {projects.map((project, index) => {
         const headline = headlineLink(project);
         const isMediSync = project.slug === "medisync";
-        const isArchOpen = openArchSlug === project.slug;
+        const isSchematicOpen = !!openSchematics[project.slug];
+        const isFilteredMatch = activeFilter
+          ? project.tech.some(
+              (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
+            )
+          : true;
 
         return (
           <article
             key={project.slug}
-            className={`edge group py-6 ${
+            className={`edge group py-6 transition-opacity duration-200 ${
               index === 0 ? "" : "border-t border-rule-soft"
-            }`}
+            } ${isFilteredMatch ? "opacity-100" : "opacity-40"}`}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -71,38 +130,41 @@ export function Projects() {
 
                 {isMediSync && (
                   <button
+                    type="button"
                     onClick={handleTrophyClick}
-                    title="1st Place Winner, CodeFusion 2026! Click for celebration"
-                    className="inline-flex items-center -my-2 transition-transform hover:scale-115 active:scale-95"
+                    title="1st Place, CodeFusion 2026. Click to verify victory telemetry."
+                    className="border border-flag/40 bg-flag/10 px-2 py-0.5 font-narrow text-tiny uppercase tracking-eyebrow text-flag hover:border-flag transition-colors"
                   >
-                    <TrophyAvatar className="w-8 h-8" />
+                    ★ Winner
                   </button>
                 )}
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span
                   onClick={isMediSync ? handleTrophyClick : undefined}
                   className={`font-narrow text-meta tracking-rail whitespace-nowrap ${
                     project.outcome.tone === "award"
-                      ? "text-flag font-bold cursor-pointer hover:underline"
+                      ? "text-flag font-semibold"
                       : "text-signal"
                   }`}
                 >
                   {project.outcome.label}
                 </span>
 
-                {isMediSync && (
+                {project.schematic && (
                   <button
-                    onClick={() => {
-                      sound.playClick();
-                      setOpenArchSlug(isArchOpen ? null : project.slug);
-                    }}
-                    className="ml-2 inline-flex items-center gap-1.5 rounded-md bg-raised px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow text-signal border border-rule hover:border-signal transition-colors shadow-2xs"
-                    aria-expanded={isArchOpen}
+                    type="button"
+                    onClick={() => toggleSchematic(project.slug)}
+                    aria-expanded={isSchematicOpen}
+                    aria-controls={`schematic-${project.slug}`}
+                    className={`ml-2 inline-flex items-center gap-1 border px-2.5 py-1 text-tiny font-narrow uppercase tracking-eyebrow transition-colors ${
+                      isSchematicOpen
+                        ? "border-signal bg-signal text-raised"
+                        : "border-rule-strong bg-raised text-muted hover:border-signal hover:text-ink"
+                    }`}
                   >
-                    <Sparkles className="size-3 text-flag" />
-                    <span>{isArchOpen ? "Hide Architecture" : "Inspect Decision Tree"}</span>
+                    <span>{isSchematicOpen ? "[-] Schematic" : "[+] Schematic"}</span>
                   </button>
                 )}
               </div>
@@ -120,10 +182,13 @@ export function Projects() {
               </p>
             ) : null}
 
-            {/* Expandable Architecture Decision Tree for Flagship Projects */}
-            {isMediSync && isArchOpen && (
-              <div className="mt-3 animate-fadeIn">
-                <MediSyncArchitecture />
+            {/* Expandable Deterministic System Schematic */}
+            {project.schematic && isSchematicOpen && (
+              <div id={`schematic-${project.slug}`}>
+                <SystemSchematic
+                  schematic={project.schematic}
+                  projectName={project.name}
+                />
               </div>
             )}
 
@@ -150,9 +215,10 @@ export function Projects() {
                     className="inline-flex items-center gap-1.5 text-muted"
                   >
                     <LinkIcon name={link.icon} />
-                    {link.label} <Todo />
+                    {link.label}{" "}
+                    <Todo todoContext={link.todoContext} />
                   </span>
-                ),
+                )
               )}
             </div>
           </article>
