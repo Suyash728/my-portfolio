@@ -1,15 +1,16 @@
-import { Rail } from "@/components/Rail";
-import { MobileNav } from "@/components/MobileNav";
+import { TopNav } from "@/components/TopNav";
+import { EdgeVisualDesk } from "@/components/EdgeVisualDesk";
+import { EdgeVisualBuilder } from "@/components/EdgeVisualBuilder";
 import { TraceBackground } from "@/components/TraceBackground";
 import { CommandPalette } from "@/components/CommandPalette";
-import { Achievements } from "@/components/sections/Achievements";
-import { Contact } from "@/components/sections/Contact";
-import { Education } from "@/components/sections/Education";
-import { Experience } from "@/components/sections/Experience";
-import { BattlestationBento } from "@/components/sections/BattlestationBento";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
+import { BattlestationBento } from "@/components/sections/BattlestationBento";
 import { Stack } from "@/components/sections/Stack";
+import { Experience } from "@/components/sections/Experience";
+import { Education } from "@/components/sections/Education";
+import { Achievements } from "@/components/sections/Achievements";
+import { Contact } from "@/components/sections/Contact";
 import { achievements } from "@/content/achievements";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
@@ -86,28 +87,79 @@ export default function Home() {
         Skip to main content
       </a>
 
+      {/* Subtle non-intrusive trace canvas in background */}
       <TraceBackground />
       <CommandPalette />
 
-      <div className="relative z-1 grid min-h-screen grid-cols-1 wide:grid-cols-[var(--rail-w)_minmax(0,1fr)]">
-        <Rail />
+      {/* Floating Top Navigation Pill */}
+      <TopNav />
 
-        <main id="main" className="min-w-0 bg-grain bg-grid-fade overflow-x-clip">
-          <MobileNav />
+      {/* Centered Editorial Main Column + Flanking Edge Companions */}
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Edge-Companion Visual A: Desk Setup (Top-Right Margin, hidden <1280px) */}
+        <div className="hidden xl:block absolute right-2 2xl:right-4 top-24 w-[250px] 2xl:w-[270px]">
+          <EdgeVisualDesk />
+        </div>
+
+        <main id="main" className="min-w-0 max-w-5xl mx-auto px-5 sm:px-8 py-4">
+          {/* 1. Hero */}
           <Hero />
-          <BattlestationBento />
+
+          {/* 2. Shipped Systems FIRST (Right Below Hero!) */}
           <Projects />
-          {/* Side-by-side Experience & Education on desktop (reduces vertical scroll fatigue by ~30%) */}
-          <div className="grid grid-cols-1 wide:grid-cols-2 border-b border-rule divide-y wide:divide-y-0 wide:divide-x divide-rule">
-            <Experience className="border-b-0 wide:px-8 wide:py-10" />
-            <Education className="border-b-0 wide:px-8 wide:py-10" />
+
+          {/* 3. Compact Systems & Rig Strip (~220px height) with Edge Visual B flanking left margin */}
+          <div className="relative">
+            <div className="hidden xl:block absolute -left-[270px] 2xl:-left-[290px] top-4 w-[250px] 2xl:w-[270px]">
+              <EdgeVisualBuilder />
+            </div>
+            <BattlestationBento />
           </div>
+
+          {/* 4. Technology Stack Mechanical Keycaps */}
           <Stack />
+
+          {/* 5. Side-by-side Experience & Education */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
+            <Experience className="border-b-0" />
+            <Education className="border-b-0" />
+          </div>
+
+          {/* 6. Trophy Achievements */}
           <Achievements />
+
+          {/* 7. Contact */}
           <Contact />
 
-          <footer className="border-t border-rule px-5 pt-7 pb-12 font-narrow text-meta tracking-rail text-muted wide:px-13">
-            Suyash Kerkar · Navi Mumbai · {new Date().getFullYear()}
+          {/* Footer */}
+          <footer className="border-t border-rule mt-12 py-8 flex flex-wrap items-center justify-between gap-3 font-narrow text-meta tracking-rail text-muted">
+            <div>Suyash Kerkar · Navi Mumbai · {new Date().getFullYear()}</div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://github.com/Suyash728"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-ink transition-colors"
+              >
+                GitHub
+              </a>
+              <span>·</span>
+              <a
+                href="https://linkedin.com/in/suyashkerkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-ink transition-colors"
+              >
+                LinkedIn
+              </a>
+              <span>·</span>
+              <a
+                href="mailto:suyashkerkar642005@gmail.com"
+                className="hover:text-ink transition-colors"
+              >
+                Email
+              </a>
+            </div>
           </footer>
         </main>
       </div>

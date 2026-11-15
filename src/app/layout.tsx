@@ -63,10 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${inter.variable} ${archivoNarrow.variable}`}
     >
       <body>
-        <SmoothScroll>
-          <div aria-hidden="true" className="film-grain" />
-          {children}
-        </SmoothScroll>
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );

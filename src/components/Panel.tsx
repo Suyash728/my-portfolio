@@ -22,7 +22,7 @@ export function Panel({
     <section
       id={id}
       aria-labelledby={id && heading ? `${id}-heading` : undefined}
-      className={`scroll-mt-8 border-b border-rule px-5 py-9 last:border-b-0 wide:px-13 wide:py-11 ${className}`}
+      className={`scroll-mt-20 py-10 sm:py-12 border-b border-rule last:border-b-0 ${className}`}
     >
       {heading ? (
         <h2

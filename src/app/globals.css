@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens — Tactile Field Instrument (Teenage Engineering × Nothing OS, Light)
-   Chassis: #F2EFE9 | Surfaces: #FBF9F5 | Wells: #E8E3DA | Ink: #181A1F
-   Accents: #D94E0F (Tactile Orange Pop) · #0F5C6E (Systems Teal)
+   Design tokens — Crisp High-Contrast Editorial (Pure White & Alabaster)
+   Ground: #F7F6F2 | Surfaces: #FFFFFF | Wells: #F0EEE6 | Ink: #111318
+   Accents: #A13706 (Safety Orange) · #0F5C6E (Systems Teal)
 --------------------------------------------------------------------------- */
 @theme {
-  --color-ground: #f2efe9;
-  --color-surface: #fbf9f5;
-  --color-surface-sunken: #e8e3da;
-  --color-raised: #fbf9f5;
-  --color-rule: #dcd6ca;
-  --color-rule-soft: #e6e1d6;
+  --color-ground: #f7f6f2;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f0eee6;
+  --color-raised: #ffffff;
+  --color-rule: #e5e2dc;
+  --color-rule-soft: #edeae4;
   --color-rule-strong: #7d7a72;
-  --color-ink: #181a1f;
-  --color-muted: #575650;
+  --color-ink: #111318;
+  --color-muted: #4a4d55;
 
-  /* Tactile Field Instrument Accents (WCAG AAA/AA 4.5:1 calibrated) */
+  /* High-Contrast Accents (WCAG AAA/AA 4.5:1+ calibrated) */
   --color-accent-orange: #a13706;
   --color-signal-teal: #0f5c6e;
   --color-signal: #0f5c6e;
   --color-flag: #a13706;
 
-  /* Teenage Engineering OLED Instrument Display Cutouts */
-  --color-oled: #14161a;
+  /* Jet-Black OLED Display Cutouts */
+  --color-oled: #111318;
   --color-oled-surface: #1d2026;
   --color-oled-rule: #2e333d;
   --color-oled-ink: #f4f2ee;
@@ -48,14 +48,14 @@
   --text-title--line-height: 1.2;
   --text-big: 29.3px;
   --text-big--line-height: 1.2;
-  --text-display: clamp(27.6px, 4.4vw, 35.3px);
-  --text-display--line-height: 1.22;
+  --text-display: clamp(2.25rem, 4.5vw, 3.75rem);
+  --text-display--line-height: 1.15;
 
   --tracking-rail: 0.02em;
   --tracking-label: 0.03em;
   --tracking-eyebrow: 0.05em;
   --tracking-tight: -0.01em;
-  --tracking-display: -0.015em;
+  --tracking-display: -0.03em;
 
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.3, 1);
   --breakpoint-wide: 900px;
@@ -82,72 +82,24 @@
 
   ::selection {
     background-color: var(--color-signal-teal);
-    color: #fff8f5;
+    color: #ffffff;
   }
 }
 
 @layer components {
-  /* Subtle tactical paper / noise grain overlay */
-  .bg-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
-  }
-
-  /* Fixed global film-grain micro-texture overlay */
-  .film-grain {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  }
-
-  /* Architectural grid hairlines that smoothly fade toward edges */
-  .bg-grid-fade {
-    background-size: 32px 32px;
-    background-image: 
-      linear-gradient(to right, rgba(220, 214, 202, 0.45) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(220, 214, 202, 0.45) 1px, transparent 1px);
-    mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 35%, #000 25%, transparent 100%);
-  }
-
-  /* Tactile Bento Card (16px / rounded-2xl radius, hairline rule, machined highlight + mouse-tracking spotlight border) */
+  /* Crisp Elevated Bento Card (Pure White, 1px Hairline, Zero Fog) */
   .bento-card {
     position: relative;
     background-color: var(--color-surface);
     border: 1px solid var(--color-rule);
     border-radius: 16px;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.95), 0 2px 8px 0 rgba(24, 26, 31, 0.04);
-    transition: border-color 0.2s var(--ease-out-soft), box-shadow 0.2s var(--ease-out-soft);
-  }
-
-  .bento-card::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: radial-gradient(
-      280px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
-      rgba(15, 92, 110, 0.35),
-      transparent 80%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-
-  .bento-card:hover::before {
-    opacity: 1;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
   .bento-card:hover {
-    border-color: var(--color-rule-strong);
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 1), 0 6px 20px 0 rgba(24, 26, 31, 0.06);
+    border-color: #c9c5bc;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
   }
 
   /* Recessed Bento Well for telemetry meters, switches, and chips */
@@ -157,14 +109,14 @@
     border-radius: 10px;
   }
 
-  /* Recessed OLED Display Well (Teenage Engineering Instrument Screen) */
+  /* Jet-Black OLED Display Well (High-Contrast Recessed Stage) */
   .oled-well {
     position: relative;
     background-color: var(--color-oled);
     border: 1px solid var(--color-oled-rule);
-    border-radius: 10px;
+    border-radius: 12px;
     color: var(--color-oled-ink);
-    box-shadow: inset 0 2px 6px 0 rgba(0, 0, 0, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   }
 
   /* 3D Low-Profile Mechanical Keycap */
@@ -245,6 +197,20 @@
     background-color: #822b04;
     border-color: #822b04;
     color: #ffffff;
+  }
+
+  .btn-dark {
+    border-color: #111318;
+    background-color: #111318;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(17, 19, 24, 0.15);
+  }
+
+  .btn-dark:hover {
+    border-color: #ff5500;
+    background-color: #ff5500;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(255, 85, 0, 0.3);
   }
 
   .btn-quiet {

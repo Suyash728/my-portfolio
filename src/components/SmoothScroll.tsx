@@ -27,29 +27,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
     rafId = requestAnimationFrame(raf);
 
-    // Global listener for card mouse tracking
-    const handlePointerMove = (e: PointerEvent) => {
-      const cards = document.querySelectorAll<HTMLElement>(".bento-card, .spotlight-card");
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        // Only calculate if visible in viewport
-        if (
-          e.clientX >= rect.left - 100 &&
-          e.clientX <= rect.right + 100 &&
-          e.clientY >= rect.top - 100 &&
-          e.clientY <= rect.bottom + 100
-        ) {
-          card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
-          card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
-        }
-      });
-    };
-
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener("pointermove", handlePointerMove);
       lenis.destroy();
     };
   }, []);
