@@ -3,15 +3,12 @@
 import { useEffect, useState } from "react";
 import { LinkIcon, type GlyphName } from "@/components/LinkIcon";
 import { profile, sections, statuses } from "@/content/profile";
+import { sound } from "@/lib/sound";
+import { Volume2, VolumeX, Search } from "lucide-react";
 
 /**
  * The three ways to reach him. Each carries its own mark so the rows read as
- * destinations rather than three lines of grey URL — and the marks take
- * `currentColor`, not LinkedIn blue, because the rail is already the loud
- * thing and does not also need to be the colourful one.
- *
- * Labels are derived from the hrefs rather than typed twice, so editing a URL
- * in profile.ts cannot leave the visible text pointing somewhere else.
+ * destinations rather than three lines of grey URL.
  */
 const CONTACTS: { icon: GlyphName; href: string; label: string }[] = [
   { icon: "github", href: profile.github, label: strip(profile.github) },
@@ -33,21 +30,17 @@ const DOT_TONE = {
   plain: "bg-signal",
 } as const;
 
-/**
- * The fixed identity rail — the one place this direction spends its boldness.
- * Client-side only for the scroll-spy; everything it renders is static content.
- */
 export function Rail() {
   const [current, setCurrent] = useState<string | null>(null);
+  const [isMuted, setIsMuted] = useState(() =>
+    typeof window !== "undefined" ? sound.isMuted() : false
+  );
 
   useEffect(() => {
     const nodes = sections
       .map((s) => document.getElementById(s.id))
       .filter((el): el is HTMLElement => el !== null);
 
-    // Nearest section whose top has passed the upper third of the viewport.
-    // An IntersectionObserver alone misreports this when a short section sits
-    // between two tall ones, so read positions directly on a rAF-throttled scroll.
     let queued = false;
     const spy = () => {
       queued = false;
@@ -79,25 +72,58 @@ export function Rail() {
     };
   }, []);
 
+  const handleNavClick = (id: string) => {
+    sound.playClick();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleToggleSound = () => {
+    const muted = sound.toggleMute();
+    setIsMuted(muted);
+  };
+
+  const openCommandPalette = () => {
+    sound.playSwitch();
+    const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
+    document.dispatchEvent(event);
+  };
+
   return (
-    <header className="flex flex-col gap-4 border-b border-rule px-5 py-6 wide:sticky wide:top-0 wide:h-screen wide:gap-[26px] wide:self-start wide:overflow-y-auto wide:border-r wide:border-b-0 wide:px-[26px] wide:pt-[34px] wide:pb-10">
-      <div className="rise [animation-delay:0.02s]">
-        <p className="font-narrow text-title leading-[1.1] font-semibold tracking-rail uppercase">
-          Suyash
-          <br />
-          Kerkar
-        </p>
-        <p className="mt-2.5 font-narrow text-meta tracking-rail text-muted">
-          {profile.identity.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
-        </p>
+    <header className="flex flex-col gap-4 border-b border-rule px-5 py-6 wide:sticky wide:top-0 wide:h-screen wide:gap-[22px] wide:self-start wide:overflow-y-auto wide:border-r wide:border-b-0 wide:px-[26px] wide:pt-[34px] wide:pb-10">
+      {/* Identity block & quick audio toggle */}
+      <div className="rise flex items-start justify-between [animation-delay:0.02s]">
+        <div>
+          <p className="font-narrow text-title leading-[1.1] font-semibold tracking-rail uppercase">
+            Suyash
+            <br />
+            Kerkar
+          </p>
+          <p className="mt-2.5 font-narrow text-meta tracking-rail text-muted">
+            {profile.identity.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
+        </div>
+
+        {/* Tactile Audio Switch in Rail */}
+        <button
+          onClick={handleToggleSound}
+          title={isMuted ? "Unmute tactile sound haptics" : "Mute tactile sound haptics"}
+          className="rounded-full border border-rule bg-raised/80 p-2 text-muted hover:text-ink hover:border-signal transition-colors shadow-2xs"
+          aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+        >
+          {isMuted ? <VolumeX className="size-3.5" /> : <Volume2 className="size-3.5 text-signal" />}
+        </button>
       </div>
 
       <div className="rise h-px bg-rule [animation-delay:0.02s]" />
 
+      {/* Live System Status Lines */}
       <ul className="rise flex list-none flex-row flex-wrap gap-x-4 gap-y-1.5 p-0 font-narrow text-meta tracking-rail wide:flex-col wide:gap-[7px] [animation-delay:0.06s]">
         {statuses.map((status) => (
           <li key={status.label} className="flex items-baseline gap-[9px] text-muted">
@@ -110,8 +136,23 @@ export function Rail() {
         ))}
       </ul>
 
-      <div className="rise h-px bg-rule [animation-delay:0.06s]" />
+      {/* Quick Cmd+K Command Search in Rail */}
+      <button
+        onClick={openCommandPalette}
+        className="rise flex items-center justify-between rounded-lg border border-rule bg-raised/60 px-3 py-1.5 font-narrow text-tiny uppercase tracking-eyebrow text-muted hover:text-ink hover:border-signal transition-colors [animation-delay:0.08s]"
+      >
+        <span className="flex items-center gap-1.5">
+          <Search className="size-3 text-signal" />
+          <span>Quick Menu</span>
+        </span>
+        <kbd className="rounded bg-ground px-1 font-mono text-[10px] text-ink border border-rule">
+          ⌘K
+        </kbd>
+      </button>
 
+      <div className="rise h-px bg-rule [animation-delay:0.08s]" />
+
+      {/* Navigation Links with Scroll Spy */}
       <nav
         aria-label="Sections"
         className="rise flex flex-row flex-wrap gap-x-[18px] wide:flex-col wide:gap-0 [animation-delay:0.1s]"
@@ -120,6 +161,10 @@ export function Rail() {
           <a
             key={section.id}
             href={`#${section.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick(section.id);
+            }}
             className="rail-link"
             aria-current={current === section.id ? "true" : "false"}
           >
@@ -128,14 +173,17 @@ export function Rail() {
         ))}
       </nav>
 
+      {/* Resume CTA */}
       <a
         href={profile.resume}
         download
+        onClick={() => sound.playClick()}
         className="rise btn text-center wide:mt-auto [animation-delay:0.14s]"
       >
         Download resume
       </a>
 
+      {/* Contact Links */}
       <div className="rise flex flex-row flex-wrap gap-x-4 gap-y-2 font-narrow text-meta tracking-rail wide:flex-col wide:gap-2 [animation-delay:0.18s]">
         {CONTACTS.map((contact) => {
           const external = !contact.href.startsWith("mailto:");
@@ -143,14 +191,13 @@ export function Rail() {
             <a
               key={contact.href}
               href={contact.href}
+              onClick={() => sound.playClick()}
               {...(external
                 ? { target: "_blank", rel: "noopener noreferrer" }
                 : {})}
               className="group flex w-fit items-center gap-[7px] text-muted transition-colors hover:text-signal"
             >
               <LinkIcon name={contact.icon} className="size-[14px] flex-none" />
-              {/* The rule sits under the label only: an underline that runs
-                  beneath the mark makes the two read as separate objects. */}
               <span className="border-b border-transparent transition-colors group-hover:border-signal">
                 {contact.label}
               </span>

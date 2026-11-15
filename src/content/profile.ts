@@ -16,6 +16,7 @@ export const profile = {
 
 export const statuses: StatusLine[] = [
   { label: "Open to 2027 roles", tone: "live" },
+  { label: "Hardware & Local AI Lab live", tone: "live" },
   { label: "Survey paper in progress", tone: "award" },
   { label: "TrustLayer in development", tone: "plain" },
 ];
@@ -28,6 +29,7 @@ export const facts: Fact[] = [
 
 /** Drives the rail nav and the scroll-spy. Order matches the page. */
 export const sections: Section[] = [
+  { id: "hardware", label: "Hardware Lab" },
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "stack", label: "Stack" },

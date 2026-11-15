@@ -1,10 +1,12 @@
 import { Rail } from "@/components/Rail";
 import { TraceBackground } from "@/components/TraceBackground";
+import { CommandPalette } from "@/components/CommandPalette";
 import { Achievements } from "@/components/sections/Achievements";
 import { Certifications } from "@/components/sections/Certifications";
 import { Contact } from "@/components/sections/Contact";
 import { Education } from "@/components/sections/Education";
 import { Experience } from "@/components/sections/Experience";
+import { HardwareLab } from "@/components/sections/HardwareLab";
 import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
 import { Stack } from "@/components/sections/Stack";
@@ -85,12 +87,14 @@ export default function Home() {
       </a>
 
       <TraceBackground />
+      <CommandPalette />
 
       <div className="relative z-1 grid min-h-screen grid-cols-1 wide:grid-cols-[var(--rail-w)_minmax(0,1fr)]">
         <Rail />
 
-        <main id="main" className="min-w-0">
+        <main id="main" className="min-w-0 bg-grain">
           <Hero />
+          <HardwareLab />
           <Projects />
           <Experience />
           <Stack />
