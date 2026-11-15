@@ -2,23 +2,39 @@
 
 import React, { useState } from "react";
 import { sound } from "@/lib/sound";
+import {
+  IsoBox,
+  project,
+  getIsoPlaneTransform,
+  Point2D,
+} from "./isoPrimitives";
 
 /**
  * Edge Visual 2: "Building the White Rig — Open Chassis"
  *
- * Style Invariants:
- * - Crisp 2.5D Isometric Geometric / High-Bit Pixel-Art Diorama (30° isometric projection).
- * - Exact Hardware: WHITE Lian Li LANCOOL 207 (LAN207RW) in open assembly state.
- *   The clear tempered glass panel is popped off, leaning upright beside the chassis!
- * - Open interior highlights: white bottom PSU shroud with dual 120mm fans blowing upward,
- *   RTX 5060 Ti 16GB GPU being carefully slotted into PCIe x16 with anti-sag bracket.
- * - Stylized geometric character (Suyash) in dark navy tee leaning over with precision screwdriver.
- * - Interactive Click: Clicking the diorama triggers "Test Boot ⚡" spinning all 4 fans with
- *   glowing Orange & Cyan ARGB rings and pulsing green POST diagnostic LEDs!
+ * Architectural Invariants:
+ * - Deterministic 30° Isometric 3D Voxel Engine (IsoBox & projected planes).
+ * - Correct Spatial Layout: WIDE OPEN SIDE BAY of the case faces the viewer (front-right).
+ *   Standing voxel character stands directly IN FRONT of the open bay and reaches inside
+ *   with an orange precision screwdriver tightening the horizontal RTX 5060 Ti GPU!
+ * - White Lian Li LANCOOL 207 (LAN207RW) realistic mid-tower proportions:
+ *   Narrow width (W = 22), Deep front-to-back (D = 45), Tall height (H = 48).
+ *   Front narrow face has 2 stacked perspective-projected 140mm circular ARGB fans.
+ *   Open side reveals white PSU bottom shroud (height=11) with 2x 120mm upward fans,
+ *   motherboard, CPU cooler, and horizontal RTX 5060 Ti with PCIe bracket screw.
+ * - Detached clear tempered-glass side panel (#E0F2FE 35% translucent) leaning to the right.
+ * - Clean Crossy-Road / Minecraft-Dungeons style 3D voxel character (no alien goggles or beak!).
+ * - Interactive ⚡ TEST BOOT: Spins all 4 fans, lights up ARGB halos, triggers green POST OK LED,
+ *   and shows a floating "+0.0 GB Offload · 61°C" badge!
  */
+
 export function EdgeVisualBuilding() {
   const [isBooted, setIsBooted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Projection origin and scale calibrated for 460x480 viewBox
+  const origin: Point2D = { x: 230, y: 310 };
+  const scale = 2.4;
 
   const handleToggleBoot = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -72,37 +88,35 @@ export function EdgeVisualBuilding() {
             shapeRendering="geometricPrecision"
           >
             <defs>
-              {/* ARGB Glow Gradients */}
-              <linearGradient id="buildArgbGlow" x1="0" y1="0" x2="1" y2="1">
+              {/* ARGB Glow Gradient */}
+              <linearGradient id="scene2Argb" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#00F0FF" />
                 <stop offset="50%" stopColor="#FF5500" />
                 <stop offset="100%" stopColor="#00F0FF" />
               </linearGradient>
 
-              {/* Translucent Glass Panel Gradient */}
-              <linearGradient id="poppedGlass" x1="0" y1="0" x2="1" y2="1">
+              {/* Translucent Leaning Glass Sheen */}
+              <linearGradient id="leaningGlass" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="rgba(224, 242, 254, 0.45)" />
-                <stop offset="40%" stopColor="rgba(255, 255, 255, 0.25)" />
+                <stop offset="40%" stopColor="rgba(255, 255, 255, 0.2)" />
                 <stop offset="70%" stopColor="rgba(0, 240, 255, 0.15)" />
-                <stop offset="100%" stopColor="rgba(224, 242, 254, 0.40)" />
+                <stop offset="100%" stopColor="rgba(224, 242, 254, 0.35)" />
               </linearGradient>
 
-              {/* SVG Keyframe Styles */}
               <style>{`
-                @keyframes spinBuildBlade {
+                @keyframes buildSpin {
                   from { transform: rotate(0deg); }
                   to { transform: rotate(360deg); }
                 }
-                @keyframes sparkPing {
-                  0%, 100% { opacity: 0; transform: scale(0.8); }
-                  50% { opacity: 1; transform: scale(1.4); }
+                @keyframes postPing {
+                  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+                  50% { opacity: 1; transform: scale(1.3); }
                 }
-                .build-fan-active {
-                  transform-origin: center;
-                  animation: spinBuildBlade 1.8s linear infinite;
+                .build-fan-spin {
+                  animation: buildSpin 1.8s linear infinite;
                 }
-                .spark-active {
-                  animation: sparkPing 1.2s ease-in-out infinite;
+                .post-led-pulse {
+                  animation: postPing 1.2s ease-in-out infinite;
                 }
               `}</style>
             </defs>
@@ -110,413 +124,669 @@ export function EdgeVisualBuilding() {
             {/* ========================================================
                 1. ISOMETRIC ESD WORKBENCH PLINTH (Technical Dark Mat)
                 ======================================================== */}
-            {/* Ambient drop shadow under workbench */}
-            <polygon
-              points="230,450 395,385 230,320 65,385"
-              fill="rgba(17, 19, 24, 0.08)"
+            <IsoBox
+              x={0}
+              y={0}
+              z={0}
+              dx={110}
+              dy={95}
+              dz={4}
+              topColor="#181B22"
+              leftColor="#111318"
+              rightColor="#14171E"
+              stroke="#333D4F"
+              strokeWidth={0.75}
+              origin={origin}
+              scale={scale}
             />
 
-            {/* Workbench Front Bevel (Anodized Aluminum Frame) */}
-            <polygon
-              points="65,370 230,435 230,448 65,383"
-              fill="#334155"
-              stroke="#1E293B"
-              strokeWidth="1"
-            />
-            <polygon
-              points="230,435 395,370 395,383 230,448"
-              fill="#1E293B"
-              stroke="#0F172A"
-              strokeWidth="1"
-            />
+            {/* Printed Cyan ESD Grid Hairlines on Workbench Top */}
+            {(() => {
+              const lines = [
+                { p1: { x: 10, y: 10, z: 4.1 }, p2: { x: 100, y: 10, z: 4.1 } },
+                { p1: { x: 10, y: 30, z: 4.1 }, p2: { x: 100, y: 30, z: 4.1 } },
+                { p1: { x: 10, y: 50, z: 4.1 }, p2: { x: 100, y: 50, z: 4.1 } },
+                { p1: { x: 10, y: 70, z: 4.1 }, p2: { x: 100, y: 70, z: 4.1 } },
+                { p1: { x: 10, y: 10, z: 4.1 }, p2: { x: 10, y: 85, z: 4.1 } },
+                { p1: { x: 40, y: 10, z: 4.1 }, p2: { x: 40, y: 85, z: 4.1 } },
+                { p1: { x: 70, y: 10, z: 4.1 }, p2: { x: 70, y: 85, z: 4.1 } },
+                { p1: { x: 100, y: 10, z: 4.1 }, p2: { x: 100, y: 85, z: 4.1 } },
+              ];
+              return lines.map((l, i) => {
+                const s1 = project(l.p1, origin, scale);
+                const s2 = project(l.p2, origin, scale);
+                return (
+                  <line
+                    key={i}
+                    x1={s1.x}
+                    y1={s1.y}
+                    x2={s2.x}
+                    y2={s2.y}
+                    stroke="rgba(15, 92, 110, 0.25)"
+                    strokeWidth={0.75}
+                    strokeDasharray="2,2"
+                  />
+                );
+              });
+            })()}
 
-            {/* Workbench Top: Dark Technical ESD Antistatic Mat (#252A36) */}
-            <polygon
-              points="230,305 395,370 230,435 65,370"
-              fill="#252A36"
-              stroke="#334155"
-              strokeWidth="1.25"
-            />
-
-            {/* Printed 20mm ESD Measurement Grid Hairlines */}
-            <g stroke="rgba(15, 92, 110, 0.22)" strokeWidth="0.75">
-              <line x1="110" y1="352" x2="275" y2="417" />
-              <line x1="150" y1="337" x2="315" y2="402" />
-              <line x1="190" y1="321" x2="355" y2="386" />
-              <line x1="185" y1="387" x2="350" y2="322" />
-              <line x1="145" y1="403" x2="310" y2="338" />
-              <line x1="105" y1="419" x2="270" y2="354" />
-            </g>
-
-            {/* Antistatic Grounding Wrist Strap Cord (Teal Coiled Wire) */}
-            <path
-              d="M80,390 Q90,380 95,392 T110,385 T125,395"
-              fill="none"
-              stroke="#00F0FF"
-              strokeWidth="1.5"
-            />
-            <rect x="75" y="388" width="6" height="4" fill="#FF5500" rx="1" />
-
-            {/* Precision Tool Tray on Workbench */}
-            <g transform="translate(100, 395)">
-              <polygon points="5,8 25,0 45,8 25,16" fill="#1E293B" stroke="#475569" strokeWidth="0.8" />
-              {/* Screws & Small Parts */}
-              <circle cx="18" cy="8" r="1.5" fill="#E2E8F0" />
-              <circle cx="22" cy="6" r="1.5" fill="#E2E8F0" />
-              <circle cx="28" cy="9" r="1.5" fill="#E2E8F0" />
-              <circle cx="32" cy="7" r="1.5" fill="#E2E8F0" />
-            </g>
+            {/* Coiled Teal Grounding Wrist Strap on Workbench */}
+            {(() => {
+              const p = project({ x: 12, y: 75, z: 4.2 }, origin, scale);
+              return (
+                <g transform={`translate(${p.x}, ${p.y})`}>
+                  <ellipse cx="6" cy="4" rx="8" ry="4" fill="none" stroke="#00F0FF" strokeWidth="1.2" />
+                  <rect x="12" y="2" width="4" height="3" fill="#FF5500" rx="0.5" />
+                </g>
+              );
+            })()}
 
             {/* ========================================================
-                2. WHITE LIAN LI LANCOOL 207 (OPEN ASSEMBLY STATE)
+                2. WHITE LIAN LI LANCOOL 207 (OPEN BAY FACING VIEWER!)
                 ======================================================== */}
-            <g transform="translate(170, 155)">
-              {/* Case Shadow on Mat */}
-              <polygon
-                points="0,185 75,148 150,185 75,222"
-                fill="rgba(0,0,0,0.35)"
-              />
+            {/* Case Dimensions: Narrow width dy=22, Deep dx=45, Tall dz=48 */}
+            {/* Positioned at x=22..67, y=14..36, z=4..52 */}
 
-              {/* Rubber Feet */}
-              <rect x="12" y="184" width="8" height="6" fill="#CBD5E1" rx="1" />
-              <rect x="68" y="214" width="8" height="6" fill="#94A3B8" rx="1" />
-              <rect x="132" y="184" width="8" height="6" fill="#CBD5E1" rx="1" />
+            {/* Chassis Back Wall & Outer Shell */}
+            <IsoBox
+              x={22}
+              y={14}
+              z={4}
+              dx={45}
+              dy={22}
+              dz={48}
+              topColor="#FFFFFF"
+              leftColor="#E2E8F0"
+              rightColor="#F8FAFC"
+              stroke="#CBD5E1"
+              strokeWidth={0.8}
+              origin={origin}
+              scale={scale}
+            />
 
-              {/* --- SNOW-WHITE TOP PANEL --- */}
-              <polygon
-                points="0,38 75,0 150,38 75,75"
-                fill="#FFFFFF"
-                stroke="#CBD5E1"
+            {/* --- WIDE OPEN INTERIOR BAY (at y=36, facing front-right toward viewer!) --- */}
+            {/* Recessed Dark Interior Chamber */}
+            <IsoBox
+              x={23}
+              y={15}
+              z={4}
+              dx={43}
+              dy={20.8}
+              dz={47}
+              topColor="#111622"
+              leftColor="#0F131C"
+              rightColor="#111622"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* White Bottom PSU Shroud (height=11, z=4..15) */}
+            <IsoBox
+              x={23}
+              y={15}
+              z={4}
+              dx={43}
+              dy={21}
+              dz={11}
+              topColor="#F1F5F9"
+              leftColor="#FFFFFF"
+              rightColor="#E2E8F0"
+              stroke="#CBD5E1"
+              strokeWidth={0.6}
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* TWO 120mm INTAKE FANS ON TOP OF PSU SHROUD (at z=15, blowing upward) */}
+            <g transform={getIsoPlaneTransform("top", { x: 30, y: 22, z: 15.2 }, origin, scale)}>
+              {/* Fan 1 (Left) */}
+              <circle cx="6" cy="6" r="5" fill="none" stroke={isBooted ? "#00F0FF" : "#64748B"} strokeWidth="1" />
+              <g className={isBooted ? "build-fan-spin" : ""} style={{ transformOrigin: "6px 6px" }}>
+                <line x1="2" y1="6" x2="10" y2="6" stroke="#FFFFFF" strokeWidth="1" />
+                <line x1="6" y1="2" x2="6" y2="10" stroke="#FFFFFF" strokeWidth="1" />
+              </g>
+              {/* Fan 2 (Right) */}
+              <circle cx="20" cy="6" r="5" fill="none" stroke={isBooted ? "#FF5500" : "#64748B"} strokeWidth="1" />
+              <g className={isBooted ? "build-fan-spin" : ""} style={{ transformOrigin: "20px 6px", animationDirection: "reverse" }}>
+                <line x1="16" y1="6" x2="24" y2="6" stroke="#FFFFFF" strokeWidth="1" />
+                <line x1="20" y1="2" x2="20" y2="10" stroke="#FFFFFF" strokeWidth="1" />
+              </g>
+            </g>
+
+            {/* Dark ATX Motherboard on Back Wall */}
+            <IsoBox
+              x={32}
+              y={15.5}
+              z={15}
+              dx={32}
+              dy={1}
+              dz={34}
+              topColor="#1E293B"
+              leftColor="#1E293B"
+              rightColor="#0F172A"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Silver Motherboard VRM Heatsinks */}
+            <IsoBox
+              x={36}
+              y={16.5}
+              z={40}
+              dx={10}
+              dy={1.5}
+              dz={6}
+              topColor="#94A3B8"
+              leftColor="#64748B"
+              rightColor="#475569"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Dual RAM Modules with RGB Top Bars */}
+            <IsoBox
+              x={48}
+              y={16.5}
+              z={34}
+              dx={2}
+              dy={1.5}
+              dz={12}
+              topColor={isBooted ? "#00F0FF" : "#475569"}
+              leftColor="#334155"
+              rightColor="#1E293B"
+              origin={origin}
+              scale={scale}
+            />
+            <IsoBox
+              x={51}
+              y={16.5}
+              z={34}
+              dx={2}
+              dy={1.5}
+              dz={12}
+              topColor={isBooted ? "#FF5500" : "#475569"}
+              leftColor="#334155"
+              rightColor="#1E293B"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* CPU Cooler Tower Block with ARGB Ring */}
+            <IsoBox
+              x={38}
+              y={17}
+              z={28}
+              dx={11}
+              dy={12}
+              dz={12}
+              topColor="#64748B"
+              leftColor="#475569"
+              rightColor="#525E70"
+              stroke="#94A3B8"
+              strokeWidth={0.5}
+              origin={origin}
+              scale={scale}
+            />
+            {/* CPU Fan ARGB Ring */}
+            <g transform={getIsoPlaneTransform("front-right", { x: 38, y: 29.2, z: 39 }, origin, scale)}>
+              <circle
+                cx="5.5"
+                cy="5.5"
+                r="4.5"
+                fill="none"
+                stroke={isBooted ? "#00F0FF" : "#475569"}
                 strokeWidth="1.2"
               />
-              <polygon
-                points="12,38 75,7 138,38 75,69"
-                fill="#F1F5F9"
-                stroke="#E2E8F0"
-                strokeWidth="0.8"
-              />
-              <circle cx="28" cy="41" r="2.2" fill={isBooted ? "#22C55E" : "#94A3B8"} stroke="#475569" strokeWidth="0.5" />
+            </g>
 
-              {/* --- FRONT PANEL (Facing Left: White Mesh & Front Fans) --- */}
-              <polygon
-                points="0,38 75,75 75,208 0,171"
-                fill="#F8FAFC"
-                stroke="#CBD5E1"
-                strokeWidth="1.2"
-              />
-              <polygon
-                points="6,46 69,78 69,198 6,166"
-                fill="#E2E8F0"
-              />
-
-              {/* Front Dual 140mm ARGB Fans (Spin on Test Boot) */}
-              {/* Fan 1 (Upper) */}
-              <g transform="translate(38, 102)">
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="24"
-                  ry="14"
-                  fill="none"
-                  stroke={isBooted ? "url(#buildArgbGlow)" : "#94A3B8"}
-                  strokeWidth={isBooted ? "2.5" : "1.2"}
-                  opacity={isBooted ? 0.95 : 0.4}
-                />
-                <g className={isBooted ? "build-fan-active" : ""}>
-                  <path d="M-14,-2 C-8,-6 8,-6 14,2 C8,6 -8,6 -14,-2 Z" fill="#FFFFFF" opacity={isBooted ? 0.9 : 0.4} />
-                  <path d="M-2,-10 C6,-6 6,6 -2,10 C-6,6 -6,-6 -2,-10 Z" fill="#F1F5F9" opacity={isBooted ? 0.9 : 0.4} />
-                </g>
-                <circle cx="0" cy="0" r="4.5" fill="#1E293B" stroke={isBooted ? "#FF5500" : "#64748B"} strokeWidth="1" />
-              </g>
-
-              {/* Fan 2 (Lower) */}
-              <g transform="translate(38, 150)">
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="24"
-                  ry="14"
-                  fill="none"
-                  stroke={isBooted ? "url(#buildArgbGlow)" : "#94A3B8"}
-                  strokeWidth={isBooted ? "2.5" : "1.2"}
-                  opacity={isBooted ? 0.95 : 0.4}
-                />
-                <g className={isBooted ? "build-fan-active" : ""} style={{ animationDirection: "reverse" }}>
-                  <path d="M-14,-2 C-8,-6 8,-6 14,2 C8,6 -8,6 -14,-2 Z" fill="#FFFFFF" opacity={isBooted ? 0.9 : 0.4} />
-                  <path d="M-2,-10 C6,-6 6,6 -2,10 C-6,6 -6,-6 -2,-10 Z" fill="#F1F5F9" opacity={isBooted ? 0.9 : 0.4} />
-                </g>
-                <circle cx="0" cy="0" r="4.5" fill="#1E293B" stroke={isBooted ? "#00F0FF" : "#64748B"} strokeWidth="1" />
-              </g>
-
-              {/* --- OPEN INTERIOR CHASSIS (Glass Panel Removed!) --- */}
-              {/* Exposed Dark Internal Compartment */}
-              <polygon
-                points="75,75 150,38 150,208 75,245"
-                fill="#0F172A"
-              />
-
-              {/* White Chassis Frame Pillars (Hex Honeycomb Cutouts) */}
-              <polygon
-                points="75,75 83,71 83,241 75,245"
-                fill="#FFFFFF"
-                stroke="#CBD5E1"
-                strokeWidth="0.8"
-              />
-              <polygon
-                points="142,42 150,38 150,208 142,212"
-                fill="#FFFFFF"
-                stroke="#CBD5E1"
-                strokeWidth="0.8"
-              />
-              <polygon
-                points="75,75 150,38 150,44 75,81"
-                fill="#FFFFFF"
-              />
-
-              {/* White Ventilated Bottom PSU Shroud (Signature Lancool 207) */}
-              <polygon
-                points="83,185 142,156 142,212 83,241"
-                fill="#FFFFFF"
-                stroke="#E2E8F0"
-                strokeWidth="1"
-              />
-              <polygon
-                points="83,185 142,156 135,152 76,181"
-                fill="#F8FAFC"
-              />
-
-              {/* TWO 120mm INTAKE FANS MOUNTED ON PSU SHROUD (Exposed & Operational!) */}
-              <g transform="translate(100, 172)">
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="15"
-                  ry="8"
-                  fill="none"
-                  stroke={isBooted ? "#00F0FF" : "#64748B"}
-                  strokeWidth={isBooted ? "2" : "1"}
-                  opacity={isBooted ? 1 : 0.5}
-                />
-                {/* 4 Blades */}
-                <g className={isBooted ? "build-fan-active" : ""}>
-                  <line x1="-10" y1="0" x2="10" y2="0" stroke="#FFFFFF" strokeWidth="1.5" />
-                  <line x1="0" y1="-5" x2="0" y2="5" stroke="#FFFFFF" strokeWidth="1.5" />
-                </g>
-                <circle cx="0" cy="0" r="3" fill="#1E293B" />
-              </g>
-
-              <g transform="translate(126, 158)">
-                <ellipse
-                  cx="0"
-                  cy="0"
-                  rx="15"
-                  ry="8"
-                  fill="none"
-                  stroke={isBooted ? "#FF5500" : "#64748B"}
-                  strokeWidth={isBooted ? "2" : "1"}
-                  opacity={isBooted ? 1 : 0.5}
-                />
-                <g className={isBooted ? "build-fan-active" : ""} style={{ animationDirection: "reverse" }}>
-                  <line x1="-10" y1="0" x2="10" y2="0" stroke="#FFFFFF" strokeWidth="1.5" />
-                  <line x1="0" y1="-5" x2="0" y2="5" stroke="#FFFFFF" strokeWidth="1.5" />
-                </g>
-                <circle cx="0" cy="0" r="3" fill="#1E293B" />
-              </g>
-
-              {/* Dark ATX Motherboard PCB */}
-              <polygon
-                points="86,88 140,61 140,150 86,177"
-                fill="#1E293B"
-              />
-              {/* Silver VRM Heatsinks */}
-              <rect x="94" y="82" width="14" height="6" fill="#94A3B8" transform="skewY(-26)" />
-              {/* Dual RAM Sticks */}
-              <rect x="116" y="66" width="2.5" height="14" fill={isBooted ? "#00F0FF" : "#64748B"} transform="skewY(-26)" />
-              <rect x="120" y="64" width="2.5" height="14" fill={isBooted ? "#FF5500" : "#64748B"} transform="skewY(-26)" />
-
-              {/* MOTHERBOARD DIAGNOSTIC POST LEDs */}
-              <g transform="translate(132, 68)">
-                <circle cx="0" cy="0" r="1.5" fill={isBooted ? "#22C55E" : "#475569"} />
-                <circle cx="3" cy="-1.5" r="1.5" fill={isBooted ? "#22C55E" : "#EF4444"} />
-                <circle cx="6" cy="-3" r="1.5" fill={isBooted ? "#22C55E" : "#F59E0B"} />
-                {isBooted && (
-                  <circle cx="0" cy="0" r="4.5" fill="#22C55E" className="spark-active" opacity="0.6" />
-                )}
-              </g>
-
-              {/* HORIZONTAL RTX 5060 Ti 16GB GPU (Being Seated into PCIe x16) */}
-              <g transform="translate(82, 122)">
-                {/* PCIe Golden Edge Connector Fingers */}
-                <polygon
-                  points="14,24 46,8 46,11 14,27"
-                  fill="#F59E0B"
-                />
-                {/* Dark GPU Shroud & Backplate */}
-                <polygon
-                  points="2,14 62,-16 62,4 2,34"
-                  fill="#111827"
-                  stroke="#374151"
-                  strokeWidth="0.8"
-                />
-                {/* Silver Triple Heatpipes */}
-                <line x1="8" y1="18" x2="56" y2="-6" stroke="#CBD5E1" strokeWidth="1.2" />
-                <line x1="8" y1="22" x2="56" y2="-2" stroke="#CBD5E1" strokeWidth="1.2" />
-                {/* Glowing "GEFORCE RTX" Logo Badge */}
-                <polygon
-                  points="12,18 44,2 44,7 12,23"
-                  fill={isBooted ? "#00F0FF" : "#475569"}
-                />
-                {/* Anti-Sag Pillar */}
-                <rect x="58" y="-12" width="3" height="30" fill="#FFFFFF" stroke="#CBD5E1" strokeWidth="0.5" />
-              </g>
-
-              {/* CPU Cooler Socket Area */}
-              <rect x="96" y="94" width="16" height="16" fill="#334155" rx="2" transform="skewY(-26)" />
-
-              {/* Test Boot Power Arc / Spark Effect when Active */}
+            {/* MOTHERBOARD DIAGNOSTIC POST LEDs */}
+            <g transform={getIsoPlaneTransform("front-right", { x: 60, y: 17, z: 45 }, origin, scale)}>
+              <circle cx="1" cy="1" r="0.8" fill={isBooted ? "#22C55E" : "#475569"} />
+              <circle cx="3" cy="1" r="0.8" fill={isBooted ? "#22C55E" : "#EF4444"} />
+              <circle cx="5" cy="1" r="0.8" fill={isBooted ? "#22C55E" : "#F59E0B"} />
               {isBooted && (
-                <g transform="translate(108, 134)" className="spark-active">
-                  <circle cx="0" cy="0" r="8" fill="none" stroke="#22C55E" strokeWidth="1.5" />
-                  <line x1="-6" y1="0" x2="6" y2="0" stroke="#00F0FF" strokeWidth="1.5" />
-                  <line x1="0" y1="-6" x2="0" y2="6" stroke="#00F0FF" strokeWidth="1.5" />
-                </g>
+                <circle cx="1" cy="1" r="2.5" fill="#22C55E" className="post-led-pulse" opacity="0.6" />
               )}
             </g>
 
-            {/* ========================================================
-                3. TEMPERED GLASS PANEL (POPPED OFF & LEANING ON WORKBENCH!)
-                ======================================================== */}
-            {/* Leaning against the right side of the workbench */}
-            <g transform="translate(325, 230)">
-              {/* Glass Shadow on Workbench Mat */}
-              <polygon
-                points="0,150 45,128 45,134 0,156"
-                fill="rgba(0,0,0,0.3)"
-              />
-              {/* Leaning Glass Panel (Cyan-tinted translucent sheet) */}
-              <polygon
-                points="2,18 42,0 42,130 2,148"
-                fill="url(#poppedGlass)"
-                stroke="rgba(255,255,255,0.7)"
-                strokeWidth="1.2"
-              />
-              {/* Top and Bottom White Steel Mounting Trim Strips */}
-              <polygon
-                points="2,18 42,0 42,6 2,24"
-                fill="#FFFFFF"
-                stroke="#CBD5E1"
-                strokeWidth="0.8"
-              />
-              <polygon
-                points="2,142 42,124 42,130 2,148"
-                fill="#FFFFFF"
-                stroke="#CBD5E1"
-                strokeWidth="0.8"
-              />
-              {/* Knurled Silver Thumbscrews on Corners */}
-              <circle cx="6" cy="22" r="1.8" fill="#CBD5E1" stroke="#475569" strokeWidth="0.5" />
-              <circle cx="38" cy="6" r="1.8" fill="#CBD5E1" stroke="#475569" strokeWidth="0.5" />
-              <circle cx="6" cy="144" r="1.8" fill="#CBD5E1" stroke="#475569" strokeWidth="0.5" />
-              <circle cx="38" cy="128" r="1.8" fill="#CBD5E1" stroke="#475569" strokeWidth="0.5" />
+            {/* HORIZONTAL GIGABYTE RTX 5060 Ti 16GB GPU BRICK (Being seated into PCIe) */}
+            <IsoBox
+              x={25}
+              y={18}
+              z={22}
+              dx={32}
+              dy={14}
+              dz={6}
+              topColor="#1E293B"
+              leftColor="#111827"
+              rightColor="#141C2B"
+              stroke="#334155"
+              strokeWidth={0.6}
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* PCIe Golden Finger Slot Pins */}
+            <g transform={getIsoPlaneTransform("top", { x: 28, y: 18, z: 22.2 }, origin, scale)}>
+              <line x1="2" y1="1" x2="22" y2="1" stroke="#F59E0B" strokeWidth="1" strokeDasharray="1,1" />
+            </g>
+
+            {/* Glowing GEFORCE RTX Side Strip */}
+            <g transform={getIsoPlaneTransform("front-right", { x: 25, y: 32.2, z: 27 }, origin, scale)}>
+              <rect x="2" y="1" width="18" height="3.5" fill={isBooted ? "#00F0FF" : "#334155"} rx="0.5" />
+              <text x="3" y="3.4" fill={isBooted ? "#0A0C10" : "#94A3B8"} fontSize="2" fontFamily="monospace" fontWeight="bold">
+                GEFORCE RTX
+              </text>
+            </g>
+
+            {/* PCIe Metal Mounting Bracket at x=25 (Touching Screwdriver Tip) */}
+            <IsoBox
+              x={24.2}
+              y={26}
+              z={21}
+              dx={1.2}
+              dy={6}
+              dz={8}
+              topColor="#CBD5E1"
+              leftColor="#94A3B8"
+              rightColor="#A8B4C4"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* --- Front Narrow Mesh Face (at x=22, facing down-left) --- */}
+            {/* Dual 140mm Circular ARGB Fans (Perspective-Projected on Front Face) */}
+            <g
+              transform={getIsoPlaneTransform(
+                "front-left",
+                { x: 22, y: 14, z: 52 },
+                origin,
+                scale
+              )}
+            >
+              {/* White Mesh Recess (Width along Y: 22, Height down along Z: 48) */}
+              <rect x="1" y="2" width="20" height="44" fill="#F1F5F9" stroke="#CBD5E1" strokeWidth="0.6" />
+
+              {/* Upper 140mm Fan (Center: 11, 14, Radius: 7.5) */}
+              <g transform="translate(11, 14)">
+                <circle
+                  cx="0"
+                  cy="0"
+                  r="7.5"
+                  fill="none"
+                  stroke={isBooted ? "url(#scene2Argb)" : "#94A3B8"}
+                  strokeWidth="1.6"
+                  opacity={isBooted ? 1 : 0.4}
+                />
+                <circle cx="0" cy="0" r="6.2" fill={isBooted ? "rgba(0,240,255,0.08)" : "none"} />
+                <g className={isBooted ? "build-fan-spin" : ""} style={{ transformOrigin: "0 0" }}>
+                  <path d="M-6,-1 C-3,-3 3,-3 6,1 C3,3 -3,3 -6,-1 Z" fill="#FFFFFF" opacity={isBooted ? 0.95 : 0.4} />
+                  <path d="M-1,-6 C3,-3 3,3 -1,6 C-3,3 -3,-3 -1,-6 Z" fill="#F1F5F9" opacity={isBooted ? 0.95 : 0.4} />
+                </g>
+                <circle cx="0" cy="0" r="2.2" fill="#1E293B" stroke={isBooted ? "#FF5500" : "#64748B"} strokeWidth="0.6" />
+              </g>
+
+              {/* Lower 140mm Fan (Center: 11, 32, Radius: 7.5) */}
+              <g transform="translate(11, 32)">
+                <circle
+                  cx="0"
+                  cy="0"
+                  r="7.5"
+                  fill="none"
+                  stroke={isBooted ? "url(#scene2Argb)" : "#94A3B8"}
+                  strokeWidth="1.6"
+                  opacity={isBooted ? 1 : 0.4}
+                />
+                <circle cx="0" cy="0" r="6.2" fill={isBooted ? "rgba(255,85,0,0.08)" : "none"} />
+                <g className={isBooted ? "build-fan-spin" : ""} style={{ transformOrigin: "0 0", animationDirection: "reverse" }}>
+                  <path d="M-6,-1 C-3,-3 3,-3 6,1 C3,3 -3,3 -6,-1 Z" fill="#FFFFFF" opacity={isBooted ? 0.95 : 0.4} />
+                  <path d="M-1,-6 C3,-3 3,3 -1,6 C-3,3 -3,-3 -1,-6 Z" fill="#F1F5F9" opacity={isBooted ? 0.95 : 0.4} />
+                </g>
+                <circle cx="0" cy="0" r="2.2" fill="#1E293B" stroke={isBooted ? "#00F0FF" : "#64748B"} strokeWidth="0.6" />
+              </g>
             </g>
 
             {/* ========================================================
-                4. CHARACTER: SUYASH BUILDING THE RIG (Navy Tee & Screwdriver)
+                3. DETACHED CLEAR TEMPERED GLASS PANEL (Leaning to the right)
                 ======================================================== */}
-            {/* Positioned on left, leaning over the open chassis */}
-            <g transform="translate(110, 210)">
-              {/* Shadow under feet/legs */}
-              <ellipse cx="26" cy="190" rx="20" ry="8" fill="rgba(0,0,0,0.22)" />
-
-              {/* Legs in Dark Charcoal Work Trousers (#1F242D) */}
-              <polygon points="18,125 28,122 34,185 24,188" fill="#1F242D" />
-              <polygon points="28,122 38,119 44,180 34,183" fill="#141820" />
-              {/* Shoes */}
-              <polygon points="24,188 34,185 40,192 28,195" fill="#334155" />
-
-              {/* Torso: Dark Navy Crew-Neck Tee (#162032) Leaning Forward */}
-              <polygon
-                points="12,58 40,44 48,120 18,130"
-                fill="#162032"
-                stroke="#0F172A"
-                strokeWidth="1"
+            {/* Positioned upright beside the case: x=72..86, y=20..36, z=4..46 */}
+            <g opacity="0.9">
+              {/* Glass Slab */}
+              <IsoBox
+                x={72}
+                y={20}
+                z={4}
+                dx={14}
+                dy={16}
+                dz={40}
+                topColor="rgba(224, 242, 254, 0.4)"
+                leftColor="rgba(224, 242, 254, 0.35)"
+                rightColor="rgba(224, 242, 254, 0.25)"
+                stroke="rgba(255, 255, 255, 0.6)"
+                strokeWidth={0.8}
+                origin={origin}
+                scale={scale}
               />
-              <polygon
-                points="40,44 52,50 56,124 48,120"
-                fill="#0F172A"
+              {/* White Steel Top and Bottom Trim Strips */}
+              <IsoBox
+                x={72}
+                y={20}
+                z={42}
+                dx={14}
+                dy={16}
+                dz={2}
+                topColor="#FFFFFF"
+                leftColor="#E2E8F0"
+                rightColor="#F8FAFC"
+                stroke="#CBD5E1"
+                strokeWidth={0.5}
+                origin={origin}
+                scale={scale}
               />
-              <ellipse cx="28" cy="51" rx="7" ry="3" fill="#0A0E17" />
-
-              {/* Left Arm: Hand Steadying the RTX 5060 Ti GPU */}
-              <polygon points="12,58 20,54 36,82 28,86" fill="#162032" />
-              <polygon points="28,86 36,82 72,98 64,103" fill="#C68B59" />
-              {/* Fingers grasping top of card */}
-              <polygon points="64,103 72,98 78,102 70,107" fill="#D4A373" />
-
-              {/* Right Arm: Extending Precision Screwdriver into Chassis */}
-              <polygon points="40,44 50,49 68,76 58,80" fill="#0F172A" />
-              <polygon points="58,80 68,76 102,92 94,97" fill="#B07246" />
-
-              {/* Hand Holding Screwdriver */}
-              <polygon points="94,97 102,92 106,97 98,102" fill="#C68B59" />
-
-              {/* Precision Magnetic Screwdriver */}
-              {/* Safety Orange Ergonomic Grip Handle (#FF5500) */}
-              <rect
-                x="100"
-                y="90"
-                width="14"
-                height="4.5"
-                rx="1"
-                fill="#FF5500"
-                stroke="#A13706"
-                strokeWidth="0.5"
-                transform="rotate(28, 100, 90)"
+              <IsoBox
+                x={72}
+                y={20}
+                z={4}
+                dx={14}
+                dy={16}
+                dz={2}
+                topColor="#FFFFFF"
+                leftColor="#E2E8F0"
+                rightColor="#F8FAFC"
+                stroke="#CBD5E1"
+                strokeWidth={0.5}
+                origin={origin}
+                scale={scale}
               />
-              {/* Chrome Silver Shaft & Magnetic Tip */}
-              <line
-                x1="112"
-                y1="97"
-                x2="136"
-                y2="110"
-                stroke="#E2E8F0"
-                strokeWidth="1.8"
-              />
-              <circle cx="136" cy="110" r="1.2" fill="#64748B" />
-
-              {/* Head & Neck (Focused Posture Looking Down into Chassis) */}
-              <polygon points="26,48 34,44 36,56 28,60" fill="#B07246" />
-
-              {/* Chiseled Geometric Head */}
-              <polygon
-                points="22,26 38,18 46,32 30,40"
-                fill="#C68B59"
-                stroke="#9A6538"
-                strokeWidth="0.75"
-              />
-              <polygon
-                points="38,18 48,23 52,38 46,32"
-                fill="#A66735"
-              />
-
-              {/* Geometric Glasses Framing Eye Pixels */}
-              <rect x="27" y="27" width="8" height="5" rx="1" fill="#0F172A" />
-              <rect x="37" y="23" width="7" height="5" rx="1" fill="#0F172A" />
-              <line x1="35" y1="27" x2="37" y2="26" stroke="#00F0FF" strokeWidth="0.8" />
-              <rect x="28.5" y="28" width="5" height="3" fill="#00F0FF" opacity="0.8" />
-              <rect x="38.5" y="24" width="4" height="3" fill="#00F0FF" opacity="0.8" />
-
-              {/* Spiky Dark Geometric Hair (#1E1B18) */}
-              <polygon
-                points="18,22 28,12 36,16 46,10 50,20 42,24 36,18 24,26"
-                fill="#1E1B18"
-                stroke="#111318"
-                strokeWidth="0.8"
-              />
-              <polygon points="28,12 36,16 32,20" fill="#2E2824" />
-              <polygon points="36,16 46,10 44,17" fill="#2E2824" />
-              <polygon points="46,10 50,20 47,23" fill="#141210" />
             </g>
+
+            {/* ========================================================
+                4. STANDING VOXEL GUY (Standing in front of OPEN bay!)
+                ======================================================== */}
+            {/* Position: x=46..58, y=46..56, z=4..54 (Looking INTO open bay) */}
+
+            {/* White / Orange Sneakers on Mat Floor */}
+            <IsoBox
+              x={46}
+              y={48}
+              z={4}
+              dx={4}
+              dy={5}
+              dz={3}
+              topColor="#FFFFFF"
+              leftColor="#FF5500"
+              rightColor="#E2E8F0"
+              origin={origin}
+              scale={scale}
+            />
+            <IsoBox
+              x={52}
+              y={48}
+              z={4}
+              dx={4}
+              dy={5}
+              dz={3}
+              topColor="#FFFFFF"
+              leftColor="#FF5500"
+              rightColor="#E2E8F0"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Dark Slate Work Trousers (Legs standing straight) */}
+            <IsoBox
+              x={46.5}
+              y={49}
+              z={7}
+              dx={3.5}
+              dy={3.5}
+              dz={18}
+              topColor="#1F242D"
+              leftColor="#141820"
+              rightColor="#1A1F26"
+              origin={origin}
+              scale={scale}
+            />
+            <IsoBox
+              x={52}
+              y={49}
+              z={7}
+              dx={3.5}
+              dy={3.5}
+              dz={18}
+              topColor="#1F242D"
+              leftColor="#141820"
+              rightColor="#1A1F26"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Torso: Dark Navy Crew-Neck Tee (z=25..41) tilted toward case */}
+            <IsoBox
+              x={46}
+              y={46}
+              z={25}
+              dx={10}
+              dy={8}
+              dz={16}
+              topColor="#182232"
+              leftColor="#111827"
+              rightColor="#141C2B"
+              stroke="#0A0E17"
+              strokeWidth={0.6}
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Left Arm: Steadying the top white chassis edge (x=36, y=36, z=52) */}
+            <IsoBox
+              x={42}
+              y={42}
+              z={35}
+              dx={4}
+              dy={6}
+              dz={4}
+              topColor="#182232"
+              leftColor="#111827"
+              rightColor="#141C2B"
+              origin={origin}
+              scale={scale}
+            />
+            {/* Left Hand: Warm skin voxel resting on chassis top frame */}
+            <IsoBox
+              x={38}
+              y={36}
+              z={50}
+              dx={4}
+              dy={4}
+              dz={2.5}
+              topColor="#E8B490"
+              leftColor="#D49B75"
+              rightColor="#DE9E78"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Right Arm: Extended down & forward into PCIe GPU mount */}
+            <IsoBox
+              x={36}
+              y={38}
+              z={28}
+              dx={10}
+              dy={8}
+              dz={4}
+              topColor="#182232"
+              leftColor="#111827"
+              rightColor="#141C2B"
+              origin={origin}
+              scale={scale}
+            />
+            {/* Right Hand: Holding Screwdriver reaching into GPU bay */}
+            <IsoBox
+              x={30}
+              y={34}
+              z={26}
+              dx={4}
+              dy={4}
+              dz={3}
+              topColor="#E8B490"
+              leftColor="#D49B75"
+              rightColor="#DE9E78"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* PRECISION MAGNETIC SCREWDRIVER */}
+            {/* Safety Orange Grip Handle */}
+            <IsoBox
+              x={28}
+              y={32}
+              z={26}
+              dx={3}
+              dy={5}
+              dz={2.5}
+              topColor="#FF5500"
+              leftColor="#C2410C"
+              rightColor="#EA580C"
+              stroke="#9A3412"
+              strokeWidth={0.4}
+              origin={origin}
+              scale={scale}
+            />
+            {/* Chrome Silver Shaft reaching into PCIe Screw Bracket */}
+            {(() => {
+              const pStart = project({ x: 28, y: 32, z: 27 }, origin, scale);
+              const pEnd = project({ x: 25, y: 28, z: 24 }, origin, scale);
+              return (
+                <line
+                  x1={pStart.x}
+                  y1={pStart.y}
+                  x2={pEnd.x}
+                  y2={pEnd.y}
+                  stroke="#E2E8F0"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                />
+              );
+            })()}
+
+            {/* Voxel Head (Warm skin tone, tilted forward looking into case) */}
+            <IsoBox
+              x={47}
+              y={44}
+              z={41}
+              dx={8}
+              dy={8}
+              dz={9}
+              topColor="#E8B490"
+              leftColor="#D49B75"
+              rightColor="#DE9E78"
+              stroke="#B57A54"
+              strokeWidth={0.5}
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Dark Espresso Voxel Hair Blocks on top & back */}
+            <IsoBox
+              x={46.5}
+              y={45}
+              z={49}
+              dx={9}
+              dy={8}
+              dz={3.5}
+              topColor="#26211D"
+              leftColor="#181512"
+              rightColor="#1E1A16"
+              origin={origin}
+              scale={scale}
+            />
+            <IsoBox
+              x={47.5}
+              y={44}
+              z={52}
+              dx={5}
+              dy={4}
+              dz={2.5}
+              topColor="#332B25"
+              leftColor="#1E1A16"
+              rightColor="#28221D"
+              origin={origin}
+              scale={scale}
+            />
+
+            {/* Dark Pixel Glasses Frame on face looking down-left into the case */}
+            <g transform={getIsoPlaneTransform("front-left", { x: 47, y: 52, z: 48 }, origin, scale)}>
+              <rect x="0.8" y="0.8" width="3.2" height="2.5" fill="#111318" rx="0.3" />
+              <rect x="4.5" y="0.8" width="3.2" height="2.5" fill="#111318" rx="0.3" />
+              <line x1="4.0" y1="1.8" x2="4.5" y2="1.8" stroke="#111318" strokeWidth="0.6" />
+              {/* Pupils + Catchlight */}
+              <rect x="1.4" y="1.4" width="1.6" height="1.4" fill="#182232" />
+              <rect x="1.6" y="1.4" width="0.6" height="0.6" fill="#FFFFFF" />
+              <rect x="5.1" y="1.4" width="1.6" height="1.4" fill="#182232" />
+              <rect x="5.3" y="1.4" width="0.6" height="0.6" fill="#FFFFFF" />
+            </g>
+
+            {/* ========================================================
+                5. WORKBENCH ACCESSORIES (Screw Tray & GPU Box)
+                ======================================================== */}
+            {/* Magnetic Parts / Screw Tray (Front-Left corner) */}
+            <IsoBox
+              x={12}
+              y={64}
+              z={4}
+              dx={8}
+              dy={8}
+              dz={1.5}
+              topColor="#0F172A"
+              leftColor="#020617"
+              rightColor="#0B0F19"
+              stroke="#334155"
+              strokeWidth={0.5}
+              origin={origin}
+              scale={scale}
+            />
+            {/* Tiny Metallic Screws inside tray */}
+            <g transform={getIsoPlaneTransform("top", { x: 13, y: 65, z: 5.6 }, origin, scale)}>
+              <circle cx="2" cy="2" r="0.8" fill="#CBD5E1" />
+              <circle cx="5" cy="3" r="0.8" fill="#CBD5E1" />
+              <circle cx="3" cy="5" r="0.8" fill="#CBD5E1" />
+            </g>
+
+            {/* RTX 5060 Ti GPU Carton Packaging Box */}
+            <IsoBox
+              x={22}
+              y={68}
+              z={4}
+              dx={14}
+              dy={16}
+              dz={10}
+              topColor="#111827"
+              leftColor="#0B0F19"
+              rightColor="#1F2937"
+              stroke="#374151"
+              strokeWidth={0.5}
+              origin={origin}
+              scale={scale}
+            />
+            {/* Box GeForce Green & Silver Artwork */}
+            <g transform={getIsoPlaneTransform("top", { x: 23, y: 69, z: 14.1 }, origin, scale)}>
+              <rect x="1" y="1" width="12" height="4" fill="#22C55E" />
+              <text x="2" y="3.6" fill="#0A0C10" fontSize="2.2" fontFamily="monospace" fontWeight="bold">
+                GEFORCE RTX
+              </text>
+            </g>
+
+            {/* Floating Live Boot Capability Tag when Booted */}
+            {isBooted && (
+              <g transform={getIsoPlaneTransform("front-right", { x: 30, y: 38, z: 62 }, origin, scale)}>
+                <rect x="0" y="0" width="28" height="7" fill="#0A0E17" rx="1.5" stroke="#22C55E" strokeWidth="0.8" />
+                <circle cx="3" cy="3.5" r="1.2" fill="#22C55E" className="post-led-pulse" />
+                <text x="6" y="4.5" fill="#22C55E" fontSize="2.4" fontFamily="monospace" fontWeight="bold">
+                  POST PASS · 61°C
+                </text>
+              </g>
+            )}
           </svg>
         </div>
 
