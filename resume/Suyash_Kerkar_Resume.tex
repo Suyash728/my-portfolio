@@ -6,13 +6,15 @@
 \documentclass[a4paper,11pt]{article}
 
 \usepackage[T1]{fontenc}
-\usepackage[sfdefault,scaled=0.95]{inter}
+\usepackage[sfdefault]{inter}
+\usepackage{microtype}
+\linespread{1.04}
 \usepackage[hidelinks]{hyperref}
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
-\usepackage[left=1.5cm,right=1.5cm,top=1.2cm,bottom=1.2cm]{geometry}
+\usepackage[left=1.5cm,right=1.5cm,top=1.4cm,bottom=1.4cm]{geometry}
 \usepackage{iftex}
 
 \ifPDFTeX
@@ -36,14 +38,14 @@
 \titleformat{\section}
   {\normalfont\bfseries\color{navy}\normalsize}
   {}{0em}{\MakeUppercase}[\color{rulegrey}\titlerule]
-\titlespacing*{\section}{0pt}{8pt}{3.5pt}
+\titlespacing*{\section}{0pt}{10.5pt}{4pt}
 
 %---------- CUSTOM LIST COMMANDS ----------
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=1.5pt,itemsep=1.5pt,parsep=0pt]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-1pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=2pt,itemsep=2pt,parsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
 
-\newcommand{\resumeSkillListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=1.5pt,itemsep=1.5pt,parsep=0pt]}
-\newcommand{\resumeSkillListEnd}{\end{itemize}\vspace{-1pt}}
+\newcommand{\resumeSkillListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=2pt,itemsep=2pt,parsep=0pt]}
+\newcommand{\resumeSkillListEnd}{\end{itemize}}
 
 \begin{document}
 
@@ -53,7 +55,6 @@
   \small Navi Mumbai, MH (Mumbai MMR \& Remote) \hspace{4pt}$|$\hspace{4pt} +91-9356736974 \hspace{4pt}$|$\hspace{4pt} \href{mailto:suyashkerkar642005@gmail.com}{suyashkerkar642005@gmail.com} \\ \vspace{1.5pt}
   \small \href{https://linkedin.com/in/suyashkerkar}{\color{navy}linkedin.com/in/suyashkerkar} \hspace{4pt}$|$\hspace{4pt} \href{https://github.com/Suyash728}{\color{navy}github.com/Suyash728} \hspace{4pt}$|$\hspace{4pt} \href{https://my-portfolio-mu-roan-75.vercel.app}{\color{navy}my-portfolio-mu-roan-75.vercel.app}
 \end{center}
-\vspace{-6pt}
 
 %---------- SUMMARY ----------
 \section{Summary}
@@ -61,11 +62,10 @@ Final-year B.E. (AI \& DS, 2027) \& CodeFusion '26 Winner building full-stack AI
 
 %---------- EDUCATION ----------
 \section{Education}
-\vspace{-1pt}
 \noindent\textbf{Terna Engineering College (Mumbai University)} \hfill Navi Mumbai, MH \\
-\textit{B.E., AI \& Data Science} (2024 -- 2027) --- Coursework: DSA, DBMS, OS, Deep Learning \\ \vspace{2pt}
+\textit{B.E., AI \& Data Science} (2024 -- 2027) --- Coursework: DSA, DBMS, OS, Deep Learning \\ \vspace{3.5pt}
 % TODO: Add CGPA if >= 7.5
-\noindent\textbf{Yashwantrao Bhonsale Polytechnic (MSBTE)} --- \textit{Diploma, Computer Engg} (\textbf{87.7\%}) \hfill \textit{2021 -- 2024} \\ \vspace{2pt}
+\noindent\textbf{Yashwantrao Bhonsale Polytechnic} --- \textit{Diploma in Computer Engineering} (\textbf{87.7\%}) \hfill \textit{2021 -- 2024} \\ \vspace{3.5pt}
 \noindent\textbf{St.\ Francis Xavier's High School} --- \textit{SSC} (\textbf{86.6\%}) \hfill \textit{2021}
 
 %---------- TECHNICAL SKILLS ----------
@@ -74,18 +74,17 @@ Final-year B.E. (AI \& DS, 2027) \& CodeFusion '26 Winner building full-stack AI
   \item \textbf{Languages \& Core:} Python, TypeScript, JavaScript, SQL, Java, C++, Solidity, DSA, OOP, DBMS
   \item \textbf{Web \& Backend:} Next.js, React.js, Tailwind CSS, FastAPI, Node.js, REST APIs, Rate Limiting
   \item \textbf{AI \& ML:} RAG, LangChain, Gemini \& Groq APIs, vLLM, BioBERT (NER), Scikit-Learn, OCR
-  \item \textbf{Data \& Cloud:} Postgres (\texttt{pgvector}), Supabase, MySQL, Firebase, Git, Linux, Vercel, Cloudflare, Railway
+  \item \textbf{Data \& Cloud:} PostgreSQL (pgvector), Supabase, MySQL, Git, Linux, Vercel, Cloudflare, Railway
 \resumeSkillListEnd
 
 %---------- EXPERIENCE ----------
 \section{Experience}
-\vspace{-1pt}
 \noindent\textbf{Career Center} --- \textit{Web \& Growth Associate (Part-Time)}, Navi Mumbai \hfill \textit{2025 -- Present}
 \resumeItemListStart
   \item Maintain Next.js + Cloudflare Pages site, ranking page-one on Google for admissions.
   \item Manage Google \& Meta Ads funnels across keyword targeting and budgets.
 \resumeItemListEnd
-\vspace{1.5pt}
+\vspace{3.5pt}
 \noindent\textbf{Softmusk Solutions Pvt.\ Ltd.} --- \textit{Python Developer Intern}, Sawantwadi \hfill \textit{Jun -- Aug 2023}
 \resumeItemListStart
   \item Built Python backend modules, SQL queries, and web workflows in agile sprints.
@@ -93,35 +92,37 @@ Final-year B.E. (AI \& DS, 2027) \& CodeFusion '26 Winner building full-stack AI
 
 %---------- PROJECTS ----------
 \section{Projects}
-\vspace{-1pt}
 \noindent\textbf{MediSync 2.0} $|$ {\small\textit{Next.js, TypeScript, FastAPI, pgvector, Gemini}} ({\small\textbf{1st Prize, CodeFusion '26}}) \hfill {\small\href{https://github.com/Suyash728/MediSync}{\color{navy}GitHub}}
 \resumeItemListStart
   \item Built ABDM health records PWA with OCR, RBAC, audit logs, and 11-language RAG.
   \item Enforced deterministic drug checks so LLMs cite records with zero hallucination.
 \resumeItemListEnd
-\vspace{1.5pt}
+\vspace{3.5pt}
 \noindent\textbf{AeroMed India} $|$ {\small\textit{Next.js, FastAPI, Python, Scikit-Learn}} ({\small\textit{INNOVATE '26 Ongoing}}) \hfill {\small\href{https://github.com/Suyash728/aeromed-india}{\color{navy}GitHub}}
 \resumeItemListStart
-  \item Built ER surge forecasting ($R^2=0.988$) with CAQM thresholds across 12 languages.
+  \item Built ER respiratory surge forecasting ($R^2 = 0.988$) with statutory CAQM triggers.
+  \item Automated multilingual hospital triage alerts across 12 Indian languages on Next.js + FastAPI.
 \resumeItemListEnd
-\vspace{1.5pt}
+\vspace{3.5pt}
 \noindent\textbf{TrustLayer} $|$ {\small\textit{Python, AST Static Analysis, mutmut}} \hfill {\small\href{https://github.com/Suyash728/trustlayer}{\color{navy}GitHub}}
 \resumeItemListStart
-  \item Built CLI with AST and mutation testing to catch hallucinated APIs and weak tests.
+  \item Built a local-first Python CLI using AST analysis to catch hallucinated library APIs.
+  \item Automated \texttt{mutmut} line-mutation runs to verify AI-generated unit tests catch logic bugs.
 \resumeItemListEnd
-\vspace{1.5pt}
+\vspace{3.5pt}
 \noindent\textbf{KisanChain} $|$ {\small\textit{Solidity, Polygon Amoy, FastAPI, Supabase}}
 \resumeItemListStart
-  \item Built crop escrow on Polygon Amoy with a FastAPI oracle validating IoT telemetry.
+  \item Built smart-contract crop escrow settlement on Polygon Amoy for farm-to-retail pricing.
+  \item Engineered a FastAPI anomaly-scoring oracle to validate IoT cold-chain sensor telemetry.
 \resumeItemListEnd
 
 %---------- ACHIEVEMENTS ----------
 \section{Achievements \& Leadership}
 \resumeItemListStart
-  \item \textbf{1st Prize} --- CodeFusion 2026 National Challenge (Marwadi Univ.\ $\times$ HackerRank).
+  \item \textbf{1st Prize} --- CodeFusion 2026 National Challenge (Marwadi University $\times$ HackerRank).
   \item \textbf{Published Author} --- \textit{IJIRCEE} (2024): ESP32 + GPS/GSM IoT Tracker.
   \item \textbf{National Finalist} --- Dataverse 2026 (SCIT Pune) \& Vibe2Ship $\cdot$ Build in AI.
-  \item \textbf{1st Prize} --- College Coding (2023) $\cdot$ \textbf{Runner-up} --- Project Comp (2024).
+  \item \textbf{1st Prize} --- College Coding (2023) $\cdot$ \textbf{Runner-up} --- Inter-College Project Competition (2024).
 \resumeItemListEnd
 
 \end{document}
