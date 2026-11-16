@@ -6,7 +6,7 @@ import { Trophy, Award, FileCheck } from "lucide-react";
 const TOP_WINS = [
   {
     tone: "orange",
-    badge: "1st Place · CodeFusion 2026",
+    badge: "1st Place · CodeFusion",
     title: "National Innovation Challenge",
     detail: "MediSync 2.0 (Team Error404) · Marwadi University × HackerRank Campus Crew.",
     year: "2026",
@@ -14,7 +14,7 @@ const TOP_WINS = [
   },
   {
     tone: "orange",
-    badge: "$1,000 Track Winner · INNOVATE 2026",
+    badge: "$1,000 Track Winner · INNOVATE",
     title: "Adaption AI Multilingual Track",
     detail: "AeroMed India · Pan-India Air Quality & Respiratory Disease Surveillance.",
     year: "2026",
@@ -22,7 +22,7 @@ const TOP_WINS = [
   },
   {
     tone: "teal",
-    badge: "Published Paper · IJIRCEE 2024",
+    badge: "Published Paper · IJIRCEE",
     title: "Autonomous Cellular Telematics",
     detail: "IJIRCEE Vol. 12 (Feb 2024) · Multipurpose IoT Tracker standalone cellular firmware.",
     year: "2024",

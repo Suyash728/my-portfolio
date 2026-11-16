@@ -24,6 +24,30 @@ export function getTechFilter(): string | null {
   return currentFilter;
 }
 
+/**
+ * Normalized tech stack matcher.
+ * Ensures:
+ * - "Next.js" matches "Next.js 14" and "Next.js" (count = 2)
+ * - "Gemini API" matches "Gemini" and "Gemini 2.5 Flash"
+ * - Case-insensitive exact or normalized matching
+ */
+export function techMatches(filter: string | null | undefined, projectTechName: string): boolean {
+  if (!filter) return false;
+  const a = filter.toLowerCase().trim();
+  const b = projectTechName.toLowerCase().trim();
+  if (a === b) return true;
+
+  // Next.js family
+  if (a === "next.js" && b.startsWith("next.js")) return true;
+  if (b === "next.js" && a.startsWith("next.js")) return true;
+
+  // Gemini family
+  if ((a === "gemini api" || a === "gemini") && b.includes("gemini")) return true;
+  if ((b === "gemini api" || b === "gemini") && a.includes("gemini")) return true;
+
+  return false;
+}
+
 export function useTechFilter() {
   const [filter, setFilter] = useState<string | null>(currentFilter);
 

@@ -4,7 +4,7 @@ import React from "react";
 import { ICONS } from "@/content/icons.generated";
 import type { Tech } from "@/content/types";
 import { projects } from "@/content/projects";
-import { useTechFilter, setTechFilter } from "@/lib/filterState";
+import { useTechFilter, setTechFilter, techMatches } from "@/lib/filterState";
 import { sound } from "@/lib/sound";
 
 /**
@@ -38,9 +38,9 @@ export function TechList({
     >
       {items.map((tech) => {
         const icon = tech.icon ? ICONS[tech.icon] : undefined;
-        const isActive = activeFilter?.toLowerCase() === tech.name.toLowerCase();
+        const isActive = techMatches(activeFilter, tech.name);
         const matchCount = projects.filter((p) =>
-          p.tech.some((t) => t.name.toLowerCase() === tech.name.toLowerCase())
+          p.tech.some((t) => techMatches(tech.name, t.name))
         ).length;
 
         if (isKeycap) {

@@ -12,23 +12,23 @@ import {
 /**
  * Edge Visual 1: "Using the White Rig — Multi-Terminal Flow"
  *
- * Architectural Invariants:
- * - Deterministic 30° Isometric 3D Voxel Engine (IsoBox & projected planes).
- * - Correct Spatial Layout: Character sits in ergonomic chair on the viewer side (front)
- *   FACING the 27" MSI monitor and typing on the mechanical keyboard. ZERO clipping through desk!
- * - White Lian Li LANCOOL 207 (LAN207RW) on back-right corner of desk:
- *   Narrow front mesh face with 2 stacked perspective-projected 140mm ARGB spinning fans;
- *   Long side tempered glass panel displaying the illuminated RTX 5060 Ti & dual shroud fans.
- * - 27" MSI 1440p 180Hz Monitor displaying 3 live-animated OLED terminal panes.
- * - 75% Mechanical Keyboard, G304 Mouse, and Mint-Teal 8BitDo Ultimate 2C Wireless Controller.
- * - Clean Crossy-Road / Minecraft-Dungeons style 3D voxel character (no alien goggles or beak!).
+ * Upgrades:
+ * - Top Hardware Spec Readout HUD framing Visual #1:
+ *   CPU: Ryzen 5 5600 · RAM: 32GB DDR4 · GPU: RTX 5060 Ti · VRAM: 16GB GDDR7.
+ * - Concise footer: "White Lancool 217 INF · 1440p 180Hz · 0.0 GB Offload".
+ * - Realistic Mid-Tower Scale: White PC case is ~40% human height (dz=24, dx=12, dy=22).
+ *   Sits lower than the top bezel of the 27" MSI monitor (no giant fridge case!).
+ * - Low-profile AMD Wraith Stealth stock circular ring cooler inside on motherboard.
+ * - Zero stray circles floating on shroud.
+ * - Replaced "eval 70b-fp8" with "vllm serve Qwen3-14B-NVFP4".
+ * - Tightened viewBox="15 0 440 375" (zero dead air gap).
  */
 
 export function EdgeVisualUsing() {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Projection origin and scale calibrated for 460x480 viewBox
-  const origin: Point2D = { x: 230, y: 310 };
+  // Origin shifted up to y=120 to eliminate top dead air gap completely
+  const origin: Point2D = { x: 225, y: 120 };
   const scale = 2.4;
 
   return (
@@ -44,39 +44,58 @@ export function EdgeVisualUsing() {
         }}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Subtle Hover Status Badge */}
-        <div className="flex items-center justify-between mb-1.5 px-2">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full border bg-surface/95 px-2.5 py-0.5 font-narrow text-[10px] uppercase tracking-eyebrow shadow-xs backdrop-blur-xs transition-colors ${
-              isHovered ? "border-signal-teal text-signal-teal" : "border-rule text-ink"
-            }`}
-          >
-            <span className="size-1.5 rounded-full bg-signal-teal animate-pulse" />
-            White Lancool 207
-          </span>
-          <span className="font-mono text-[9.5px] text-muted tabular-nums">
-            RTX 5060 Ti · 16GB
-          </span>
+        {/* Hardware Spec Readout HUD */}
+        <div
+          className={`mb-2 rounded-xl border bg-surface/95 p-2 shadow-xs backdrop-blur-xs transition-colors ${
+            isHovered ? "border-signal-teal" : "border-rule"
+          }`}
+        >
+          <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-rule-soft">
+            <span className="inline-flex items-center gap-1.5 font-narrow text-[10.5px] uppercase tracking-eyebrow font-semibold text-ink">
+              <span className="size-1.5 rounded-full bg-signal-teal animate-pulse" />
+              Daily Driver Rig
+            </span>
+            <span className="font-mono text-[9px] text-[#A13706] font-semibold">
+              0.0 GB Offload
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1 font-mono text-[9.5px]">
+            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
+              <span className="text-muted text-[8.5px]">CPU</span>
+              <span className="font-semibold text-ink">Ryzen 5 5600</span>
+            </div>
+            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
+              <span className="text-muted text-[8.5px]">RAM</span>
+              <span className="font-semibold text-ink">32GB DDR4</span>
+            </div>
+            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
+              <span className="text-muted text-[8.5px]">GPU</span>
+              <span className="font-semibold text-ink">RTX 5060 Ti</span>
+            </div>
+            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
+              <span className="text-muted text-[8.5px]">VRAM</span>
+              <span className="font-semibold text-signal-teal">16GB GDDR7</span>
+            </div>
+          </div>
         </div>
 
-        {/* 2.5D Isometric Diorama SVG */}
+        {/* 2.5D Isometric Diorama SVG (Tightened Framing: viewBox="15 0 440 375") */}
         <div className="relative transition-transform duration-300 group-hover:-translate-y-1">
           <svg
-            viewBox="0 0 460 480"
+            viewBox="15 0 440 375"
             className="w-full h-auto drop-shadow-md"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             shapeRendering="geometricPrecision"
           >
             <defs>
-              {/* ARGB Glow Gradient */}
               <linearGradient id="scene1Argb" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#00F0FF" />
                 <stop offset="50%" stopColor="#FF5500" />
                 <stop offset="100%" stopColor="#00F0FF" />
               </linearGradient>
 
-              {/* Glass Sheen */}
               <linearGradient id="glassSheen" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
                 <stop offset="35%" stopColor="rgba(255,255,255,0.08)" />
@@ -128,7 +147,7 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* Subtle floor ambient shadow under desk & chair */}
+            {/* Floor ambient shadow under desk & chair */}
             {(() => {
               const p1 = project({ x: 12, y: 12, z: 4.1 }, origin, scale);
               const p2 = project({ x: 96, y: 12, z: 4.1 }, origin, scale);
@@ -145,7 +164,6 @@ export function EdgeVisualUsing() {
             {/* ========================================================
                 2. MODERN DESK (Dark Steel Legs + White Ash Top)
                 ======================================================== */}
-            {/* Left Steel Leg Frame */}
             <IsoBox
               x={18}
               y={14}
@@ -159,7 +177,6 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Right Steel Leg Frame */}
             <IsoBox
               x={88}
               y={14}
@@ -174,7 +191,7 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* White Ash Tabletop Slab */}
+            {/* White Ash Tabletop Slab (z=28..31) */}
             <IsoBox
               x={14}
               y={12}
@@ -196,7 +213,7 @@ export function EdgeVisualUsing() {
               x={18}
               y={15}
               z={31}
-              dx={52}
+              dx={54}
               dy={25}
               dz={0.6}
               topColor="#161920"
@@ -240,7 +257,7 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* 27" Frameless Display Enclosure */}
+            {/* 27" Frameless Display Enclosure (top edge at z=67) */}
             <IsoBox
               x={22}
               y={17}
@@ -266,36 +283,34 @@ export function EdgeVisualUsing() {
                 scale
               )}
             >
-              {/* Recessed OLED Screen Area (Width 43, Height 24 in local units) */}
               <rect x="0" y="0" width="43" height="24" fill="#0A0C10" />
 
-              {/* --- Top-Left Pane: Fish Prompt & Test Suite --- */}
+              {/* --- Top-Left Pane: Qwen3-14B vLLM Server Prompt --- */}
               <rect x="0.8" y="0.8" width="26" height="13.2" fill="#11141B" stroke="#1E232E" strokeWidth="0.4" />
               <circle cx="2.2" cy="2.2" r="0.8" fill="#22C55E" />
               <text x="3.8" y="2.7" fill="#94A3B8" fontSize="1.8" fontFamily="monospace">
-                fish ~ (vllm)
+                fish ~ (cachyos)
               </text>
-              <text x="1.6" y="5.8" fill="#22C55E" fontSize="1.7" fontFamily="monospace">
-                &gt; eval 70b-fp8
+              <text x="1.6" y="5.8" fill="#22C55E" fontSize="1.6" fontFamily="monospace">
+                &gt; vllm serve Qwen3-14B-NVFP4
               </text>
-              <rect x="15" y="4.5" width="1.2" height="1.8" fill="#00F0FF" className="cursor-pulse" />
+              <rect x="23.2" y="4.5" width="1.2" height="1.8" fill="#00F0FF" className="cursor-pulse" />
               <text x="1.6" y="8.8" fill="#64748B" fontSize="1.5" fontFamily="monospace">
-                ✓ ast-mutation 94%
+                ✓ engine ready [0.0 offload]
               </text>
               <text x="1.6" y="11.6" fill="#64748B" fontSize="1.5" fontFamily="monospace">
-                ✓ caqm-rule 100%
+                ✓ 1440p @ 180Hz wayland
               </text>
 
               {/* --- Bottom-Left Pane: btop VRAM Telemetry --- */}
               <rect x="0.8" y="14.8" width="26" height="8.4" fill="#11141B" stroke="#1E232E" strokeWidth="0.4" />
               <text x="1.6" y="17.2" fill="#E2E8F0" fontSize="1.6" fontFamily="monospace">
-                VRAM: 14.1 / 16G
+                VRAM: 14.1 / 16GB NVFP4
               </text>
-              {/* VRAM Bar */}
               <rect x="1.6" y="18.5" width="24" height="2" fill="#1E293B" rx="0.5" />
               <rect x="1.6" y="18.5" width="21" height="2" fill="#FF5500" rx="0.5" className="vram-pulse" />
               <text x="1.6" y="22.2" fill="#00F0FF" fontSize="1.4" fontFamily="monospace">
-                0.0 GB HOST OFFLOAD
+                0.0 GB HOST SPILL
               </text>
 
               {/* --- Right Pane: Live Telemetry Sparkline --- */}
@@ -306,7 +321,6 @@ export function EdgeVisualUsing() {
               <text x="28.4" y="5.2" fill="#64748B" fontSize="1.4" fontFamily="monospace">
                 180Hz · 1ms
               </text>
-              {/* Mini Sparkline */}
               <polyline
                 points="28.5,14 31,11 34,13 36,9 39,11 41,7"
                 fill="none"
@@ -322,35 +336,35 @@ export function EdgeVisualUsing() {
             </g>
 
             {/* ========================================================
-                4. WHITE LIAN LI LANCOOL 207 (LAN207RW) MID-TOWER
+                4. WHITE LIAN LI LANCOOL 217 INF (PROPERLY SCALED!)
+                Case is dx=12 narrow, dy=22 deep, dz=24 tall (sits at z=31..55,
+                BELOW monitor top bezel at z=67!)
                 ======================================================== */}
-            {/* Positioned on back-right corner: dx=22, dy=40, dz=48 */}
-            {/* Case Main Chassis Block */}
+            {/* Chassis Outer Shell */}
             <IsoBox
-              x={72}
-              y={12}
+              x={76}
+              y={15}
               z={31}
-              dx={22}
-              dy={40}
-              dz={48}
+              dx={12}
+              dy={22}
+              dz={24}
               topColor="#FFFFFF"
               leftColor="#F8FAFC"
               rightColor="#E2E8F0"
               stroke="#CBD5E1"
-              strokeWidth={0.8}
+              strokeWidth={0.75}
               origin={origin}
               scale={scale}
             />
 
-            {/* --- Clear Tempered Glass Side Window on Left Face (at x=72) --- */}
-            {/* Dark Interior Bay */}
+            {/* Left Tempered Glass Window Chamber (at x=76) */}
             <IsoBox
-              x={72.2}
-              y={14}
-              z={33}
-              dx={0.5}
-              dy={36}
-              dz={44}
+              x={76.2}
+              y={16}
+              z={32}
+              dx={0.4}
+              dy={20}
+              dz={22}
               topColor="#111622"
               leftColor="#111622"
               rightColor="#0B0E14"
@@ -358,37 +372,31 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* White Bottom PSU Shroud (height=11) */}
+            {/* White Bottom PSU Shroud (height=6, z=31..37) */}
             <IsoBox
-              x={72.3}
-              y={14}
-              z={33}
-              dx={0.5}
-              dy={36}
-              dz={11}
+              x={76.3}
+              y={16}
+              z={31}
+              dx={0.4}
+              dy={20}
+              dz={6}
               topColor="#F1F5F9"
               leftColor="#FFFFFF"
               rightColor="#E2E8F0"
               stroke="#CBD5E1"
-              strokeWidth={0.6}
+              strokeWidth={0.5}
               origin={origin}
               scale={scale}
             />
 
-            {/* Dual 120mm Fans on top of PSU Shroud blowing upward */}
-            <g transform={getIsoPlaneTransform("top", { x: 72.4, y: 20, z: 44 }, origin, scale)}>
-              <ellipse cx="6" cy="6" rx="5" ry="5" fill="none" stroke="#00F0FF" strokeWidth="0.8" opacity="0.85" />
-              <ellipse cx="22" cy="6" rx="5" ry="5" fill="none" stroke="#FF5500" strokeWidth="0.8" opacity="0.85" />
-            </g>
-
-            {/* Dark ATX Motherboard PCB */}
+            {/* Motherboard Backplate */}
             <IsoBox
-              x={75}
-              y={16}
-              z={44}
-              dx={16}
-              dy={1}
-              dz={30}
+              x={78}
+              y={17}
+              z={37}
+              dx={9.5}
+              dy={0.8}
+              dz={16}
               topColor="#1E293B"
               leftColor="#1E293B"
               rightColor="#0F172A"
@@ -396,14 +404,23 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
+            {/* AMD Wraith Stealth Stock Cooler (Low-profile circular ring cooler) */}
+            <g transform={getIsoPlaneTransform("front-left", { x: 78.5, y: 25, z: 49 }, origin, scale)}>
+              {/* Outer circular heatsink ring */}
+              <circle cx="0" cy="0" r="3.6" fill="#333D4F" stroke="#94A3B8" strokeWidth="0.7" />
+              {/* Inner fan hub & ARGB accent */}
+              <circle cx="0" cy="0" r="2.2" fill="#1E293B" />
+              <circle cx="0" cy="0" r="1.5" fill="#FF5500" opacity="0.8" />
+            </g>
+
             {/* Horizontal Gigabyte RTX 5060 Ti 16GB GPU Brick */}
             <IsoBox
-              x={72.5}
-              y={20}
-              z={50}
-              dx={18}
-              dy={24}
-              dz={6}
+              x={76.5}
+              y={18}
+              z={39}
+              dx={10}
+              dy={15}
+              dz={3.5}
               topColor="#1E293B"
               leftColor="#111827"
               rightColor="#141C2B"
@@ -412,81 +429,61 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Glowing GEFORCE RTX Side Badge */}
-            <g transform={getIsoPlaneTransform("front-left", { x: 72.6, y: 44, z: 55 }, origin, scale)}>
-              <rect x="4" y="1" width="16" height="3" fill="#00F0FF" rx="0.5" />
-              <text x="5" y="3.2" fill="#0A0C10" fontSize="1.8" fontFamily="monospace" fontWeight="bold">
-                RTX 5060 Ti
+            {/* Glowing GEFORCE RTX Side Strip */}
+            <g transform={getIsoPlaneTransform("front-left", { x: 76.6, y: 32, z: 41.5 }, origin, scale)}>
+              <rect x="0" y="0" width="10" height="2" fill="#00F0FF" rx="0.4" />
+              <text x="1" y="1.5" fill="#0A0C10" fontSize="1.2" fontFamily="monospace" fontWeight="bold">
+                RTX 5060Ti
               </text>
             </g>
 
-            {/* CPU Tower Cooler Block with ARGB Ring */}
-            <IsoBox
-              x={78}
-              y={26}
-              z={59}
-              dx={10}
-              dy={12}
-              dz={12}
-              topColor="#64748B"
-              leftColor="#475569"
-              rightColor="#525E70"
-              stroke="#94A3B8"
-              strokeWidth={0.5}
-              origin={origin}
-              scale={scale}
-            />
-
-            {/* Tempered Glass Specular Light Reflection */}
+            {/* Tempered Glass Reflection */}
             {(() => {
-              const g1 = project({ x: 72.1, y: 14, z: 33 }, origin, scale);
-              const g2 = project({ x: 72.1, y: 50, z: 33 }, origin, scale);
-              const g3 = project({ x: 72.1, y: 50, z: 77 }, origin, scale);
-              const g4 = project({ x: 72.1, y: 14, z: 77 }, origin, scale);
+              const g1 = project({ x: 76.1, y: 16, z: 32 }, origin, scale);
+              const g2 = project({ x: 76.1, y: 36, z: 32 }, origin, scale);
+              const g3 = project({ x: 76.1, y: 36, z: 54 }, origin, scale);
+              const g4 = project({ x: 76.1, y: 16, z: 54 }, origin, scale);
               return (
                 <polygon
                   points={`${g1.x},${g1.y} ${g2.x},${g2.y} ${g3.x},${g3.y} ${g4.x},${g4.y}`}
                   fill="url(#glassSheen)"
-                  opacity="0.35"
+                  opacity="0.32"
                 />
               );
             })()}
 
-            {/* --- Front Narrow Mesh Face (at y=52, facing down-left) --- */}
-            {/* Dual 140mm Perspective-Projected ARGB Circular Fans on Front Face */}
+            {/* --- Front Narrow Mesh Face (at y=37, facing front-right) --- */}
+            {/* Dual 140mm Perspective-Projected ARGB Circular Fans on Front Mesh */}
             <g
               transform={getIsoPlaneTransform(
                 "front-right",
-                { x: 72, y: 52.2, z: 79 },
+                { x: 76, y: 37.1, z: 55 },
                 origin,
                 scale
               )}
             >
-              {/* White Mesh Recess Frame (Width along X: 22, Height down along Z: 48) */}
-              <rect x="1" y="2" width="20" height="44" fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="0.5" />
+              <rect x="0.8" y="1" width="10.4" height="22" fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="0.4" />
 
-              {/* Upper 140mm Fan (Center: 11, 14, Radius: 7.5) */}
-              <g transform="translate(11, 14)">
-                {/* Outer Glowing ARGB Halo Ring */}
-                <circle cx="0" cy="0" r="7.5" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.6" />
-                <circle cx="0" cy="0" r="6.2" fill="rgba(0,240,255,0.06)" />
-                {/* 4 Spinning Rotor Blades */}
+              {/* Upper 140mm Fan (Center: 6, 6.5, Radius: 4.2) */}
+              <g transform="translate(6, 6.5)">
+                <circle cx="0" cy="0" r="4.2" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.2" />
+                <circle cx="0" cy="0" r="3.2" fill="rgba(0,240,255,0.06)" />
                 <g className="fan-rotor-using" style={{ transformOrigin: "0 0" }}>
-                  <path d="M-6,-1 C-3,-3 3,-3 6,1 C3,3 -3,3 -6,-1 Z" fill="#FFFFFF" opacity="0.9" />
-                  <path d="M-1,-6 C3,-3 3,3 -1,6 C-3,3 -3,-3 -1,-6 Z" fill="#F1F5F9" opacity="0.9" />
+                  <path d="M-3.5,-0.6 C-1.8,-1.8 1.8,-1.8 3.5,0.6 C1.8,1.8 -1.8,1.8 -3.5,-0.6 Z" fill="#FFFFFF" opacity="0.9" />
+                  <path d="M-0.6,-3.5 C1.8,-1.8 1.8,1.8 -0.6,3.5 C-1.8,1.8 -1.8,-1.8 -0.6,-3.5 Z" fill="#F1F5F9" opacity="0.9" />
                 </g>
-                <circle cx="0" cy="0" r="2.2" fill="#1E293B" stroke="#FF5500" strokeWidth="0.6" />
+                <circle cx="0" cy="0" r="1.4" fill="#1E293B" stroke="#FF5500" strokeWidth="0.5" />
               </g>
 
-              {/* Lower 140mm Fan (Center: 11, 32, Radius: 7.5) */}
-              <g transform="translate(11, 32)">
-                <circle cx="0" cy="0" r="7.5" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.6" />
-                <circle cx="0" cy="0" r="6.2" fill="rgba(255,85,0,0.06)" />
+              {/* Lower 140mm Fan (Center: 6, 16.5, Radius: 4.2) */}
+              <g transform="translate(6, 16.5)">
+                <circle cx="0" cy="0" r="4.2" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.2" />
+                <circle cx="0" cy="0" r="3.2" fill="rgba(255,85,0,0.06)" />
                 <g className="fan-rotor-using" style={{ transformOrigin: "0 0", animationDirection: "reverse" }}>
-                  <path d="M-6,-1 C-3,-3 3,-3 6,1 C3,3 -3,3 -6,-1 Z" fill="#FFFFFF" opacity="0.9" />
-                  <path d="M-1,-6 C3,-3 3,3 -1,6 C-3,3 -3,-3 -1,-6 Z" fill="#F1F5F9" opacity="0.9" />
+                  <path d="M-3.5,-0.6 C-1.8,-1.8 1.8,-1.8 3.5,0.6 C1.8,1.8 -1.8,1.8 -3.5,-0.6 Z" fill="#FFFFFF" opacity="0.9" />
+                  <path d="M-0.6,-3.5 C1.8,-1.8 1.8,1.8 -0.6,3.5 C-1.8,1.8 -1.8,-1.8 -0.6,-3.5 Z" fill="#F1F5F9" opacity="0.9" />
                 </g>
-                <circle cx="0" cy="0" r="2.2" fill="#1E293B" stroke="#00F0FF" strokeWidth="0.6" />
+                <circle cx="0" cy="0" r="1.4" fill="#1E293B" stroke="#00F0FF" strokeWidth="0.5" />
               </g>
             </g>
 
@@ -568,7 +565,6 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Mouse Dark Scroll Wheel */}
             <IsoBox
               x={55}
               y={29}
@@ -599,11 +595,9 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* D-Pad White Cross */}
             <g transform={getIsoPlaneTransform("top", { x: 19, y: 29.5, z: 33.5 }, origin, scale)}>
               <rect x="1" y="2" width="4" height="1.4" fill="#FFFFFF" />
               <rect x="2.3" y="0.7" width="1.4" height="4" fill="#FFFFFF" />
-              {/* Dual Dark Analog Thumbsticks */}
               <circle cx="2" cy="6" r="1.3" fill="#1E293B" />
               <circle cx="5" cy="5" r="1.3" fill="#1E293B" />
             </g>
@@ -761,7 +755,6 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Left Hand: Warm skin voxel resting on keycaps */}
             <IsoBox
               x={31}
               y={34}
@@ -790,7 +783,6 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Right Hand: Warm skin voxel resting on white mouse */}
             <IsoBox
               x={52}
               y={30}
@@ -822,7 +814,7 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* Dark Espresso Voxel Hair Blocks on top & back of head */}
+            {/* Dark Espresso Voxel Hair Blocks */}
             <IsoBox
               x={34.5}
               y={45}
@@ -836,7 +828,6 @@ export function EdgeVisualUsing() {
               origin={origin}
               scale={scale}
             />
-            {/* Spiky Textured Top Tuft */}
             <IsoBox
               x={35.5}
               y={44}
@@ -851,20 +842,18 @@ export function EdgeVisualUsing() {
               scale={scale}
             />
 
-            {/* Dark Pixel Glasses Frame on front-right face looking at monitor */}
+            {/* Clean Dark Pixel Glasses Frame on front-right face */}
             <g transform={getIsoPlaneTransform("front-right", { x: 35, y: 44, z: 48 }, origin, scale)}>
-              {/* Clean Dark Glasses Frame */}
               <rect x="0.5" y="0.8" width="3.2" height="2.5" fill="#111318" rx="0.3" />
               <rect x="4.2" y="0.8" width="3.2" height="2.5" fill="#111318" rx="0.3" />
               <line x1="3.7" y1="1.8" x2="4.2" y2="1.8" stroke="#111318" strokeWidth="0.6" />
-              {/* Eyes & Catchlight (No weird glowing cyan bug-eyes!) */}
               <rect x="1.2" y="1.4" width="1.6" height="1.4" fill="#182232" />
               <rect x="1.4" y="1.4" width="0.6" height="0.6" fill="#FFFFFF" />
               <rect x="4.8" y="1.4" width="1.6" height="1.4" fill="#182232" />
               <rect x="5.0" y="1.4" width="0.6" height="0.6" fill="#FFFFFF" />
             </g>
 
-            {/* Ergonomic Chair Backrest (Lumbar frame behind lower back, leaves shoulders/head crisp) */}
+            {/* Ergonomic Chair Backrest (Lumbar frame behind lower back) */}
             <IsoBox
               x={33}
               y={55}
@@ -883,16 +872,14 @@ export function EdgeVisualUsing() {
           </svg>
         </div>
 
-        {/* Live Hardware Capability Telemetry Capsule */}
-        <div className="mt-2 flex items-center justify-between px-2 font-mono text-[9px] text-muted">
-          <span className="flex items-center gap-1">
+        {/* Secondary Footer Strip */}
+        <div className="mt-1.5 flex items-center justify-between px-2 font-mono text-[9.5px] text-muted">
+          <span className="flex items-center gap-1 text-ink font-medium">
             <span className="size-1 rounded-full bg-signal-teal" />
-            Dual 140mm ARGB
+            White Lancool 217 INF
           </span>
-          <span className="text-ink font-semibold">1440p @ 180Hz</span>
-          <span className="flex items-center gap-1 text-[#FF5500]">
-            0.0 Offload
-          </span>
+          <span className="text-muted">1440p 180Hz</span>
+          <span className="text-[#A13706] font-semibold">0.0 Offload</span>
         </div>
       </div>
     </aside>

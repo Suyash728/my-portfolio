@@ -127,7 +127,7 @@ export function BattlestationBento() {
               <div className="p-2 rounded-md bg-[#101216] border border-oled-rule flex items-center justify-between text-tiny">
                 <span className="flex items-center gap-2 text-oled-ink font-medium">
                   <Layers className="size-3.5 text-[#2dd4bf]" />
-                  Lancool 207 + RTX 5060 Ti 16GB
+                  Lancool 217 INF + RTX 5060 Ti 16GB
                 </span>
                 <span className="text-oled-muted text-[11px] font-mono">Dual 140mm Mesh</span>
               </div>

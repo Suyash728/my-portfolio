@@ -8,7 +8,7 @@ import { TechList } from "@/components/TechList";
 import { SystemSchematic } from "@/components/SystemSchematic";
 import { ProjectVisualHeader } from "@/components/ProjectVisualHeader";
 import { projects } from "@/content/projects";
-import { useTechFilter, clearTechFilter } from "@/lib/filterState";
+import { useTechFilter, clearTechFilter, techMatches } from "@/lib/filterState";
 import { sound } from "@/lib/sound";
 import { ChevronDown, ArrowUpRight } from "lucide-react";
 
@@ -32,7 +32,7 @@ export function Projects() {
 
   const matchingCount = activeFilter
     ? projects.filter((p) =>
-        p.tech.some((t) => t.name.toLowerCase() === activeFilter.toLowerCase())
+        p.tech.some((t) => techMatches(activeFilter, t.name))
       ).length
     : projects.length;
 
@@ -79,7 +79,7 @@ export function Projects() {
           const isSchematicOpen = openSchematicSlug === project.slug;
           const isFilteredMatch = activeFilter
             ? project.tech.some(
-                (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
+                (t) => techMatches(activeFilter, t.name)
               )
             : true;
 
@@ -229,7 +229,7 @@ export function Projects() {
             const isArchiveOpen = openArchiveSlug === archive.slug;
             const isFilteredMatch = activeFilter
               ? archive.tech.some(
-                  (t) => t.name.toLowerCase() === activeFilter.toLowerCase()
+                  (t) => techMatches(activeFilter, t.name)
                 )
               : true;
 

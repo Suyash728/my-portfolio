@@ -5,17 +5,21 @@ import { motion } from "motion/react";
 import confetti from "canvas-confetti";
 import { facts, profile } from "@/content/profile";
 import { sound } from "@/lib/sound";
-import { Search } from "lucide-react";
+import { LinkIcon } from "@/components/LinkIcon";
 
 function MagneticButton({
   children,
   className = "",
   href,
+  target,
+  rel,
   onClick,
 }: {
   children: React.ReactNode;
   className?: string;
   href?: string;
+  target?: string;
+  rel?: string;
   onClick?: () => void;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -38,6 +42,8 @@ function MagneticButton({
     <motion.a
       ref={ref}
       href={href ?? "#"}
+      target={target}
+      rel={rel}
       onClick={(e) => {
         if (!href) e.preventDefault();
         onClick?.();
@@ -77,12 +83,6 @@ export function Hero() {
       origin: { y: 0.6 },
       colors: ["#A13706", "#0F5C6E", "#7D7A72"],
     });
-  };
-
-  const openCommandPalette = () => {
-    sound.playSwitch();
-    const event = new KeyboardEvent("keydown", { key: "k", metaKey: true });
-    document.dispatchEvent(event);
   };
 
   return (
@@ -162,10 +162,13 @@ export function Hero() {
           </MagneticButton>
           <MagneticButton
             className="btn btn-quiet"
-            onClick={openCommandPalette}
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => sound.playClick()}
           >
-            <Search className="size-3.5 mr-1.5 text-signal-teal" />
-            <span>⌘K Quick Menu</span>
+            <LinkIcon name="github" className="size-3.5 mr-1.5 inline-block text-ink" />
+            <span>View GitHub ↗</span>
           </MagneticButton>
         </div>
       </div>
