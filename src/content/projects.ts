@@ -50,7 +50,7 @@ export const projects: Project[] = [
     slug: "aeromed",
     name: "AeroMed India",
     spotlight: true,
-    outcome: { label: "$1k Track Winner · INNOVATE 2026", tone: "award" },
+    outcome: { label: "Active Submission · INNOVATE 2026 (Adaption AI Track)", tone: "status" },
     problem:
       "Urban respiratory surges strike emergency rooms without localized atmospheric warning.",
     decision:

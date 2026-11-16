@@ -228,7 +228,7 @@ export function CommandPalette() {
                         AeroMed India (Air Quality &amp; CAQM GRAP Gate)
                       </span>
                       <span className="ml-auto font-sans text-tiny opacity-70">
-                        $1k @ INNOVATE
+                        INNOVATE &apos;26
                       </span>
                     </Command.Item>
 

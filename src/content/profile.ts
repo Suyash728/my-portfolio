@@ -9,7 +9,7 @@ export const profile = {
   email: "suyashkerkar642005@gmail.com",
   github: "https://github.com/Suyash728",
   linkedin: "https://www.linkedin.com/in/suyashkerkar",
-  resume: "/Suyash_Kerkar_CV_2026.pdf",
+  resume: "/resume.pdf",
   location: "Navi Mumbai, IN",
 } as const;
 
@@ -22,7 +22,7 @@ export const statuses: StatusLine[] = [
 export const facts: Fact[] = [
   { value: "7", label: "Shipped Systems" },
   { value: "1st", label: "CodeFusion '26", tone: "award" },
-  { value: "$1k", label: "INNOVATE '26", tone: "award" },
+  { value: "Finalist", label: "Dataverse '26", tone: "award" },
   { value: "Pub", label: "IJIRCEE '24", tone: "award" },
 ];
 

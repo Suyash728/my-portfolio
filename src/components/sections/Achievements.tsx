@@ -13,10 +13,10 @@ const TOP_WINS = [
     icon: Trophy,
   },
   {
-    tone: "orange",
-    badge: "$1,000 Track Winner · INNOVATE",
-    title: "Adaption AI Multilingual Track",
-    detail: "AeroMed India · Pan-India Air Quality & Respiratory Disease Surveillance.",
+    tone: "teal",
+    badge: "National Finalist · Dataverse",
+    title: "Dataverse 2026",
+    detail: "Symbiosis Centre for Information Technology (SCIT), Pune.",
     year: "2026",
     icon: Award,
   },
@@ -35,7 +35,7 @@ export function Achievements() {
   const remainingAchievements = achievements.filter(
     (item) =>
       !item.title.includes("CodeFusion 2026") &&
-      !item.title.includes("INNOVATE 2026") &&
+      !item.title.includes("Dataverse 2026") &&
       !item.title.includes("IJIRCEE")
   );
 

@@ -10,12 +10,6 @@ export const achievements: Achievement[] = [
   },
   {
     marker: "2026",
-    title: "Track Winner ($1,000) — INNOVATE 2026",
-    detail:
-      "AeroMed India · Best Use of Adaption AI Track (Air Quality & Respiratory Surveillance).",
-  },
-  {
-    marker: "2026",
     title: "Finalist — Dataverse 2026",
     detail: "Symbiosis Centre for Information Technology, Pune.",
   },
@@ -37,7 +31,7 @@ export const achievements: Achievement[] = [
 export const activities: Activity[] = [
   {
     marker: "Hackathons",
-    text: "INNOVATE 2026 · CodeFusion 2026 · Hackverse 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship (AutoClutch) · Project Viksit Bharat 2026 · Build in AI for India",
+    text: "INNOVATE 2026 (Ongoing — Adaption AI Track) · CodeFusion 2026 · Hackverse 2026 · Evolothon 1.0 · CODEAMBLE · Vibe2Vision · Vibe2Ship (AutoClutch) · Project Viksit Bharat 2026 · Build in AI for India",
   },
   {
     marker: "Community",
