@@ -1,27 +1,29 @@
 %-------------------------------------------------------------------------------
-%  Suyash Satish Kerkar — ATS-Compliant Resume
-%  Optimized for Indian MNCs (TCS, Wipro, Accenture) & Pan-India AI Startups
-%  Format: Strictly 1 A4 Page | Zero Tables | Pure Linear Text Extraction
+%  Suyash Satish Kerkar — ATS-Compliant Modern Tech Resume
+%  Optimized for Mumbai/Navi Mumbai MNCs & Remote Indian AI Startups
+%  Format: Strictly 1 A4 Page | Modern Inter Sans | High White Space | Zero Tables
 %-------------------------------------------------------------------------------
-\documentclass[a4paper,10.5pt]{article}
+\documentclass[a4paper,11pt]{article}
 
 \usepackage[T1]{fontenc}
-\usepackage{mathptmx}                 % Times New Roman metric-compatible
+\usepackage[sfdefault,scaled=0.95]{inter}
 \usepackage[hidelinks]{hyperref}
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
-\usepackage[left=1.25cm,right=1.25cm,top=0.9cm,bottom=0.85cm]{geometry}
+\usepackage[left=1.5cm,right=1.5cm,top=1.2cm,bottom=1.2cm]{geometry}
 \usepackage{iftex}
 
 \ifPDFTeX
   \input{glyphtounicode}
-  \pdfgentounicode=1                  % Keeps PDF ATS-parseable
+  \pdfgentounicode=1
 \fi
 
 \definecolor{navy}{HTML}{1F3864}
 \definecolor{rulegrey}{HTML}{7D7A72}
+\definecolor{RULEGREY}{HTML}{7D7A72}
+\definecolor{NAVY}{HTML}{1F3864}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -32,157 +34,94 @@
 
 %---------- SECTION HEADINGS ----------
 \titleformat{\section}
-  {\normalfont\bfseries\color{navy}\scshape\small}
-  {}{0em}{}[\color{rulegrey}\titlerule]
-\titlespacing*{\section}{0pt}{4pt}{2.5pt}
+  {\normalfont\bfseries\color{navy}\normalsize}
+  {}{0em}{\MakeUppercase}[\color{rulegrey}\titlerule]
+\titlespacing*{\section}{0pt}{8pt}{3.5pt}
 
-%---------- CUSTOM COMMANDS ----------
-\newcommand{\resumeItem}[1]{\item\small{#1\vspace{-1.5pt}}}
-
-\newcommand{\resumeEducationHeading}[4]{%
-  \vspace{-1pt}\item[]
-  \small\textbf{#1} \hfill \textbf{#2} \\
-  \textit{\small#3} \hfill \textit{\small#4}\vspace{-2pt}
-}
-
-\newcommand{\resumeExpHeading}[4]{%
-  \vspace{-1pt}\item[]
-  \small\textbf{#1} $|$ \textit{#2} \hfill \small#3 \\
-  \textit{\footnotesize#4}\vspace{-2pt}
-}
-
-\newcommand{\resumeProjectHeading}[3]{%
-  \vspace{-1pt}\item[]
-  \small\textbf{#1} $|$ \textit{#2} \hfill #3\vspace{-2pt}
-}
-
+%---------- CUSTOM LIST COMMANDS ----------
 \newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=1.5pt,itemsep=1.5pt,parsep=0pt]}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2pt}}
-
-\newcommand{\resumeSubListStart}{\begin{itemize}[leftmargin=0in,label={},topsep=0pt,itemsep=2pt,parsep=0pt]}
-\newcommand{\resumeSubListEnd}{\end{itemize}\vspace{-2pt}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-1pt}}
 
 \newcommand{\resumeSkillListStart}{\begin{itemize}[leftmargin=0.15in,label=\textbullet,topsep=1.5pt,itemsep=1.5pt,parsep=0pt]}
-\newcommand{\resumeSkillListEnd}{\end{itemize}\vspace{-2pt}}
-
-\newcommand{\tech}[1]{\textit{#1}}
+\newcommand{\resumeSkillListEnd}{\end{itemize}\vspace{-1pt}}
 
 \begin{document}
 
 %---------- HEADING ----------
 \begin{center}
-  {\large\bfseries\color{navy} SUYASH SATISH KERKAR} \\ \vspace{2pt}
-  \footnotesize Nerul, Navi Mumbai, MH (Open to Mumbai / Navi Mumbai \& Remote India) $|$ +91-9356736974 \\ \vspace{1.5pt}
-  \href{mailto:suyashkerkar642005@gmail.com}{suyashkerkar642005@gmail.com} $|$
-  \href{https://linkedin.com/in/suyashkerkar}{\color{navy}linkedin.com/in/suyashkerkar} $|$
-  \href{https://github.com/Suyash728}{\color{navy}github.com/Suyash728} $|$
-  \href{https://my-portfolio-mu-roan-75.vercel.app}{\color{navy}my-portfolio-mu-roan-75.vercel.app}
+  {\LARGE\bfseries\color{navy} SUYASH SATISH KERKAR} \\ \vspace{2.5pt}
+  \small Navi Mumbai, MH (Mumbai MMR \& Remote) \hspace{4pt}$|$\hspace{4pt} +91-9356736974 \hspace{4pt}$|$\hspace{4pt} \href{mailto:suyashkerkar642005@gmail.com}{suyashkerkar642005@gmail.com} \\ \vspace{1.5pt}
+  \small \href{https://linkedin.com/in/suyashkerkar}{\color{navy}linkedin.com/in/suyashkerkar} \hspace{4pt}$|$\hspace{4pt} \href{https://github.com/Suyash728}{\color{navy}github.com/Suyash728} \hspace{4pt}$|$\hspace{4pt} \href{https://my-portfolio-mu-roan-75.vercel.app}{\color{navy}my-portfolio-mu-roan-75.vercel.app}
 \end{center}
 \vspace{-6pt}
 
 %---------- SUMMARY ----------
 \section{Summary}
-\small Final-year B.E. in AI \& Data Science (Mumbai University, 2027) with prior full-stack internship and production web engineering experience. National hackathon winner (1st Prize, CodeFusion 2026) experienced in building deterministic full-stack AI applications, REST APIs, and RAG pipelines using Python, TypeScript, Next.js, FastAPI, and PostgreSQL. Seeking Software / AI Engineering Intern or Fresher roles (Mumbai MMR or Remote India).
+Final-year B.E. (AI \& DS, 2027) \& CodeFusion '26 Winner building full-stack AI apps and RAG with Python, TypeScript, Next.js, FastAPI, and PostgreSQL.
 
 %---------- EDUCATION ----------
 \section{Education}
-\resumeSubListStart
-  \resumeEducationHeading
-    {Terna Engineering College, Mumbai University}{Navi Mumbai, MH}
-    {B.E. in Artificial Intelligence \& Data Science}{2024 -- May 2027 (Expected)}
-    % TODO: Add CGPA if >= 7.5
-    \resumeItemListStart
-      \resumeItem{Relevant Coursework: Data Structures \& Algorithms (DSA), OOPs, DBMS, Operating Systems, Deep Learning, NLP, Big Data Analytics.}
-    \resumeItemListEnd
-
-  \resumeEducationHeading
-    {Yashwantrao Bhonsale Polytechnic (YBIT, MSBTE)}{Sawantwadi, MH}
-    {Diploma in Computer Engineering (87.70\%)}{2021 -- 2024}
-
-  \resumeEducationHeading
-    {St.\ Francis Xavier's High School}{Vengurla, MH}
-    {SSC (Class X) (86.60\%)}{2021}
-\resumeSubListEnd
+\vspace{-1pt}
+\noindent\textbf{Terna Engineering College (Mumbai University)} \hfill Navi Mumbai, MH \\
+\textit{B.E., AI \& Data Science} (2024 -- 2027) --- Coursework: DSA, DBMS, OS, Deep Learning \\ \vspace{2pt}
+% TODO: Add CGPA if >= 7.5
+\noindent\textbf{Yashwantrao Bhonsale Polytechnic (MSBTE)} --- \textit{Diploma, Computer Engg} (\textbf{87.7\%}) \hfill \textit{2021 -- 2024} \\ \vspace{2pt}
+\noindent\textbf{St.\ Francis Xavier's High School} --- \textit{SSC} (\textbf{86.6\%}) \hfill \textit{2021}
 
 %---------- TECHNICAL SKILLS ----------
 \section{Technical Skills}
 \resumeSkillListStart
-  \resumeItem{\textbf{Languages:} Python, TypeScript, JavaScript (ES6+), SQL, Java, C++, Solidity}
-  \resumeItem{\textbf{Backend \& Frontend:} FastAPI, Node.js, RESTful APIs, React.js, Next.js, Tailwind CSS, HTML5, CSS3}
-  \resumeItem{\textbf{AI, ML \& Data:} RAG Pipelines, LangChain, LLM Integration (Gemini API, Groq, vLLM), BioBERT (NER), Scikit-Learn, OCR}
-  \resumeItem{\textbf{Databases, Cloud \& DevOps:} PostgreSQL (\texttt{pgvector}), MySQL, Supabase, Firebase, Git, GitHub, Linux (Arch/Bash), Vercel, Cloudflare, Railway}
-  \resumeItem{\textbf{Core Concepts:} Data Structures \& Algorithms (DSA), Object-Oriented Programming (OOP), DBMS, API Rate Limiting, Mutation Testing (\texttt{mutmut})}
+  \item \textbf{Languages \& Core:} Python, TypeScript, JavaScript, SQL, Java, C++, Solidity, DSA, OOP, DBMS
+  \item \textbf{Web \& Backend:} Next.js, React.js, Tailwind CSS, FastAPI, Node.js, REST APIs, Rate Limiting
+  \item \textbf{AI \& ML:} RAG, LangChain, Gemini \& Groq APIs, vLLM, BioBERT (NER), Scikit-Learn, OCR
+  \item \textbf{Data \& Cloud:} Postgres (\texttt{pgvector}), Supabase, MySQL, Firebase, Git, Linux, Vercel, Cloudflare, Railway
 \resumeSkillListEnd
 
 %---------- EXPERIENCE ----------
 \section{Experience}
-\resumeSubListStart
-  \resumeExpHeading
-    {Career Center}{Full-Stack Web \& Digital Growth Associate (Part-Time)}{2025 -- Present}{Navi Mumbai, MH}
-    \resumeItemListStart
-      \resumeItem{Built, deployed, and maintain a responsive production web platform using \textbf{Next.js} and \textbf{Cloudflare Pages}, securing \textbf{page-one organic Google Search rankings} for regional college admissions queries.}
-      \resumeItem{Execute data-driven \textbf{Google Ads and Meta Ads} lead-generation funnels, managing keyword targeting, conversion tracking, and budget optimization.}
-    \resumeItemListEnd
-
-  \resumeExpHeading
-    {Softmusk Solutions Pvt.\ Ltd.}{Python Full-Stack Developer Intern}{Jun 2023 -- Aug 2023}{Sawantwadi, MH}
-    \resumeItemListStart
-      \resumeItem{Developed and tested \textbf{Python} backend modules, relational database queries, and full-stack web features across agile sprint cycles during a 3-month industrial internship.}
-    \resumeItemListEnd
-\resumeSubListEnd
+\vspace{-1pt}
+\noindent\textbf{Career Center} --- \textit{Web \& Growth Associate (Part-Time)}, Navi Mumbai \hfill \textit{2025 -- Present}
+\resumeItemListStart
+  \item Maintain Next.js + Cloudflare Pages site, ranking page-one on Google for admissions.
+  \item Manage Google \& Meta Ads funnels across keyword targeting and budgets.
+\resumeItemListEnd
+\vspace{1.5pt}
+\noindent\textbf{Softmusk Solutions Pvt.\ Ltd.} --- \textit{Python Developer Intern}, Sawantwadi \hfill \textit{Jun -- Aug 2023}
+\resumeItemListStart
+  \item Built Python backend modules, SQL queries, and web workflows in agile sprints.
+\resumeItemListEnd
 
 %---------- PROJECTS ----------
 \section{Projects}
-\resumeSubListStart
-  \resumeProjectHeading
-    {MediSync 2.0}{1st Prize -- CodeFusion 2026 National Hackathon}{\href{https://github.com/Suyash728/MediSync}{\color{navy}\footnotesize github.com/Suyash728/MediSync}}
-    \vspace{-1pt}
-    \item[]\footnotesize\tech{Next.js, TypeScript, FastAPI, PostgreSQL (pgvector), Gemini}\vspace{-2pt}
-    \resumeItemListStart
-      \resumeItem{Built an \textbf{ABDM-aligned} patient health-records PWA (\textbf{Vercel, Railway}) featuring \textbf{OCR} medical scan ingestion, role-based access (patient/doctor/pharmacist), and time-limited audit-logged sharing.}
-      \resumeItem{Engineered a \textbf{deterministic rule-table drug-interaction engine} paired with \textbf{RAG} citation cards and \textbf{11-language TTS}, ensuring zero LLM hallucination on clinical contraindications.}
-    \resumeItemListEnd
-
-  \resumeProjectHeading
-    {AeroMed India}{INNOVATE 2026 (Ongoing -- Adaption AI Track)}{\href{https://github.com/Suyash728/aeromed-india}{\color{navy}\footnotesize github.com/Suyash728/aeromed-india}}
-    \vspace{-1pt}
-    \item[]\footnotesize\tech{Next.js, FastAPI, Python, Scikit-Learn, Adaption AI}\vspace{-2pt}
-    \resumeItemListStart
-      \resumeItem{Developed a respiratory surge forecasting and hospital triage platform combining atmospheric ML modeling ($R^2 = 0.988$) with statutory \textbf{CAQM GRAP} air-quality thresholds to automate alerts across \textbf{12 Indian languages}.}
-    \resumeItemListEnd
-
-  \resumeProjectHeading
-    {TrustLayer}{Open-Source AI Code \& Test Verification CLI}{\href{https://github.com/Suyash728/trustlayer}{\color{navy}\footnotesize github.com/Suyash728/trustlayer}}
-    \vspace{-1pt}
-    \item[]\footnotesize\tech{Python, AST Static Analysis, mutmut}\vspace{-2pt}
-    \resumeItemListStart
-      \resumeItem{Created a local-first verification tool that detects hallucinated library APIs via \textbf{AST parsing} and runs \textbf{mutation testing (\texttt{mutmut})} to verify whether AI-generated unit tests catch real logic defects.}
-    \resumeItemListEnd
-
-  \resumeProjectHeading
-    {KisanChain}{Blockchain \& AI Oracle Supply-Chain System (Survey Paper in Progress)}{}
-    \vspace{-1pt}
-    \item[]\footnotesize\tech{Solidity, Polygon Amoy, FastAPI, Supabase}\vspace{-2pt}
-    \resumeItemListStart
-      \resumeItem{Implemented smart-contract crop escrow settlement on \textbf{Polygon Amoy} backed by a \textbf{FastAPI} anomaly-scoring oracle for \textbf{IoT} cold-chain telemetry, preserving transparent farm-to-retail pricing.}
-    \resumeItemListEnd
-
-  \resumeProjectHeading
-    {Multipurpose IoT Asset Tracker}{Published in IJIRCEE (Vol. 12, Feb 2024)}{}
-    \vspace{-1pt}
-    \item[]\footnotesize\tech{C++, ESP32, A9G GSM, GPS}\vspace{-2pt}
-    \resumeItemListStart
-      \resumeItem{Engineered standalone cellular firmware combining real-time \textbf{GPS} tracking, \textbf{GSM} audio monitoring, and hardware SOS dispatch on a single \textbf{ESP32} microcontroller without smartphone dependency.}
-    \resumeItemListEnd
-\resumeSubListEnd
+\vspace{-1pt}
+\noindent\textbf{MediSync 2.0} $|$ {\small\textit{Next.js, TypeScript, FastAPI, pgvector, Gemini}} ({\small\textbf{1st Prize, CodeFusion '26}}) \hfill {\small\href{https://github.com/Suyash728/MediSync}{\color{navy}GitHub}}
+\resumeItemListStart
+  \item Built ABDM health records PWA with OCR, RBAC, audit logs, and 11-language RAG.
+  \item Enforced deterministic drug checks so LLMs cite records with zero hallucination.
+\resumeItemListEnd
+\vspace{1.5pt}
+\noindent\textbf{AeroMed India} $|$ {\small\textit{Next.js, FastAPI, Python, Scikit-Learn}} ({\small\textit{INNOVATE '26 Ongoing}}) \hfill {\small\href{https://github.com/Suyash728/aeromed-india}{\color{navy}GitHub}}
+\resumeItemListStart
+  \item Built ER surge forecasting ($R^2=0.988$) with CAQM thresholds across 12 languages.
+\resumeItemListEnd
+\vspace{1.5pt}
+\noindent\textbf{TrustLayer} $|$ {\small\textit{Python, AST Static Analysis, mutmut}} \hfill {\small\href{https://github.com/Suyash728/trustlayer}{\color{navy}GitHub}}
+\resumeItemListStart
+  \item Built CLI with AST and mutation testing to catch hallucinated APIs and weak tests.
+\resumeItemListEnd
+\vspace{1.5pt}
+\noindent\textbf{KisanChain} $|$ {\small\textit{Solidity, Polygon Amoy, FastAPI, Supabase}}
+\resumeItemListStart
+  \item Built crop escrow on Polygon Amoy with a FastAPI oracle validating IoT telemetry.
+\resumeItemListEnd
 
 %---------- ACHIEVEMENTS ----------
 \section{Achievements \& Leadership}
 \resumeItemListStart
-  \resumeItem{\textbf{Winner (1st Prize)} --- CodeFusion 2026 National Innovation Challenge (\textit{Marwadi University $\times$ HackerRank Campus Crew}).}
-  \resumeItem{\textbf{National Finalist} --- Dataverse 2026 (\textit{Symbiosis Centre for IT, Pune}) \& Vibe2Ship Hackathon (\textit{AutoClutch} agentic planner); \textbf{Demo Day Shortlist} --- Build in AI for India.}
-  \resumeItem{\textbf{Published Research Author} --- \textit{International Journal of Innovative Research in Computer and Communication Engineering (IJIRCEE)}, Feb 2024.}
-  \resumeItem{\textbf{1st Prize} --- College Coding Competition (2023) $\cdot$ \textbf{Runner-up} --- Inter-College Project Competition (2024) $\cdot$ \textbf{Technical Volunteer} --- CSI AgenticAI Workshop $\cdot$ \textbf{AWS Future Builders Connect} (Navi Mumbai, 2026).}
+  \item \textbf{1st Prize} --- CodeFusion 2026 National Challenge (Marwadi Univ.\ $\times$ HackerRank).
+  \item \textbf{Published Author} --- \textit{IJIRCEE} (2024): ESP32 + GPS/GSM IoT Tracker.
+  \item \textbf{National Finalist} --- Dataverse 2026 (SCIT Pune) \& Vibe2Ship $\cdot$ Build in AI.
+  \item \textbf{1st Prize} --- College Coding (2023) $\cdot$ \textbf{Runner-up} --- Project Comp (2024).
 \resumeItemListEnd
 
 \end{document}
