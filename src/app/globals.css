@@ -119,24 +119,41 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
   }
 
-  /* 3D Low-Profile Mechanical Keycap */
+  /* 3D Low-Profile Mechanical Keycap with Brand-Lit RGB Illumination */
   .keycap {
+    --brand-color: var(--color-signal-teal);
     position: relative;
     background-color: var(--color-surface);
     border: 1px solid var(--color-rule);
     border-bottom: 2px solid var(--color-rule-strong);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(24, 26, 31, 0.06);
-    transition: transform 0.08s ease, border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.12s ease, border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
   }
 
-  .keycap:hover {
-    border-color: var(--brand, var(--color-rule-strong));
-    box-shadow: 0 0 10px var(--brand, rgba(15, 92, 110, 0.25)), 0 1px 3px rgba(24, 26, 31, 0.08);
+  .keycap:hover,
+  .keycap:focus-visible {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 1px var(--brand-color),
+                0 4px 14px color-mix(in srgb, var(--brand-color) 28%, transparent),
+                inset 0 0 12px color-mix(in srgb, var(--brand-color) 10%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .keycap[aria-pressed="true"],
+  .keycap.active-keycap {
+    border-color: var(--brand-color);
+    border-bottom-width: 2px;
+    border-bottom-color: var(--brand-color);
+    background-color: color-mix(in srgb, var(--brand-color) 8%, white);
+    box-shadow: 0 0 0 1px var(--brand-color),
+                0 4px 14px color-mix(in srgb, var(--brand-color) 32%, transparent),
+                inset 0 0 12px color-mix(in srgb, var(--brand-color) 14%, transparent);
+    font-weight: 600;
   }
 
   .keycap:active {
-    transform: translateY(2px);
+    transform: translateY(1px);
     border-bottom-width: 1px;
     margin-bottom: 1px;
   }
