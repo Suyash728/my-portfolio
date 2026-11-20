@@ -1,8 +1,8 @@
 import type { Project } from "./types";
 
 /**
- * 4 Flagship Spotlight Bento Cards + 3 Compact Shipped Archive Projects.
- * Strictly adheres to the <28 words total visible copy rule at rest!
+ * Four spotlight cards, then the earlier builds. Spotlight copy at rest
+ * (problem + decision) stays under 28 words.
  */
 export const projects: Project[] = [
   // ================= 4 SPOTLIGHT BENTO PROJECTS =================
@@ -17,7 +17,7 @@ export const projects: Project[] = [
     detail:
       "Reports arrive as paper scans, normalized through OCR before vectorization. Contraindications are evaluated on a typed AST lookup table; Gemini generates patient explanations and document citation cards.",
     tech: [
-      { name: "Next.js 14", icon: "nextdotjs" },
+      { name: "Next.js", icon: "nextdotjs" },
       { name: "FastAPI", icon: "fastapi" },
       { name: "TypeScript", icon: "typescript" },
       { name: "PostgreSQL", icon: "postgresql" },
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     slug: "kisanchain",
     name: "KisanChain",
     spotlight: true,
-    outcome: { label: "Survey Paper · Dec 2026 Window", tone: "status" },
+    outcome: { label: "Survey Paper · In Review", tone: "status" },
     problem:
       "Agricultural crop retail markups lack transparent chain-of-custody verification.",
     decision:
@@ -111,10 +111,10 @@ export const projects: Project[] = [
     ],
     links: [
       {
-        label: "Paper In Review",
+        label: "Survey Paper",
         href: null,
         icon: "paper",
-        statusPill: "Dec 2026 Window",
+        statusPill: "In Review",
       },
     ],
     schematic: {
@@ -166,7 +166,7 @@ export const projects: Project[] = [
     },
   },
 
-  // ================= 3 SHIPPED ARCHIVE PROJECTS =================
+  // ================= EARLIER BUILDS =================
   {
     slug: "iot-tracker",
     name: "Multipurpose IoT Tracker",

@@ -128,7 +128,7 @@ export function CommandPalette() {
                     >
                       <FolderGit2 className="size-4" />
                       <span className="font-sans font-medium">
-                        Shipped Systems (Spotlight &amp; Archive)
+                        Systems (Spotlight &amp; Earlier Builds)
                       </span>
                       <span className="ml-auto font-sans text-tiny tabular-nums opacity-70">
                         #projects

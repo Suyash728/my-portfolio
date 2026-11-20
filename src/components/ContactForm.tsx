@@ -129,7 +129,7 @@ export function ContactForm() {
         className={`text-small ${state.status === "error" ? "text-flag" : "text-muted"}`}
       >
         {state.message ||
-          "Direct to inbox · Encrypted via Resend · Typically replies within 24h"}
+          "Goes straight to my inbox."}
       </p>
     </form>
   );

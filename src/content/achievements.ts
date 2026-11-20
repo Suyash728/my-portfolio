@@ -20,11 +20,6 @@ export const achievements: Achievement[] = [
   },
   { marker: "2024", title: "Runner-up — Inter-college Project Competition" },
   { marker: "2023", title: "1st Prize — College Coding Competition" },
-  {
-    marker: "2024",
-    title: "Certified — Full-Stack Web Development Bootcamp",
-    detail: "Udemy · Modern React, Node.js, and REST API architecture.",
-  },
 ];
 
 /** Hackathons and technical volunteering. */

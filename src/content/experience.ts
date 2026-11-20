@@ -7,7 +7,7 @@ export const roles: Role[] = [
     period: "2025 — present",
     kind: "Part-time",
     points: [
-      "Family-run education consultancy. Built and maintain the site on Next.js and Cloudflare Pages; it ranks on page one for local admissions searches.",
+      "Family-run education consultancy. Built and maintain the site on Next.js and Cloudflare Pages.",
       "Run the Meta and Google Ads campaigns end to end — targeting, creative, budget pacing and lead tracking.",
     ],
   },

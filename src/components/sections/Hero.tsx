@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import confetti from "canvas-confetti";
 import { facts, profile } from "@/content/profile";
 import { sound } from "@/lib/sound";
@@ -24,9 +24,10 @@ function MagneticButton({
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const reduceMotion = useReducedMotion();
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!ref.current) return;
+    if (!ref.current || reduceMotion) return;
     const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     const x = (clientX - (left + width / 2)) * 0.2;
@@ -60,9 +61,10 @@ function MagneticButton({
 }
 
 function AnimatedFactCounter({ value }: { value: string }) {
+  const reduceMotion = useReducedMotion();
   return (
     <motion.span
-      initial={{ opacity: 0, y: 6 }}
+      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 24, delay: 0.15 }}
       className="inline-block"
@@ -74,9 +76,11 @@ function AnimatedFactCounter({ value }: { value: string }) {
 
 export function Hero() {
   const words = profile.headline.split(" ");
+  const reduceMotion = useReducedMotion();
 
   const handleAwardClick = () => {
     sound.playSuccess();
+    if (reduceMotion) return;
     confetti({
       particleCount: 50,
       spread: 60,
@@ -100,7 +104,7 @@ export function Hero() {
             <React.Fragment key={`${word}-${i}`}>
               <span className="inline-block overflow-hidden pb-1 -mb-1 align-top">
                 <motion.span
-                  initial={{ y: "115%", opacity: 0 }}
+                  initial={reduceMotion ? false : { y: "115%", opacity: 0 }}
                   animate={{ y: "0%", opacity: 1 }}
                   transition={{
                     type: "spring",
@@ -127,14 +131,22 @@ export function Hero() {
         <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-narrow text-meta tracking-rail">
           {facts.map((fact) => {
             const isAward = fact.tone === "award";
+            const Tag = isAward ? "a" : "div";
             return (
-              <div
+              <Tag
                 key={fact.label}
-                onClick={isAward ? handleAwardClick : undefined}
-                className={`bento-card p-3 text-center transition-all ${
-                  isAward ? "cursor-pointer hover:border-accent-orange" : ""
+                {...(isAward
+                  ? {
+                      href: "#achievements",
+                      onClick: handleAwardClick,
+                      "aria-label": `${fact.value} ${fact.label} — see achievements`,
+                    }
+                  : {})}
+                className={`bento-card block p-3 text-center transition-all ${
+                  isAward
+                    ? "hover:border-accent-orange focus-visible:outline-2 focus-visible:outline-signal-teal focus-visible:outline-offset-2"
+                    : ""
                 }`}
-                title={isAward ? "Click to verify achievement telemetry" : undefined}
               >
                 <div
                   className={`font-sans text-lead font-semibold tabular-nums ${
@@ -146,7 +158,7 @@ export function Hero() {
                 <div className="text-tiny font-narrow text-muted truncate mt-0.5">
                   {fact.label}
                 </div>
-              </div>
+              </Tag>
             );
           })}
         </div>
@@ -158,7 +170,7 @@ export function Hero() {
             href="#projects"
             onClick={() => sound.playClick()}
           >
-            Explore Shipped Systems
+            Explore Systems
           </MagneticButton>
           <MagneticButton
             className="btn btn-quiet"

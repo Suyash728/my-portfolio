@@ -17,7 +17,7 @@ interface VramPreset {
 const VRAM_PRESETS: VramPreset[] = [
   { id: "qwen", name: "Qwen3-14B", vram: 14.1, total: 16.0, format: "NVFP4 Native" },
   { id: "devstral", name: "Devstral-24B", vram: 14.8, total: 16.0, format: "Q4_K_M Quant" },
-  { id: "mistral", name: "Mistral-7B", vram: 8.4, total: 16.0, format: "Q8 Uncompressed" },
+  { id: "mistral", name: "Mistral-7B", vram: 8.4, total: 16.0, format: "Q8_0 Quant" },
 ];
 
 export function BattlestationBento() {
@@ -27,7 +27,7 @@ export function BattlestationBento() {
     <Panel
       id="battlestation"
       heading="Systems & Rig Telemetry"
-      intro="Hardware configured strictly for zero-host-spill local AI inference and low-latency Linux gaming."
+      intro="The rig I run local models on, so private data and test code never leave the machine."
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Card 1: 16GB Blackwell VRAM Gauge */}
@@ -41,7 +41,7 @@ export function BattlestationBento() {
                 </h3>
               </div>
               <span className="font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-[#2dd4bf] border border-[#2dd4bf]/40 bg-[#0f5c6e]/30 px-2 py-0.5 rounded">
-                0.0 GB Host Offload
+                All Layers On GPU
               </span>
             </div>
 
@@ -83,28 +83,21 @@ export function BattlestationBento() {
                 <motion.div
                   className="h-full rounded-xs bg-[#f97316] shadow-[0_0_8px_rgba(249,115,22,0.6)]"
                   initial={false}
-                  animate={{ width: `${((activeVram.vram * 0.75) / activeVram.total) * 100}%` }}
-                  transition={{ type: "spring", stiffness: 350, damping: 28 }}
-                />
-                <motion.div
-                  className="h-full rounded-xs bg-[#22d3ee] shadow-[0_0_8px_rgba(34,211,238,0.6)]"
-                  initial={false}
-                  animate={{ width: `${((activeVram.vram * 0.25) / activeVram.total) * 100}%` }}
+                  animate={{ width: `${(activeVram.vram / activeVram.total) * 100}%` }}
                   transition={{ type: "spring", stiffness: 350, damping: 28 }}
                 />
                 <div className="flex-1 h-full rounded-xs bg-[#1a1d24] opacity-50" />
               </div>
 
               <div className="flex items-center justify-between text-[10.5px] mt-2 pt-2 border-t border-oled-rule/60">
-                <span className="text-[#fb923c]">Weights: {(activeVram.vram * 0.75).toFixed(1)} GB</span>
-                <span className="text-[#67e8f9]">KV: {(activeVram.vram * 0.25).toFixed(1)} GB</span>
+                <span className="text-[#fb923c]">Weights + KV: {activeVram.vram.toFixed(1)} GB</span>
                 <span className="text-oled-muted">Free: {(activeVram.total - activeVram.vram).toFixed(1)} GB</span>
               </div>
             </div>
           </div>
 
           <p className="font-narrow text-tiny tracking-rail text-oled-muted pt-1">
-            Weights and KV cache fit strictly inside silicon. Zero host memory spill.
+            Approximate footprint; KV cache grows with context length.
           </p>
         </div>
 

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Archivo_Narrow, Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { SITE_URL } from "@/lib/site";
+import { projects } from "@/content/projects";
 import "./globals.css";
 
 // Inter reads the running text. It is drawn for screens rather than for
@@ -27,11 +29,9 @@ const archivoNarrow = Archivo_Narrow({
   display: "swap",
 });
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://suyashkerkar.vercel.app";
 
 const description =
-  "Applied AI engineer and final-year BE student in AI & Data Science. Six shipped systems across health records, agriculture and developer tooling, built so the rules live in code and the model only explains them.";
+  `Applied AI engineer and final-year BE student in AI & Data Science. ${projects.length} systems across health records, agriculture and developer tooling, built so the rules live in code and the model only explains them.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

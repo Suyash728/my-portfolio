@@ -2,20 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 import { sound } from "@/lib/sound";
+import { profile } from "@/content/profile";
 import { Search, Volume2, VolumeX, FileDown } from "lucide-react";
 
 const NAV_LINKS = [
   { id: "projects", label: "Projects" },
-  { id: "battlestation", label: "Systems Lab" },
-  { id: "stack", label: "Stack" },
   { id: "experience", label: "Experience" },
+  { id: "stack", label: "Stack" },
+  { id: "battlestation", label: "Systems Lab" },
   { id: "contact", label: "Contact" },
 ];
 
 export function TopNav() {
   const [activeSection, setActiveSection] = useState<string>("projects");
   const [isMuted, setIsMuted] = useState(() =>
-    typeof window !== "undefined" ? sound.isMuted() : false
+    typeof window !== "undefined" ? sound.isMuted() : true
   );
   const [istTime, setIstTime] = useState<string | null>(null);
 
@@ -167,7 +168,7 @@ export function TopNav() {
 
           {/* Resume CTA */}
           <a
-            href="/resume.pdf"
+            href={profile.resume}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => sound.playClick()}

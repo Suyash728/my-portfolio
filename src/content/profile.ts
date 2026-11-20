@@ -1,4 +1,5 @@
 import type { Fact, Section, StatusLine } from "./types";
+import { projects } from "./projects";
 
 export const profile = {
   name: "Suyash Kerkar",
@@ -16,11 +17,11 @@ export const profile = {
 export const statuses: StatusLine[] = [
   { label: "Open to 2027 roles", tone: "live" },
   { label: "Hardware & Local AI Lab live", tone: "live" },
-  { label: "Survey paper in review", tone: "plain" },
+  { label: "KisanChain survey paper in review", tone: "plain" },
 ];
 
 export const facts: Fact[] = [
-  { value: "7", label: "Shipped Systems" },
+  { value: String(projects.length), label: "Systems Built" },
   { value: "1st", label: "CodeFusion '26", tone: "award" },
   { value: "Finalist", label: "Dataverse '26", tone: "award" },
   { value: "Pub", label: "IJIRCEE '24", tone: "award" },
@@ -28,11 +29,11 @@ export const facts: Fact[] = [
 
 /** Drives the rail nav and the scroll-spy. Order matches the page. */
 export const sections: Section[] = [
-  { id: "battlestation", label: "Battlestation" },
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "education", label: "Education" },
   { id: "stack", label: "Stack" },
+  { id: "battlestation", label: "Systems Lab" },
   { id: "achievements", label: "Achievements" },
   { id: "contact", label: "Contact" },
 ];

@@ -14,6 +14,7 @@ import { Contact } from "@/components/sections/Contact";
 import { achievements } from "@/content/achievements";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
+import { SITE_URL } from "@/lib/site";
 
 /**
  * The page is static, revalidated daily to keep year honest without SSR overhead.
@@ -29,7 +30,7 @@ function StructuredData() {
     alternateName: profile.name,
     jobTitle: "Applied AI engineer",
     email: `mailto:${profile.email}`,
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://suyashkerkar.vercel.app",
+    url: SITE_URL,
     sameAs: [profile.github, profile.linkedin],
     address: {
       "@type": "PostalAddress",
@@ -87,7 +88,6 @@ export default function Home() {
         Skip to main content
       </a>
 
-      {/* Awwwards Interactive Architectural Blueprint & Pulse Grid */}
       <InteractiveBackdrop />
       <CommandPalette />
 
@@ -105,24 +105,24 @@ export default function Home() {
           {/* 1. Hero */}
           <Hero />
 
-          {/* 2. Shipped Systems FIRST (Right Below Hero!) */}
+          {/* 2. Projects */}
           <Projects />
 
-          {/* 3. Compact Systems & Rig Strip (~220px height) with Edge Visual 2 flanking left margin */}
-          <div className="relative">
-            <div className="hidden xl:flex absolute -left-[225px] 2xl:-left-[280px] top-4 w-[220px] 2xl:w-[265px]">
-              <EdgeVisualBuilding />
-            </div>
-            <BattlestationBento />
+          {/* 3. Side-by-side Experience & Education */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
+            <Experience className="border-b-0" />
+            <Education className="border-b-0" />
           </div>
 
           {/* 4. Technology Stack Mechanical Keycaps */}
           <Stack />
 
-          {/* 5. Side-by-side Experience & Education */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-8">
-            <Experience className="border-b-0" />
-            <Education className="border-b-0" />
+          {/* 5. Systems Lab: local-inference rig, Edge Visual 2 flanking the left margin */}
+          <div className="relative">
+            <div className="hidden xl:flex absolute -left-[225px] 2xl:-left-[280px] top-4 w-[220px] 2xl:w-[265px]">
+              <EdgeVisualBuilding />
+            </div>
+            <BattlestationBento />
           </div>
 
           {/* 6. Trophy Achievements */}
@@ -136,7 +136,7 @@ export default function Home() {
             <div>Suyash Kerkar · Navi Mumbai · {new Date().getFullYear()}</div>
             <div className="flex items-center gap-4">
               <a
-                href="https://github.com/Suyash728"
+                href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-ink transition-colors"
@@ -145,7 +145,7 @@ export default function Home() {
               </a>
               <span>·</span>
               <a
-                href="https://linkedin.com/in/suyashkerkar"
+                href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-ink transition-colors"
@@ -154,7 +154,7 @@ export default function Home() {
               </a>
               <span>·</span>
               <a
-                href="mailto:suyashkerkar642005@gmail.com"
+                href={`mailto:${profile.email}`}
                 className="hover:text-ink transition-colors"
               >
                 Email

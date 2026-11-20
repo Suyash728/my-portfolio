@@ -13,7 +13,7 @@ import { sound } from "@/lib/sound";
 import { ChevronDown, ArrowUpRight } from "lucide-react";
 
 export function Projects() {
-  const [openSchematicSlug, setOpenSchematicSlug] = useState<string | null>("medisync");
+  const [openSchematicSlug, setOpenSchematicSlug] = useState<string | null>(null);
   const [openArchiveSlug, setOpenArchiveSlug] = useState<string | null>(null);
   const [activeFilter] = useTechFilter();
 
@@ -39,7 +39,7 @@ export function Projects() {
   return (
     <Panel
       id="projects"
-      heading="Shipped Systems & Engineering Decisions"
+      heading="Systems & Engineering Decisions"
       intro="Four flagship spotlight systems and three compact archive builds. Designed so deterministic rules live in code and LLMs strictly synthesize."
     >
       {/* Active Request-Path Filter Banner */}
@@ -117,7 +117,7 @@ export function Projects() {
                 {/* Micro-UI Visual Preview Banner */}
                 <ProjectVisualHeader slug={project.slug} />
 
-                {/* Scannable 1-Sentence Problem + 1-Sentence Decision (Strictly <28 words total!) */}
+                {/* Problem + decision, under 28 words */}
                 <p className="font-sans text-small text-muted leading-relaxed mb-2">
                   {project.problem}
                 </p>
@@ -212,12 +212,12 @@ export function Projects() {
       </div>
 
       {/* =========================================================================
-          BOTTOM LIST: Compact Shipped Archive (Interactive Accordion Rows)
+          BOTTOM LIST: Earlier builds (Interactive Accordion Rows)
       ========================================================================= */}
       <div>
         <div className="flex items-center justify-between border-b border-rule pb-2 mb-3">
           <h3 className="font-narrow text-tiny uppercase tracking-eyebrow text-muted font-bold">
-            Shipped Systems Archive ({archiveProjects.length} Builds)
+            Earlier Builds ({archiveProjects.length})
           </h3>
           <span className="font-narrow text-tiny text-muted">
             Click row to inspect decision

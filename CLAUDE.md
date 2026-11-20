@@ -12,14 +12,14 @@ All colors and radii live strictly inside `@theme` in `src/app/globals.css`. Nev
 
 | Token                | Value                 | Job                                                                                                                                                                                   |
 | -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ground`             | `#F2EFE9`             | Warm anodized off-white chassis base.                                                                                                                                                 |
-| `surface`            | `#FBF9F5`             | Elevated bento module surface.                                                                                                                                                        |
-| `surface- sunken`    | `#E8E3DA`             | Recessed wells, progress tracks, switch housings, archive rows.                                                                                                                       |
-| `rule` / `rule-soft` | `#DCD6CA` / `#E6E1D6` | Structural bento borders and subtle dot-grid hairlines.                                                                                                                               |
+| `ground`             | `#F7F6F2`             | Warm anodized off-white chassis base.                                                                                                                                                 |
+| `surface`            | `#FFFFFF`             | Elevated bento module surface.                                                                                                                                                        |
+| `surface-sunken`    | `#F0EEE6`             | Recessed wells, progress tracks, switch housings, archive rows.                                                                                                                       |
+| `rule` / `rule-soft` | `#E5E2DC` / `#EDEAE4` | Structural bento borders and subtle dot-grid hairlines.                                                                                                                               |
 | `rule-strong`        | `#7D7A72`             | **Operable control edges** (switches, buttons, inputs, tabs) — >= 3:1 contrast on both `ground` and `surface` (WCAG 1.4.11).                                                          |
-| `ink`                | `#181A1F`             | Primary crisp body & display ink.                                                                                                                                                     |
-| `muted`              | `#575650`             | Secondary labels & concise captions (>= 5.9:1 contrast).                                                                                                                              |
-| `accent-orange`      | `#D94E0F`             | **Tactile Primary Pop** — live hardware LEDs, physical toggle switches, award badges, primary hover callouts. (Use `#FFF8F5` text on filled orange, or dark ink on pale orange tint). |
+| `ink`                | `#111318`             | Primary crisp body & display ink.                                                                                                                                                     |
+| `muted`              | `#4A4D55`             | Secondary labels & concise captions (>= 5.9:1 contrast).                                                                                                                              |
+| `accent-orange`      | `#A13706`             | **Tactile Primary Pop** — live hardware LEDs, physical toggle switches, award badges, primary hover callouts. (Use `#FFF8F5` text on filled orange, or dark ink on pale orange tint). |
 | `signal-teal`        | `#0F5C6E`             | **Systems & Telemetry Accent** — deterministic verification gates, active VRAM meters, focus rings, interactive filter states.                                                        |
 
 ### Tactile Surfaces & Geometry
@@ -42,7 +42,7 @@ All colors and radii live strictly inside `@theme` in `src/app/globals.css`. Nev
 - Use `motion/react` (`layoutId`, spring physics: `stiffness: 380, damping: 30`) for tab switches, schematic expansions, and stack filters.
 - Subtle 3D perspective tilt (`rotateX`/`rotateY` <= 4deg) + cursor spotlight border on Battlestation & Spotlight bento cards.
 - Smooth staggered scroll-reveal on bento modules (`opacity` + `translateY(12px)`, `viewport={{ once: true, margin: "-60px" }}`), strictly disabled when `prefers-reduced-motion: reduce` is active.
-- Keep `TraceBackground.tsx` capped at 30fps and <= 0.11 opacity.
+- Keep `InteractiveBackdrop.tsx` subtle (low opacity), paused on hidden tabs, and static under `prefers-reduced-motion`.
 
 ### Zero `TODO`s Policy
 
