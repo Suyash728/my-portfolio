@@ -959,7 +959,7 @@ export function EdgeVisualBuilding() {
           <button
             type="button"
             onClick={handleToggleBoot}
-            className={`w-full py-2 px-3 rounded-lg border font-narrow text-tiny uppercase tracking-eyebrow font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs ${
+            className={`w-full py-2 px-2 rounded-lg border font-narrow text-tiny uppercase tracking-rail whitespace-nowrap font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs ${
               isBooted
                 ? "bg-surface text-ink border-rule hover:border-rule-strong hover:bg-ground"
                 : "bg-oled text-oled-ink border-argb-orange/70 hover:border-argb-orange hover:bg-oled-surface shadow-[0_0_12px_color-mix(in_srgb,var(--color-argb-orange)_25%,transparent)]"
