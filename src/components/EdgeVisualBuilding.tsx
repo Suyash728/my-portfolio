@@ -19,7 +19,7 @@ import {
  *    - White rear spine wall (narrow back face)
  *    - Dark recessed ATX motherboard tray
  *    - Solid white top roof panel with dark magnetic mesh dust-filter strip
- *    - White front mesh bezel with TWO stacked 140mm ARGB fans (spinning in Online mode)
+ *    - Front intake: TWO stacked 170mm infinity-mirror ARGB fans (real 217 INF spec) (spinning in Online mode)
  * 3. Character with Two Visible Voxel Arms:
  *    - Stands at front-left of bench beside the open side bay (NOT trapped behind back wall)
  *    - Holds orange precision screwdriver reaching toward PCIe bracket in Build mode
@@ -77,25 +77,25 @@ export function EdgeVisualBuilding() {
         onClick={handleToggleBoot}
       >
         {/* Subtle Header Badge */}
-        <div className="flex items-center justify-between mb-2 px-1">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 mb-2 px-1">
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full border bg-surface/95 px-2.5 py-0.5 font-narrow text-[10px] uppercase tracking-eyebrow shadow-xs backdrop-blur-xs transition-colors ${
+            className={`inline-flex items-center gap-1.5 rounded-full border bg-surface/95 px-2.5 py-0.5 font-narrow text-tiny uppercase tracking-eyebrow whitespace-nowrap shadow-xs backdrop-blur-xs transition-colors ${
               isBooted
-                ? "border-[#22C55E]/40 text-[#16A34A] bg-[#22C55E]/10 font-semibold"
+                ? "border-led-green/40 text-led-ok-ink bg-led-green/10 font-semibold"
                 : isHovered
-                ? "border-[#FF5500] text-[#FF5500]"
+                ? "border-accent-orange text-accent-orange"
                 : "border-rule text-ink"
             }`}
           >
             <span
               className={`size-1.5 rounded-full ${
-                isBooted ? "bg-[#22C55E] animate-ping" : "bg-[#FF5500] animate-pulse"
+                isBooted ? "bg-led-green animate-ping" : "bg-argb-orange animate-pulse"
               }`}
             />
-            {isBooted ? "✓ Custom Rig Online" : "🔧 Hands-On PC Build"}
+            {isBooted ? "✓ Rig Online" : "Hands-On Build"}
           </span>
-          <span className="font-mono text-[9.5px] text-muted tabular-nums">
-            {isBooted ? "0.0 GB Offload" : "White Lancool 217 INF"}
+          <span className="font-narrow text-tiny text-muted tabular-nums whitespace-nowrap">
+            {isBooted ? "0.0 GB Offload" : "Lancool 217 INF"}
           </span>
         </div>
 
@@ -104,6 +104,8 @@ export function EdgeVisualBuilding() {
           <svg
             viewBox="0 0 450 350"
             className="w-full h-auto drop-shadow-md"
+            aria-hidden="true"
+            focusable="false"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             shapeRendering="geometricPrecision"
@@ -274,7 +276,7 @@ export function EdgeVisualBuilding() {
                   fontFamily="monospace"
                   textAnchor="middle"
                 >
-                  RTX 5060Ti
+                  RTX 5060 Ti
                 </text>
               );
             })()}
@@ -744,7 +746,7 @@ export function EdgeVisualBuilding() {
             })()}
 
             {/* ========================================================
-                8. WHITE FRONT MESH BEZEL WITH DUAL 140MM ARGB FANS
+                8. WHITE FRONT BEZEL WITH DUAL 170MM ARGB FANS
                 Narrow Front Face at x=74, facing front-right!
                 ======================================================== */}
             {/* Front Bezel Structure */}
@@ -764,13 +766,13 @@ export function EdgeVisualBuilding() {
               scale={scale}
             />
 
-            {/* Dual 140mm ARGB Front Fans projected on +X face */}
+            {/* Dual 170mm ARGB Front Fans projected on +X face */}
             {(() => {
               const fanUpper = p({ x: 75.9, y: 25, z: 33.5 });
               const fanLower = p({ x: 75.9, y: 25, z: 22.5 });
               return (
                 <g>
-                  {/* Upper 140mm Fan */}
+                  {/* Upper 170mm Fan */}
                   <g>
                     <ellipse
                       cx={fanUpper.x}
@@ -784,7 +786,7 @@ export function EdgeVisualBuilding() {
                     <circle cx={fanUpper.x} cy={fanUpper.y} r={2} fill="#FF5500" />
                   </g>
 
-                  {/* Lower 140mm Fan */}
+                  {/* Lower 170mm Fan */}
                   <g>
                     <ellipse
                       cx={fanLower.x}
@@ -919,8 +921,8 @@ export function EdgeVisualBuilding() {
               ======================================================== */}
           {/* Badge 1: CPU / RAM (Top-Right, routed away from character!) */}
           <div className="absolute top-[6%] right-[3%] pointer-events-none">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[#0F5C6E]/60 bg-[#14171E]/95 shadow-sm backdrop-blur-xs font-mono text-[10.5px] font-medium tracking-tight text-[#F4F2EE]">
-              <span className="size-1.5 rounded-full bg-[#0F5C6E]" />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-signal-teal/60 bg-oled/95 shadow-sm backdrop-blur-xs font-narrow text-tiny font-medium whitespace-nowrap text-oled-ink">
+              <span className="size-1.5 rounded-full bg-oled-teal" />
               <span>{isBooted ? "Ryzen 5 5600 · 61°C" : "Ryzen 5 5600 + 32GB"}</span>
             </div>
           </div>
@@ -928,15 +930,15 @@ export function EdgeVisualBuilding() {
           {/* Badge 2: GPU (Front-Left) */}
           <div className="absolute bottom-[24%] left-[2%] pointer-events-none">
             <div
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border shadow-sm backdrop-blur-xs font-mono text-[10.5px] font-medium tracking-tight ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md border shadow-sm backdrop-blur-xs font-narrow text-tiny font-medium whitespace-nowrap ${
                 isBooted
-                  ? "border-[#22C55E]/60 bg-[#14171E]/95 text-[#22C55E]"
-                  : "border-[#FF5500]/60 bg-[#14171E]/95 text-[#F4F2EE]"
+                  ? "border-led-green/60 bg-oled/95 text-led-green"
+                  : "border-argb-orange/60 bg-oled/95 text-oled-ink"
               }`}
             >
               <span
                 className={`size-1.5 rounded-full ${
-                  isBooted ? "bg-[#22C55E]" : "bg-[#FF5500] animate-pulse"
+                  isBooted ? "bg-led-green" : "bg-argb-orange animate-pulse"
                 }`}
               />
               <span>{isBooted ? "✓ RTX 5060 Ti · 16GB" : "Installing: RTX 5060 Ti"}</span>
@@ -945,8 +947,8 @@ export function EdgeVisualBuilding() {
 
           {/* Badge 3: Glass Panel / Front Airflow (Bottom-Right) */}
           <div className="absolute bottom-[10%] right-[3%] pointer-events-none">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-rule-strong bg-[#14171E]/95 shadow-sm backdrop-blur-xs font-mono text-[10.5px] font-medium tracking-tight text-[#94A3B8]">
-              <span className={`size-1.5 rounded-full ${isBooted ? "bg-[#00F0FF] animate-pulse" : "bg-[#64748B]"}`} />
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-rule-strong bg-oled/95 shadow-sm backdrop-blur-xs font-narrow text-tiny font-medium whitespace-nowrap text-oled-muted">
+              <span className={`size-1.5 rounded-full ${isBooted ? "bg-argb-cyan animate-pulse" : "bg-oled-muted"}`} />
               <span>{isBooted ? "ARGB Airflow Active" : "Glass Panel Off"}</span>
             </div>
           </div>
@@ -960,13 +962,13 @@ export function EdgeVisualBuilding() {
             className={`w-full py-2 px-3 rounded-lg border font-narrow text-tiny uppercase tracking-eyebrow font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs ${
               isBooted
                 ? "bg-surface text-ink border-rule hover:border-rule-strong hover:bg-ground"
-                : "bg-[#14171E] text-[#F4F2EE] border-[#FF5500]/70 hover:border-[#FF5500] hover:bg-[#1E2028] shadow-[0_0_12px_rgba(255,85,0,0.25)]"
+                : "bg-oled text-oled-ink border-argb-orange/70 hover:border-argb-orange hover:bg-oled-surface shadow-[0_0_12px_color-mix(in_srgb,var(--color-argb-orange)_25%,transparent)]"
             }`}
           >
-            <span>{isBooted ? "🔧 Inspect Open Chassis" : "⚡ Snap GPU & Test Boot"}</span>
+            <span>{isBooted ? "Inspect Open Chassis" : "Snap GPU & Test Boot"}</span>
             <span
               className={`size-1.5 rounded-full ${
-                isBooted ? "bg-[#22C55E]" : "bg-[#FF5500] animate-ping"
+                isBooted ? "bg-led-green" : "bg-argb-orange animate-ping"
               }`}
             />
           </button>
