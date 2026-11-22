@@ -119,9 +119,9 @@ export default function Home() {
 
           {/* 5. Systems Lab: local-inference rig, Edge Visual 2 flanking the left margin.
               Sized to the real gutter ((100vw - 64rem) / 2 minus a gap) so it never
-              clips off-screen; below 2xl the gutter is too narrow for it to read. */}
+              clips off-screen; below 1440px the gutter (<200px) is too narrow to read. */}
           <div className="relative">
-            <div className="hidden 2xl:flex absolute top-4 right-[calc(100%+1.5rem)] w-[min(265px,calc((100vw-64rem)/2-1.5rem))]">
+            <div className="hidden min-[1440px]:flex absolute top-4 right-[calc(100%+1.5rem)] w-[min(265px,calc((100vw-64rem)/2-1.5rem))]">
               <EdgeVisualBuilding />
             </div>
             <BattlestationBento />
