@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { Panel } from "@/components/Panel";
 import { sound } from "@/lib/sound";
 import { Cpu, Terminal, Layers, Monitor, Gamepad2 } from "lucide-react";
@@ -22,6 +22,7 @@ const VRAM_PRESETS: VramPreset[] = [
 
 export function BattlestationBento() {
   const [activeVram, setActiveVram] = useState<VramPreset>(VRAM_PRESETS[0]);
+  const reduceMotion = useReducedMotion();
 
   return (
     <Panel
@@ -35,12 +36,12 @@ export function BattlestationBento() {
           <div>
             <div className="flex items-center justify-between border-b border-oled-rule pb-2 mb-3">
               <div className="flex items-center gap-2">
-                <Cpu className="size-4 text-[#2dd4bf]" />
+                <Cpu className="size-4 text-oled-teal" />
                 <h3 className="font-sans text-small font-semibold text-oled-ink">
                   16GB VRAM Gauge
                 </h3>
               </div>
-              <span className="font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-[#2dd4bf] border border-[#2dd4bf]/40 bg-[#0f5c6e]/30 px-2 py-0.5 rounded">
+              <span className="font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-oled-teal border border-oled-teal/40 bg-signal-teal/30 px-2 py-0.5 rounded">
                 All Layers On GPU
               </span>
             </div>
@@ -55,10 +56,10 @@ export function BattlestationBento() {
                     sound.playClick();
                     setActiveVram(preset);
                   }}
-                  className={`flex-1 rounded-md py-1 px-1.5 font-narrow text-[11px] uppercase tracking-eyebrow border text-center transition-all ${
+                  className={`flex-1 rounded-md py-1 px-1.5 font-narrow text-tiny uppercase tracking-eyebrow border text-center transition-all ${
                     activeVram.id === preset.id
-                      ? "border-[#2dd4bf] bg-[#1d2026] text-white font-semibold"
-                      : "border-oled-rule bg-[#101216] text-oled-muted hover:text-oled-ink"
+                      ? "border-oled-teal bg-oled-surface text-oled-ink font-semibold"
+                      : "border-oled-rule bg-oled-deep text-oled-muted hover:text-oled-ink"
                   }`}
                 >
                   {preset.name}
@@ -67,10 +68,10 @@ export function BattlestationBento() {
             </div>
 
             {/* Segmented VRAM Bar */}
-            <div className="p-3 bg-[#101216] rounded-lg border border-oled-rule font-mono mb-2">
-              <div className="flex items-center justify-between text-[11px] mb-2">
+            <div className="p-3 bg-oled-deep rounded-lg border border-oled-rule font-narrow tabular-nums mb-2">
+              <div className="flex items-center justify-between text-tiny mb-2">
                 <span className="flex items-center gap-1.5 text-oled-muted">
-                  <span className="size-1.5 rounded-full bg-[#2dd4bf] animate-pulse" />
+                  <span className="size-1.5 rounded-full bg-oled-teal animate-pulse" />
                   Format: {activeVram.format}
                 </span>
                 <span className="font-semibold text-oled-ink tabular-nums text-tiny">
@@ -79,18 +80,22 @@ export function BattlestationBento() {
               </div>
 
               {/* Glowing Segmented Bar */}
-              <div className="h-3.5 w-full bg-[#181a1f] rounded overflow-hidden p-0.5 border border-oled-rule flex gap-0.5">
+              <div className="h-3.5 w-full bg-oled-track rounded overflow-hidden p-0.5 border border-oled-rule flex gap-0.5">
                 <motion.div
-                  className="h-full rounded-xs bg-[#f97316] shadow-[0_0_8px_rgba(249,115,22,0.6)]"
+                  className="h-full rounded-xs bg-oled-orange shadow-[0_0_8px_color-mix(in_srgb,var(--color-oled-orange)_60%,transparent)]"
                   initial={false}
                   animate={{ width: `${(activeVram.vram / activeVram.total) * 100}%` }}
-                  transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 380, damping: 30 }
+                  }
                 />
-                <div className="flex-1 h-full rounded-xs bg-[#1a1d24] opacity-50" />
+                <div className="flex-1 h-full rounded-xs bg-oled-surface opacity-50" />
               </div>
 
-              <div className="flex items-center justify-between text-[10.5px] mt-2 pt-2 border-t border-oled-rule/60">
-                <span className="text-[#fb923c]">Weights + KV: {activeVram.vram.toFixed(1)} GB</span>
+              <div className="flex items-center justify-between text-tiny mt-2 pt-2 border-t border-oled-rule/60">
+                <span className="text-oled-orange-soft">Weights + KV: {activeVram.vram.toFixed(1)} GB</span>
                 <span className="text-oled-muted">Free: {(activeVram.total - activeVram.vram).toFixed(1)} GB</span>
               </div>
             </div>
@@ -106,47 +111,47 @@ export function BattlestationBento() {
           <div>
             <div className="flex items-center justify-between border-b border-oled-rule pb-2 mb-3">
               <div className="flex items-center gap-2">
-                <Terminal className="size-4 text-[#2dd4bf]" />
+                <Terminal className="size-4 text-oled-teal" />
                 <h3 className="font-sans text-small font-semibold text-oled-ink">
                   Hardware &amp; CachyOS
                 </h3>
               </div>
-              <span className="font-mono text-tiny text-oled-muted">
+              <span className="font-narrow text-tiny text-oled-muted">
                 Fish Shell 4.0
               </span>
             </div>
 
             <div className="space-y-2">
-              <div className="p-2 rounded-md bg-[#101216] border border-oled-rule flex items-center justify-between text-tiny">
+              <div className="p-2 rounded-md bg-oled-deep border border-oled-rule flex items-center justify-between text-tiny">
                 <span className="flex items-center gap-2 text-oled-ink font-medium">
-                  <Layers className="size-3.5 text-[#2dd4bf]" />
-                  Lancool 217 INF + RTX 5060 Ti 16GB
+                  <Layers className="size-3.5 text-oled-teal" />
+                  White Lancool 217 INF + RTX 5060 Ti 16GB
                 </span>
-                <span className="text-oled-muted text-[11px] font-mono">Dual 140mm Mesh</span>
+                <span className="text-oled-muted text-tiny font-narrow">2× 170mm ARGB</span>
               </div>
 
-              <div className="p-2 rounded-md bg-[#101216] border border-oled-rule flex items-center justify-between text-tiny">
+              <div className="p-2 rounded-md bg-oled-deep border border-oled-rule flex items-center justify-between text-tiny">
                 <span className="flex items-center gap-2 text-oled-ink font-medium">
-                  <Monitor className="size-3.5 text-[#2dd4bf]" />
-                  27&quot; MSI 1440p @ 180Hz Fast IPS
+                  <Monitor className="size-3.5 text-oled-teal" />
+                  27&quot; MSI 1440p @ 180Hz Rapid IPS
                 </span>
-                <span className="text-[#2dd4bf] text-[11px] font-mono">Wayland Sub-1ms</span>
+                <span className="text-oled-teal text-tiny font-narrow">1ms GtG</span>
               </div>
 
-              <div className="p-2 rounded-md bg-[#101216] border border-oled-rule flex items-center justify-between text-tiny">
+              <div className="p-2 rounded-md bg-oled-deep border border-oled-rule flex items-center justify-between text-tiny">
                 <span className="flex items-center gap-2 text-oled-ink font-medium">
-                  <Terminal className="size-3.5 text-[#2dd4bf]" />
+                  <Terminal className="size-3.5 text-oled-teal" />
                   CachyOS Linux x86_64
                 </span>
-                <span className="text-oled-muted text-[11px] font-mono">7.3 BORE Kernel</span>
+                <span className="text-oled-muted text-tiny font-narrow">7.3 BORE Kernel</span>
               </div>
 
-              <div className="p-2 rounded-md bg-[#101216] border border-oled-rule flex items-center justify-between text-tiny">
+              <div className="p-2 rounded-md bg-oled-deep border border-oled-rule flex items-center justify-between text-tiny">
                 <span className="flex items-center gap-2 text-oled-ink font-medium">
-                  <Gamepad2 className="size-3.5 text-[#f97316]" />
+                  <Gamepad2 className="size-3.5 text-oled-orange" />
                   8BitDo Ultimate 2C + G304
                 </span>
-                <span className="text-[#f97316] text-[11px] font-mono">Hall Effect Sticks</span>
+                <span className="text-oled-orange text-tiny font-narrow">Hall Effect Sticks</span>
               </div>
             </div>
           </div>

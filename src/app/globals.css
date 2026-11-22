@@ -28,6 +28,19 @@
   --color-oled-rule: #2e333d;
   --color-oled-ink: #f4f2ee;
   --color-oled-muted: #9ba1ae;
+  --color-oled-deep: #101216;
+  --color-oled-track: #181a1f;
+
+  /* OLED-only telemetry glows (bright tints that only pass contrast on oled) */
+  --color-oled-teal: #2dd4bf;
+  --color-oled-orange: #f97316;
+  --color-oled-orange-soft: #fb923c;
+
+  /* Rig hardware LEDs / ARGB (dots, rails, fan rings; not body text on light) */
+  --color-led-green: #22c55e;
+  --color-led-ok-ink: #15803d;
+  --color-argb-orange: #ff5500;
+  --color-argb-cyan: #00f0ff;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-narrow: var(--font-archivo-narrow), var(--font-inter), ui-sans-serif, sans-serif;

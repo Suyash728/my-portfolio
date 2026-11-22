@@ -51,33 +51,33 @@ export function EdgeVisualUsing() {
           }`}
         >
           <div className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-rule-soft">
-            <span className="inline-flex items-center gap-1.5 font-narrow text-[10.5px] uppercase tracking-eyebrow font-semibold text-ink">
+            <span className="inline-flex items-center gap-1.5 font-narrow text-tiny uppercase tracking-eyebrow font-semibold text-ink whitespace-nowrap">
               <span className="size-1.5 rounded-full bg-signal-teal animate-pulse" />
               Daily Driver Rig
             </span>
-            <span className="font-mono text-[9px] text-[#A13706] font-semibold">
+            <span className="font-narrow text-tiny text-accent-orange font-semibold tabular-nums whitespace-nowrap">
               0.0 GB Offload
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-1 font-mono text-[9.5px]">
-            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
-              <span className="text-muted text-[8.5px]">CPU</span>
-              <span className="font-semibold text-ink">Ryzen 5 5600</span>
-            </div>
-            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
-              <span className="text-muted text-[8.5px]">RAM</span>
-              <span className="font-semibold text-ink">32GB DDR4</span>
-            </div>
-            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
-              <span className="text-muted text-[8.5px]">GPU</span>
-              <span className="font-semibold text-ink">RTX 5060 Ti</span>
-            </div>
-            <div className="flex items-center justify-between px-1.5 py-0.5 rounded bg-surface-sunken/60">
-              <span className="text-muted text-[8.5px]">VRAM</span>
-              <span className="font-semibold text-signal-teal">16GB GDDR7</span>
-            </div>
-          </div>
+          <dl className="grid grid-cols-2 gap-1 font-narrow text-tiny">
+            {[
+              ["CPU", "Ryzen 5 5600"],
+              ["RAM", "32GB DDR4"],
+              ["GPU", "RTX 5060 Ti"],
+              ["VRAM", "16GB GDDR7"],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="min-w-0 flex flex-col px-1.5 py-1 rounded bg-surface-sunken/60 leading-tight"
+              >
+                <dt className="text-muted uppercase tracking-eyebrow">{label}</dt>
+                <dd className={`truncate font-semibold ${label === "VRAM" ? "text-signal-teal" : "text-ink"}`}>
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         {/* 2.5D Isometric Diorama SVG (Tightened Framing: viewBox="15 0 440 375") */}
@@ -85,6 +85,8 @@ export function EdgeVisualUsing() {
           <svg
             viewBox="15 0 440 375"
             className="w-full h-auto drop-shadow-md"
+            aria-hidden="true"
+            focusable="false"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             shapeRendering="geometricPrecision"
@@ -316,7 +318,7 @@ export function EdgeVisualUsing() {
               {/* --- Right Pane: Live Telemetry Sparkline --- */}
               <rect x="27.6" y="0.8" width="14.6" height="22.4" fill="#11141B" stroke="#1E232E" strokeWidth="0.4" />
               <text x="28.4" y="2.7" fill="#00F0FF" fontSize="1.6" fontFamily="monospace">
-                RTX 5060Ti
+                RTX 5060 Ti
               </text>
               <text x="28.4" y="5.2" fill="#64748B" fontSize="1.4" fontFamily="monospace">
                 180Hz · 1ms
@@ -433,7 +435,7 @@ export function EdgeVisualUsing() {
             <g transform={getIsoPlaneTransform("front-left", { x: 76.6, y: 32, z: 41.5 }, origin, scale)}>
               <rect x="0" y="0" width="10" height="2" fill="#00F0FF" rx="0.4" />
               <text x="1" y="1.5" fill="#0A0C10" fontSize="1.2" fontFamily="monospace" fontWeight="bold">
-                RTX 5060Ti
+                RTX 5060 Ti
               </text>
             </g>
 
@@ -452,8 +454,8 @@ export function EdgeVisualUsing() {
               );
             })()}
 
-            {/* --- Front Narrow Mesh Face (at y=37, facing front-right) --- */}
-            {/* Dual 140mm Perspective-Projected ARGB Circular Fans on Front Mesh */}
+            {/* --- Front Glass Face (at y=37, facing front-right) --- */}
+            {/* Dual 170mm infinity-mirror ARGB intake fans behind the glass front */}
             <g
               transform={getIsoPlaneTransform(
                 "front-right",
@@ -464,7 +466,7 @@ export function EdgeVisualUsing() {
             >
               <rect x="0.8" y="1" width="10.4" height="22" fill="#F1F5F9" stroke="#E2E8F0" strokeWidth="0.4" />
 
-              {/* Upper 140mm Fan (Center: 6, 6.5, Radius: 4.2) */}
+              {/* Upper 170mm Fan (Center: 6, 6.5, Radius: 4.2) */}
               <g transform="translate(6, 6.5)">
                 <circle cx="0" cy="0" r="4.2" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.2" />
                 <circle cx="0" cy="0" r="3.2" fill="rgba(0,240,255,0.06)" />
@@ -475,7 +477,7 @@ export function EdgeVisualUsing() {
                 <circle cx="0" cy="0" r="1.4" fill="#1E293B" stroke="#FF5500" strokeWidth="0.5" />
               </g>
 
-              {/* Lower 140mm Fan (Center: 6, 16.5, Radius: 4.2) */}
+              {/* Lower 170mm Fan (Center: 6, 16.5, Radius: 4.2) */}
               <g transform="translate(6, 16.5)">
                 <circle cx="0" cy="0" r="4.2" fill="none" stroke="url(#scene1Argb)" strokeWidth="1.2" />
                 <circle cx="0" cy="0" r="3.2" fill="rgba(255,85,0,0.06)" />
@@ -872,14 +874,13 @@ export function EdgeVisualUsing() {
           </svg>
         </div>
 
-        {/* Secondary Footer Strip */}
-        <div className="mt-1.5 flex items-center justify-between px-2 font-mono text-[9.5px] text-muted">
-          <span className="flex items-center gap-1 text-ink font-medium">
+        {/* Secondary Footer Strip (offload already shown in the HUD) */}
+        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-x-2 px-2 font-narrow text-tiny text-muted">
+          <span className="flex items-center gap-1.5 text-ink font-medium whitespace-nowrap">
             <span className="size-1 rounded-full bg-signal-teal" />
             White Lancool 217 INF
           </span>
-          <span className="text-muted">1440p 180Hz</span>
-          <span className="text-[#A13706] font-semibold">0.0 Offload</span>
+          <span className="tabular-nums whitespace-nowrap">27&quot; 1440p · 180Hz</span>
         </div>
       </div>
     </aside>

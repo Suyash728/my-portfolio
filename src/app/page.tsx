@@ -117,9 +117,11 @@ export default function Home() {
           {/* 4. Technology Stack Mechanical Keycaps */}
           <Stack />
 
-          {/* 5. Systems Lab: local-inference rig, Edge Visual 2 flanking the left margin */}
+          {/* 5. Systems Lab: local-inference rig, Edge Visual 2 flanking the left margin.
+              Sized to the real gutter ((100vw - 64rem) / 2 minus a gap) so it never
+              clips off-screen; below 2xl the gutter is too narrow for it to read. */}
           <div className="relative">
-            <div className="hidden xl:flex absolute -left-[225px] 2xl:-left-[280px] top-4 w-[220px] 2xl:w-[265px]">
+            <div className="hidden 2xl:flex absolute top-4 right-[calc(100%+1.5rem)] w-[min(265px,calc((100vw-64rem)/2-1.5rem))]">
               <EdgeVisualBuilding />
             </div>
             <BattlestationBento />
